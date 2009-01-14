@@ -1,4 +1,74 @@
 <?php
+$realm = 'Geschützter Bereich';
+
+// Benutzer => Passwort
+$benutzer = array('admin' => 'mypass', 'gast' => 'gast');
+
+if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
+    header('HTTP/1.1 401 Unauthorized');
+    header('WWW-Authenticate: Digest realm="' . $realm .
+           '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) .
+           '"');
+
+    die('Text, der gesendet wird, falls der Benutzer auf Abbrechen drückt');
+}
+
+// Analysieren der Variable PHP_AUTH_DIGEST
+if (!($daten = http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])) ||
+    !isset($benutzer[$daten['username']]))
+    die('Falsche Zugangsdaten!');
+
+// Erzeugen einer gültigen Antwort
+$A1 = md5($daten['username'] . ':' . $realm . ':' .
+          $benutzer[$daten['username']]);
+$A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $daten['uri']);
+$gueltige_antwort = md5($A1 . ':' . $daten['nonce'] . ':' . $daten['nc'] .
+                        ':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' .
+                        $A2);
+
+if ($daten['response'] != $gueltige_antwort)
+    die('Falsche Zugangsdaten!');
+
+// OK, gültige Benutzername & Passwort
+echo 'Sie sind angemeldet als: ' . $daten['username'];
+
+// Funktion zum analysieren der HTTP-Auth-Header
+function http_digest_parse($txt) {
+    // gegen fehlende Daten schützen
+    $noetige_teile = array('nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1,
+                           'username'=>1, 'uri'=>1, 'response'=>1);
+    $daten = array();
+
+    preg_match_all('@(\w+)=(?:([\'"])([^\2]+)\2|([^\s,]+))@', $txt, $treffer,
+                   PREG_SET_ORDER);
+
+    foreach ($treffer as $t) {
+        $daten[$t[1]] = $t[3] ? $t[3] : $t[4];
+        unset($noetige_teile[$t[1]]);
+    }
+
+    return $noetige_teile ? false : $daten;
+}
+?>
+
+
+
+
+--- SQL Abfrage, ob der User mit dem Passwort der Gruppe "Trainer" zugehört
+
+das Password wird dabei als MD5- Hash übergeben
+
+SELECT adm_users.usr_login_name
+FROM `adm_users` , adm_members, adm_roles
+WHERE adm_users.usr_id = adm_members.mem_usr_id
+AND adm_members.mem_rol_id = adm_roles.rol_id
+AND adm_roles.rol_name = "Trainer"
+AND adm_users.usr_login_name = "steffen"
+AND adm_users.usr_password = "05926b46a83be76ef66c2e9a6ff7b0c5"
+
+
+
+<?php
 /******************************************************************************
  * Mitglieder einer Rolle zuordnen
  *
