@@ -1,8 +1,9 @@
 <?php
-$realm = 'Geschützter Bereich';
 
-// Benutzer => Passwort
-$benutzer = array('admin' => 'mypass', 'gast' => 'gast');
+require("../../system/common.php");
+
+$realm = $g_realm;
+
 
 if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
     header('HTTP/1.1 401 Unauthorized');
@@ -10,39 +11,51 @@ if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
            '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) .
            '"');
 
-    die('Text, der gesendet wird, falls der Benutzer auf Abbrechen drückt');
+    die('Login cancelled');
 }
+
+
 
 // Analysieren der Variable PHP_AUTH_DIGEST
-if (!($daten = http_digest_parse($_SERVER['PHP_AUTH_DIGEST']))
-	//  || !isset($benutzer[$daten['username']])
-)
-    {
-	//authentifizieren();
+if (!($daten = http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])))  {
+	authentifizieren();
 	die('Falsche Zugangsdaten! (1)');
 }
+$sql    = "SELECT usr_password FROM ". TBL_USERS." WHERE usr_login_name = \"".$daten['username']."\"";
+$dates_result = $g_db->query($sql);
+ 
+$row = $g_db->fetch_array($dates_result);
+if (count($row)<1){
+	authentifizieren();
+	die('Falsche Zugangsdaten! (1)');
+}
+ //Der zum Berechnen gültige Hash wurde schon damals beim Anlegen des Userpassworts berechnet
+// und als Userpasswort-Hash gespeichert. Das war der einzige Zeitpunkt, an dem das Userpasswort 
+// im Klartext zur Verfügung steht.
+$digestHash=$row[0];
 
-// Erzeugen einer gültigen Antwort
-$A1 = md5($daten['username'] . ':' . $realm . ':' .
-          $benutzer[$daten['username']]);
+
+// Überprüfen einer gültigen Antwort
+// Diese setzt sich normalerweise folgendermaßen zusammen
+//
+//  $A1 = md5(USERNAME . ':' . $realm . ':' . PASSWORD);
+//
+// nun kennt man das Password aber ja auf der Serverseite gar nicht,
+// weil ja stattdessen nur dessen MD5-Hash gespeichert ist
+// also muß man beim Anlegen des Passwort- Eintrags gleich den MD5-Hash
+// über den gesamten oben genannten Ausruck erzeugen 
+         // $benutzer[$daten['username']]);
 $A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $daten['uri']);
-$gueltige_antwort = md5($A1 . ':' . $daten['nonce'] . ':' . $daten['nc'] .
-                        ':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' .
-                        $A2);
+//$gueltige_antwort = md5($A1 . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
+$gueltige_antwort = md5($digestHash . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
 
 if ($daten['response'] != $gueltige_antwort)
     die('Falsche Zugangsdaten! (2)');
 
 // OK, gültige Benutzername & Passwort
-echo 'Sie sind angemeldet als: ' . $daten['username'];
+echo 'Sie sind angemeldet als: ' . $daten['username']."-Passwort".$daten['username'];
 
-function authentifizieren() {
-    header('WWW-Authenticate: Basic realm="Test Authentication System"');
-    header('HTTP/1.0 401 Unauthorized');
-    echo "Bitte geben Sie eine gültige Login-ID und das Passwort für den
-        Zugang ein\n";
-    exit;
-}
+?>
 
 if (!isset($_SERVER['PHP_AUTH_USER']) ||
     ($_POST['Gesehen'] == 1 &&
@@ -61,9 +74,8 @@ if (!isset($_SERVER['PHP_AUTH_USER']) ||
 
 
 
-
 // Funktion zum analysieren der HTTP-Auth-Header
-?>
+
 
 
 
@@ -136,7 +148,7 @@ AND adm_users.usr_password = "05926b46a83be76ef66c2e9a6ff7b0c5"
  *
  *****************************************************************************/
 
-require("../../system/common.php");
+die("joo...");
 require("../../system/login_valid.php");
 require("../../system/role_class.php");
 
@@ -815,6 +827,17 @@ if($g_db->num_rows($result_user)>=50)
    
 require(THEME_SERVER_PATH. "/overall_footer.php");
 
+// Löscht den Username cache beim Client im Falle einer ungültigen Anmeldung
+function authentifizieren() {
+    header('WWW-Authenticate: Basic realm="Test Authentication System"');
+    header('HTTP/1.0 401 Unauthorized');
+    echo "Bitte geben Sie eine gültige Login-ID und das Passwort für den
+        Zugang ein\n";
+    exit;
+}
+
+
+
 
 // function to parse the http auth header
 function http_digest_parse($txt)
@@ -827,10 +850,15 @@ function http_digest_parse($txt)
     preg_match_all('@(\w+)=(?:([\'"])([^$2]+)$2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
    
     foreach ($matches as $m) {
-	echo "$m[1]:".trim($m[4],"\",\'")."<br>";
+//	echo "$m[1]:".trim($m[4],"\",\'")."<br>";
         $data[$m[1]] = $m[3] ? trim($m[3],"\",\'") : trim($m[4],"\",\'");
         unset($needed_parts[$m[1]]);
     }
+//	echo "---<br>";
+   foreach ($needed_parts as $n) {
+//	echo "$n<br>";
+   }
+
     return $needed_parts ? false : $data;
 }
 
