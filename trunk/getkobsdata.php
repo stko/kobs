@@ -2,7 +2,7 @@
 
 require("../../system/common.php");
 
-$realm = $g_realm;
+$realm = $g_organization;
 
 
 if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
@@ -47,10 +47,12 @@ $digestHash=$row[0];
          // $benutzer[$daten['username']]);
 $A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $daten['uri']);
 //$gueltige_antwort = md5($A1 . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
-$gueltige_antwort = md5($digestHash . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
+$gueltige_antwort = md5($row[0] . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
 
-if ($daten['response'] != $gueltige_antwort)
+if ($daten['response'] != $gueltige_antwort){
+	authentifizieren();
     die('Falsche Zugangsdaten! (2)');
+}
 
 // OK, gültige Benutzername & Passwort
 echo 'Sie sind angemeldet als: ' . $daten['username']."-Passwort".$daten['username'];
@@ -829,11 +831,19 @@ require(THEME_SERVER_PATH. "/overall_footer.php");
 
 // Löscht den Username cache beim Client im Falle einer ungültigen Anmeldung
 function authentifizieren() {
-    header('WWW-Authenticate: Basic realm="Test Authentication System"');
+/*    header('WWW-Authenticate: Basic realm="Test Authentication System"');
     header('HTTP/1.0 401 Unauthorized');
     echo "Bitte geben Sie eine gültige Login-ID und das Passwort für den
         Zugang ein\n";
     exit;
+*/
+    header('HTTP/1.1 401 Unauthorized');
+    header('WWW-Authenticate: Digest realm="' . $realm .
+           '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) .
+           '"');
+
+    die('Login cancelled');
+
 }
 
 
