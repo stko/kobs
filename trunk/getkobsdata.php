@@ -2,37 +2,26 @@
 
 require("../../system/common.php");
 
-$realm = $g_organization;
-
-
+$g_realm = $g_realm;
+//Loginprozess anstossen
 if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
-/*
-    header('HTTP/1.1 401 Unauthorized');
-    header('WWW-Authenticate: Digest realm="' . $realm .
-           '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) .
-           '"');
-
-    die('Login cancelled');
-*/
-	authentifizieren($realm);
-
+	authentifizieren('Login cancelled',$g_realm);
 }
-
 
 
 // Analysieren der Variable PHP_AUTH_DIGEST
 if (!($daten = http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])))  {
-	authentifizieren($realm);
-	die('Falsche Zugangsdaten! (1)');
+	authentifizieren('Falsche Zugangsdaten!',$g_realm);
 }
+
 $sql    = "SELECT usr_password FROM ". TBL_USERS." WHERE usr_login_name = \"".$daten['username']."\"";
 $dates_result = $g_db->query($sql);
  
 $row = $g_db->fetch_array($dates_result);
 if (count($row)<1){
-	authentifizieren($realm);
-	die('Falsche Zugangsdaten! (1)');
+	authentifizieren('Unbekannter User',$g_realm);
 }
+
  //Der zum Berechnen gültige Hash wurde schon damals beim Anlegen des Userpassworts berechnet
 // und als Userpasswort-Hash gespeichert. Das war der einzige Zeitpunkt, an dem das Userpasswort 
 // im Klartext zur Verfügung steht.
@@ -42,27 +31,26 @@ $digestHash=$row[0];
 // Überprüfen einer gültigen Antwort
 // Diese setzt sich normalerweise folgendermaßen zusammen
 //
-//  $A1 = md5(USERNAME . ':' . $realm . ':' . PASSWORD);
+//  $A1 = md5(USERNAME . ':' . $g_realm . ':' . PASSWORD);
 //
 // nun kennt man das Password aber ja auf der Serverseite gar nicht,
 // weil ja stattdessen nur dessen MD5-Hash gespeichert ist
 // also muß man beim Anlegen des Passwort- Eintrags gleich den MD5-Hash
 // über den gesamten oben genannten Ausruck erzeugen 
-         // $benutzer[$daten['username']]);
+
 $A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $daten['uri']);
 //$gueltige_antwort = md5($A1 . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
-$gueltige_antwort = md5($row[0] . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
+$gueltige_antwort = md5($digestHash . ':' . $daten['nonce'] . ':' . $daten['nc'] .':' . $daten['cnonce'] . ':' . $daten['qop'] . ':' . $A2);
 
 if ($daten['response'] != $gueltige_antwort){
-	authentifizieren($realm);
-    die('Falsche Zugangsdaten! (2)');
+	authentifizieren('Falsches Passwort',$g_realm);
 }
 
 // OK, gültige Benutzername & Passwort
 echo 'Sie sind angemeldet als: ' . $daten['username']."-Passwort".$daten['username'];
 
 
-function authentifizieren($realm) {
+function authentifizieren($title,$g_realm) {
 /*    header('WWW-Authenticate: Basic realm="Test Authentication System"');
     header('HTTP/1.0 401 Unauthorized');
     echo "Bitte geben Sie eine gültige Login-ID und das Passwort für den
@@ -70,11 +58,11 @@ function authentifizieren($realm) {
     exit;
 */
     header('HTTP/1.1 401 Unauthorized');
-    header('WWW-Authenticate: Digest realm="' . $realm .
-           '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) .
+    header('WWW-Authenticate: Digest realm="' . $g_realm .
+           '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($g_realm) .
            '"');
 
-    die('Login cancelled');
+    die($title);
 
 }
 
