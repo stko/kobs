@@ -4,6 +4,11 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 
+import javax.comm.*;
+import java.util.*;
+
+
+
 public class ttyReader{
 	JFrame frame;
 	JPanel panel;
@@ -13,6 +18,32 @@ public class ttyReader{
 	JLabel label;
 	JButton button;
 	public static void main(String[] args) {
+
+		boolean portFound = false;
+		String defaultPort = "/dev/ttyUSB0";
+
+		if (args.length > 0) {
+			defaultPort = args[0];
+		} 
+
+		SerialRead.portList = CommPortIdentifier.getPortIdentifiers();
+
+		while (SerialRead.portList.hasMoreElements()) {
+		SerialRead.portId = (CommPortIdentifier) SerialRead.portList.nextElement();
+			System.out.println(SerialRead.portId.getName());
+		if (SerialRead.portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+			System.out.println(SerialRead.portId.getName());
+			if (SerialRead.portId.getName().equals(defaultPort)) {
+			System.out.println("Found port: "+defaultPort);
+			portFound = true;
+			SerialRead reader = new SerialRead();
+			} 
+		} 
+		} 
+		if (!portFound) {
+		System.out.println("port " + defaultPort + " not found.");
+		} 
+		
 		ttyReader u = new ttyReader();
 	}
 	public ttyReader(){
