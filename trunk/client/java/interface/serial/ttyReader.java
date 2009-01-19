@@ -19,6 +19,7 @@ public class ttyReader{
 	JButton button;
 	public static void main(String[] args) {
 
+	Thread readThread;
 		boolean portFound = false;
 		String defaultPort = "/dev/ttyUSB0";
 
@@ -26,24 +27,8 @@ public class ttyReader{
 			defaultPort = args[0];
 		} 
 
-		SerialRead.portList = CommPortIdentifier.getPortIdentifiers();
-
-		while (SerialRead.portList.hasMoreElements()) {
-		SerialRead.portId = (CommPortIdentifier) SerialRead.portList.nextElement();
-			System.out.println(SerialRead.portId.getName());
-		if (SerialRead.portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-			System.out.println(SerialRead.portId.getName());
-			if (SerialRead.portId.getName().equals(defaultPort)) {
-			System.out.println("Found port: "+defaultPort);
-			portFound = true;
-			SerialRead reader = new SerialRead();
-			} 
-		} 
-		} 
-		if (!portFound) {
-		System.out.println("port " + defaultPort + " not found.");
-		} 
-		
+		readThread = new Thread(new SerialRead(defaultPort));
+		readThread.start();
 		ttyReader u = new ttyReader();
 	}
 	public ttyReader(){

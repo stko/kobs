@@ -46,7 +46,7 @@ public class SerialRead implements Runnable, SerialPortEventListener {
     public static Enumeration	      portList;
     InputStream		      inputStream;
     SerialPort		      serialPort;
-    Thread		      readThread;
+	boolean portFound = false;
 
     /**
      * Method declaration
@@ -89,9 +89,37 @@ public class SerialRead implements Runnable, SerialPortEventListener {
      *
      * @see
      */
-    public SerialRead() {
+	public SerialRead(String defaultPort) {
+	portList = CommPortIdentifier.getPortIdentifiers();
+
+	while (portList.hasMoreElements()&& !portFound) {
+	    portId = (CommPortIdentifier) portList.nextElement();
+	    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+		if (portId.getName().equals(defaultPort)) {
+		    System.out.println("Found port: "+defaultPort);
+		    portFound = true;
+		    //SerialRead reader = new SerialRead();
+		} 
+	    } 
+	} 
+
+    }
+
+    /**
+     * Method declaration
+     *
+     *
+     * @see
+     */
+    public void run() {
+	if (!portFound) {
+		System.out.println("port not found.");
+	} 
+	else {
+		System.out.println("Try to open port .");
+	}
 	try {
-	    serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
+	    serialPort = (SerialPort) portId.open("KobsReader", 2000);
 	} catch (PortInUseException e) {}
 
 	try {
@@ -109,23 +137,10 @@ public class SerialRead implements Runnable, SerialPortEventListener {
 					   SerialPort.STOPBITS_1, 
 					   SerialPort.PARITY_NONE);
 	}
-	catch (IOException e) {
-	}
 	catch (UnsupportedCommOperationException e){
 	}
-
-	readThread = new Thread(this);
-
-	readThread.start();
-    }
-
-    /**
-     * Method declaration
-     *
-     *
-     * @see
-     */
-    public void run() {
+//	catch (IOException e) {
+//	}
 	try {
 	    Thread.sleep(20000);
 	} catch (InterruptedException e) {}
