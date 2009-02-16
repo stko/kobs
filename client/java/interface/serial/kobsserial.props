@@ -1,0 +1,15 @@
+#kobsserial.props
+# Configfile for the KOBS serial Card Reader
+# the following setting are also the defaults
+# to change, uncomment and change the values
+
+#the port on which the reader is connected to
+#SerialPort /dev/ttyUSB0
+
+# the IP address or Hostname the read string is send to via UDP
+#HostName 127.0.0.1
+
+# the port 
+#HostPort 3305
+
+

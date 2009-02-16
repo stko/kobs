@@ -89,7 +89,6 @@ public class ttyReader implements  SerialPortEventListener {
 			serialPort.addEventListener(this);
 		} catch (TooManyListenersException e) {}
 		serialPort.notifyOnDataAvailable(true);
-		System.out.println("timer start.");
 //		timer.timerStart();
 		try {
 			serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, 
@@ -104,7 +103,6 @@ public class ttyReader implements  SerialPortEventListener {
 	  ActionListener taskPerformer = new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
 			label.setText("-");
-			System.out.println("tick....");	
 			timer.stop();		
 		}
 	};
