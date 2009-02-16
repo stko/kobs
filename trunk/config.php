@@ -11,4 +11,10 @@
 // Gibt den Namen der Rolle an, die ein User braucht, um die Funktionen des KOBS- Moduls nutzen zu dürfen
 
 $kobs_trainer = "Trainer";
+// Gibt den Namen des Feldes an, in der sich die Kartennummer befindet
+
+$kobs_card = "Kartennummer";
+// Gibt den Namen des Feldes an, in der sich die zweite Klassifizierung befindet
+
+$kobs_belt = "Gurt";
 ?>

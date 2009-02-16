@@ -12,7 +12,7 @@
  *****************************************************************************/
 
 require("../../system/common.php");
-include("../config.php");
+include("./config.php");
 
 $g_realm = $g_realm;
 //Loginprozess anstossen
@@ -94,7 +94,8 @@ while($row = $g_db->fetch_array($db_result))
 
     //Falls gefordert, aufrufen alle Leute aus der Datenbank
     $sql = "SELECT usr_id, last_name.usd_value as last_name, first_name.usd_value as first_name, birthday.usd_value as birthday, 
-                   city.usd_value as city, phone.usd_value as phone, address.usd_value as address, zip_code.usd_value as zip_code
+                   city.usd_value as city, phone.usd_value as phone, address.usd_value as address, zip_code.usd_value as zip_code,
+                   kartennummer.usd_value as kartennummer, gurt.usd_value as gurt
             FROM ". TBL_USERS. "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = usr_id
@@ -117,6 +118,12 @@ while($row = $g_db->fetch_array($db_result))
             LEFT JOIN ". TBL_USER_DATA. " as zip_code
               ON zip_code.usd_usr_id = usr_id
              AND zip_code.usd_usf_id = ". $g_current_user->getProperty("PLZ", "usf_id"). "
+            LEFT JOIN ". TBL_USER_DATA. " as kartennummer
+              ON kartennummer.usd_usr_id = usr_id
+             AND kartennummer.usd_usf_id = ". $g_current_user->getProperty($kobs_card, "usf_id"). "
+            LEFT JOIN ". TBL_USER_DATA. " as gurt
+              ON gurt.usd_usr_id = usr_id
+             AND gurt.usd_usf_id = ". $g_current_user->getProperty($kobs_belt, "usf_id"). "
             WHERE usr_valid = 1
             ORDER BY last_name, first_name ";
 
@@ -126,7 +133,7 @@ $result_user = $g_db->query($sql);
 //Beginn der XML-Ausgabe
 
 header ("content-type: text/xml"); 
-echo '<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>';
+echo '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>';
 // echo '<?xml-stylesheet href="kobsdata.xsl" type="text/xsl">';
 
 echo "<kobsdata>\n";
