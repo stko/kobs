@@ -2,12 +2,12 @@
  * KobsView.java
  */
 package kobs;
-
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -16,8 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.*;
 import javax.swing.table.*;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
+import java.net.*;
+import java.io.*;
 
 /**
  * The application's main frame.
@@ -85,7 +86,10 @@ public class KobsView extends FrameView {
                 }
             }
         });
-        createViewTable(KobsApp.members,jTable);
+        createMemberTable(KobsApp.members, jTableMembers);
+        new StartThread();
+
+
     }
 
     @Action
@@ -114,8 +118,11 @@ public class KobsView extends FrameView {
         jToolBar2 = new javax.swing.JToolBar();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
+        jTableAttendies = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableMembers = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -152,7 +159,7 @@ public class KobsView extends FrameView {
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(609, Short.MAX_VALUE))
+                .addContainerGap(649, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -162,9 +169,11 @@ public class KobsView extends FrameView {
         jToolBar3.setRollover(true);
         jToolBar3.setName("jToolBar3"); // NOI18N
 
+        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
+        jTableAttendies.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -187,26 +196,52 @@ public class KobsView extends FrameView {
                 return canEdit [columnIndex];
             }
         });
-        jTable.setName("jTable"); // NOI18N
-        jTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable);
+        jTableAttendies.setName("jTableAttendies"); // NOI18N
+        jTableAttendies.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableAttendies);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KobsView.class);
-        jTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable.columnModel.title0")); // NOI18N
-        jTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable.columnModel.title1")); // NOI18N
+        jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
+        jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
+
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTableMembers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Last Name", "First Name", "Birthday", "City", "Phone", "Address", "Zip Code", "Kartennummer", "Gurt"
+            }
+        ));
+        jTableMembers.setName("jTableMembers"); // NOI18N
+        jScrollPane2.setViewportView(jTableMembers);
+        jTableMembers.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title0")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title1")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title2")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title3")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title4")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title5")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title6")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title7")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title8")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
                 .add(jToolBar3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE))
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 643, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -215,15 +250,15 @@ public class KobsView extends FrameView {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
+            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(mainPanelLayout.createSequentialGroup()
                 .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -272,11 +307,11 @@ public class KobsView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
+            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 601, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 715, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -320,13 +355,39 @@ public class KobsView extends FrameView {
                     KobsApp.props.store(new java.io.FileOutputStream(KConstants.PrefsFileName), "Kobs Preferences");
                 } catch(java.io.IOException ignored){};
                 KobsApp.importUserDB();
-                createViewTable(KobsApp.members,jTable);
+                createMemberTable(KobsApp.members,jTableMembers);
            }
         }
     }
-    
-    public void createViewTable(HashMap<String, HashMap> map, JTable jTable){
-        jTable.removeAll();
+        public void getNr(String nr) {
+            System.out.println(nr);
+            Toolkit.getDefaultToolkit().beep();
+            HashMap<String,String> thisRecord= KobsApp.members.find("kartennummer", nr);
+            if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
+                System.out.println("Insert Kartennummer");
+                KHashLink actHashKink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
+                HashMap<String,String> newRecord= actHashKink.getHashMap();
+                if (thisRecord != newRecord){
+                    newRecord.put("kartennummer", nr);
+                    newRecord.put("modified", "true");
+                    if (thisRecord!=null){
+                        thisRecord.put("kartennummer", "");
+                        thisRecord.put("modified", "true");
+                    }
+                    jTableMembers.updateUI();
+                }
+            }
+            thisRecord= KobsApp.members.find("kartennummer", nr);
+            if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
+            KobsApp.attendies.put(nr, thisRecord);
+            createAttendiesTable(KobsApp.attendies,jTableAttendies);
+
+            }
+
+        }
+
+    public void createAttendiesTable(HashMap<String, HashMap<String,String>> map, JTable jTable){
+        ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
         Iterator<String> all = map.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
@@ -337,20 +398,80 @@ public class KobsView extends FrameView {
                 String currentKey = records.next();
                 System.out.println(currentKey + ":" + thisRecord.get(currentKey));
             }
-            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord,"last_name"), new KHashLink(thisRecord,"belt")});
+            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord,"last_name"), new KHashLink(thisRecord,"gurt")});
 
 
         }
     }
+    
+    public void createMemberTable(HashMap<String, HashMap<String,String>> map, JTable jTable){
+        ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
+         Iterator<String> all = map.keySet().iterator();
+        while (all.hasNext()) {
+            String currentall = all.next();
+            HashMap<String, String> thisRecord = map.get(currentall);
+             ((DefaultTableModel) jTable.getModel()).addRow(
+                     new Object[]{
+                     new KHashLink(thisRecord,"last_name"),
+                     new KHashLink(thisRecord,"first_name"),
+                     new KHashLink(thisRecord,"birthday"),
+                     new KHashLink(thisRecord,"city"),
+                     new KHashLink(thisRecord,"phone"),
+                     new KHashLink(thisRecord,"address"),
+                     new KHashLink(thisRecord,"zip_code"),
+                     new KHashLink(thisRecord,"kartennummer"),
+                     new KHashLink(thisRecord,"gurt")
+             });
+
+
+        }
+    }
+    
+        public class StartThread implements Runnable {
+
+        StartThread() {
+            thread = new Thread(this);
+            thread.start();
+        }
+
+        public void run() {
+            try {
+                byte[] buffer = new byte[1024];
+                int port = Integer.valueOf(KobsApp.lang.getProperty("UDPPort", "3305")).intValue();
+                try {
+                    socket = new DatagramSocket(port);
+                    while (true) {
+                        try {
+                            //Receive request from client
+                            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                            socket.receive(packet);
+                            InetAddress client = packet.getAddress();
+                            int client_port = packet.getPort();
+                            getNr(new String(buffer).trim());
+
+                        } catch (UnknownHostException ue) {
+                        }
+                    }
+                } catch (java.net.BindException b) {
+                }
+            } catch (IOException e) {
+                System.err.println(e);
+            }
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTable jTable;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTableAttendies;
+    private javax.swing.JTable jTableMembers;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
@@ -370,4 +491,8 @@ public class KobsView extends FrameView {
 
     private JDialog aboutBox;
     private KURLDialog urlDialog;
+    
+        Thread thread;
+    DatagramSocket socket;
+
 }

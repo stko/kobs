@@ -20,7 +20,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class KReadInfoXML extends HashMap<String, HashMap> {
+public class KReadInfoXML extends HashMap<String, HashMap<String,String>> {
 
     public static void main(String argv[]) {
 
@@ -101,5 +101,18 @@ public class KReadInfoXML extends HashMap<String, HashMap> {
             t.printStackTrace();
         }
 
+    }
+
+    public HashMap<String, String> find(String primaryKey, String value) {
+        Iterator<String> all = this.keySet().iterator();
+        while (all.hasNext()) {
+            String currentall = all.next();
+            HashMap<String, String> thisRecord = this.get(currentall);
+            String thisline = thisRecord.get(primaryKey);
+            if (thisline !=null && thisline.equals(value)) {
+                return thisRecord;
+            }
+        }
+        return null;
     }
 }

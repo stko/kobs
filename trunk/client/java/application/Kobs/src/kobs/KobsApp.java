@@ -6,8 +6,10 @@ package kobs;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.io.*;
+import java.util.*;
 
 /**
  * The main class of the application.
@@ -16,9 +18,10 @@ public class KobsApp extends SingleFrameApplication {
 
     static Properties lang;
     static Properties props;
-    static HashMap<String, HashMap> members;
-    static HashMap<String, HashMap> locations;
-    static HashMap<String, HashMap> activities;
+    static KReadInfoXML members;
+    static HashMap<String, HashMap<String,String>> attendies;
+    static KReadInfoXML locations;
+    static KReadInfoXML activities;
 
     /**
      * At startup create and show the main frame of the application.
@@ -61,6 +64,7 @@ public class KobsApp extends SingleFrameApplication {
         } catch (IOException ignored) {
         }
         importUserDB();
+
         launch(KobsApp.class, args);
     }
 
@@ -68,5 +72,8 @@ public class KobsApp extends SingleFrameApplication {
         members = new KReadInfoXML(KConstants.DBDataFileName, "usr_id", "members");
         locations = new KReadInfoXML(KConstants.DBDataFileName, "ort", "orte");
         activities = new KReadInfoXML(KConstants.DBDataFileName, "usr_id", "trainings");
+        attendies =new HashMap<String, HashMap<String,String>>();
     }
+
+
 }
