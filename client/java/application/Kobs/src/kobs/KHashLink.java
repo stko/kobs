@@ -23,5 +23,9 @@ public class KHashLink {
     public String toString() {
         return thisRecord.get(identifier);
     }
+    
+    public HashMap<String, String> getHashMap(){
+        return thisRecord;
+    }
 }
 

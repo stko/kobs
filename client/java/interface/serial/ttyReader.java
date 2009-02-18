@@ -35,8 +35,29 @@ public class ttyReader implements  SerialPortEventListener {
 			lang.load(new FileInputStream("kobsserial.lang"));
 		}
 		catch (IOException ignored) {}
+		String osname = System.getProperty("os.name","").toLowerCase();
+		String defaultPort ="";
+		if ( osname.startsWith("windows") ) {
+			// windows
+			defaultPort = "COM1";
+		} else if (osname.startsWith("linux")) {
+			// linux
+		defaultPort = "/dev/ttyUSB0";
+		} else if ( osname.startsWith("mac") ) {
+			// mac
+			defaultPort = "????";
+		} else {
+			System.out.println("Sorry, your operating system is not supported");
+			return;
+		}
+			
+		if (args.length > 0) {
+			defaultPort = args[0];
+		} 
+
+
 		boolean portFound = false;
-		serPortName = props.getProperty("SerialPort","/dev/ttyUSB0");
+		serPortName = props.getProperty("SerialPort",defaultPort);
 		hostPort = props.getProperty("HostPort","3305");
 		hostName = props.getProperty("HostName","127.0.0.1");
 		portList = CommPortIdentifier.getPortIdentifiers();
