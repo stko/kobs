@@ -4,3 +4,7 @@ URLDownloadErrorText Konnte keine Daten abholen - sind die Login- Daten korrekt 
 URLDownloadOkTitle Synchronisierung
 URLDownloadOkText Synchronisierung erfolgreich -aktuelle Daten empfangen
 URLSaveText Konnte Daten nicht auf Platte speichern
+Date Datum
+DateMessage Für welches Datum gelten die Daten?
+DateError Das ist keine gültige Datumseingabe..
+DateFormat dd.MM.yyyy

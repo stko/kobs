@@ -16,17 +16,21 @@ public class KURLDialog extends javax.swing.JDialog {
     public static String userName;
     public static String userPw;
     public static String URL;
+    public static boolean noURL;
     public static boolean res;
 
     /** Creates new form KURLDialog */
-    public KURLDialog(java.awt.Frame parent, boolean modal, String tuserName, String tuserPw, String tURL) {
+    public KURLDialog(java.awt.Frame parent, boolean modal, String tuserName, String tuserPw, String tURL, boolean noURL) {
         super(parent, modal);
+        res=false;
         this.userName = tuserName;
         this.URL = tURL;
         this.userPw = tuserPw;
+        this.noURL=noURL;
         initComponents();
         jTextFieldUserName.setText(tuserName);
         jPasswordField.setText(tuserPw);
+        jTextField2.setEnabled(!noURL);
         jTextField2.setText(tURL);
         getRootPane().setDefaultButton(jButtonOK);
 
@@ -144,7 +148,9 @@ public class KURLDialog extends javax.swing.JDialog {
     public void ButtonOkClick() {
         userName=jTextFieldUserName.getText();
         userPw=new String(jPasswordField.getPassword());
-        URL=jTextField2.getText();
+        if (!noURL){
+            URL=jTextField2.getText();
+        }
         res=true;
         setVisible(false);
     }

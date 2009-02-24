@@ -16,14 +16,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.table.TableModel;
+import javax.swing.event.*;
 import java.util.*;
 import java.net.*;
 import java.io.*;
-
 /**
  * The application's main frame.
  */
-public class KobsView extends FrameView {
+public class KobsView extends FrameView implements TableModelListener {
 
     public KobsView(SingleFrameApplication app) {
         super(app);
@@ -87,8 +88,15 @@ public class KobsView extends FrameView {
             }
         });
         createMemberTable(KobsApp.members, jTableMembers);
+        setDateTitle(this.getFrame());
         new StartThread();
-
+        
+        while (KobsApp.members.size()==0){
+            Syncronize();
+            if(!urlDialog.res){
+                System.exit(0);
+            }
+        }
 
     }
 
@@ -118,6 +126,9 @@ public class KobsView extends FrameView {
         jToolBar2 = new javax.swing.JToolBar();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        jButtonAdd = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableAttendies = new javax.swing.JTable();
@@ -127,6 +138,7 @@ public class KobsView extends FrameView {
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
+        jMenuItemDate = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
@@ -169,8 +181,32 @@ public class KobsView extends FrameView {
         jToolBar3.setRollover(true);
         jToolBar3.setName("jToolBar3"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KobsView.class);
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar3.add(jButton1);
+
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getActionMap(KobsView.class, this);
+        jButtonAdd.setAction(actionMap.get("AddAttendie")); // NOI18N
+        jButtonAdd.setFocusable(false);
+        jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonAdd.setName("jButtonAdd"); // NOI18N
+        jButtonAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar3.add(jButtonAdd);
+
+        jButtonDelete.setAction(actionMap.get("RemoveAttendie")); // NOI18N
+        jButtonDelete.setFocusable(false);
+        jButtonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDelete.setName("jButtonDelete"); // NOI18N
+        jButtonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar3.add(jButtonDelete);
+
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         jTableAttendies.setModel(new javax.swing.table.DefaultTableModel(
@@ -196,15 +232,24 @@ public class KobsView extends FrameView {
                 return canEdit [columnIndex];
             }
         });
+        jTableAttendies.setDragEnabled(true);
         jTableAttendies.setName("jTableAttendies"); // NOI18N
         jTableAttendies.getTableHeader().setReorderingAllowed(false);
+        jTableAttendies.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTableAttendiesFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTableAttendiesFocusLost(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableAttendies);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KobsView.class);
         jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
         jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         jTableMembers.setModel(new javax.swing.table.DefaultTableModel(
@@ -216,7 +261,16 @@ public class KobsView extends FrameView {
             }
         ));
         jTableMembers.setName("jTableMembers"); // NOI18N
+        jTableMembers.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTableMembersFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTableMembersFocusLost(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableMembers);
+        jTableMembers.getModel().addTableModelListener(this);
         jTableMembers.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title0")); // NOI18N
         jTableMembers.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title1")); // NOI18N
         jTableMembers.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title2")); // NOI18N
@@ -266,7 +320,6 @@ public class KobsView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getActionMap(KobsView.class, this);
         jMenuItem1.setAction(actionMap.get("Syncronize")); // NOI18N
         jMenuItem1.setText(resourceMap.getString("SyncronizeMenuItem.text")); // NOI18N
         jMenuItem1.setName("SyncronizeMenuItem"); // NOI18N
@@ -275,6 +328,11 @@ public class KobsView extends FrameView {
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         fileMenu.add(jSeparator1);
+
+        jMenuItemDate.setAction(actionMap.get("setDate")); // NOI18N
+        jMenuItemDate.setText(resourceMap.getString("jMenuItemDate.text")); // NOI18N
+        jMenuItemDate.setName("jMenuItemDate"); // NOI18N
+        fileMenu.add(jMenuItemDate);
 
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
@@ -334,12 +392,28 @@ public class KobsView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+private void jTableAttendiesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusGained
+    jButtonDelete.setEnabled(KobsApp.attendies.size()>0);
+}//GEN-LAST:event_jTableAttendiesFocusGained
+
+private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusLost
+    jButtonDelete.setEnabled(false);
+}//GEN-LAST:event_jTableAttendiesFocusLost
+
+private void jTableMembersFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusGained
+    jButtonAdd.setEnabled(KobsApp.members.size()>0);
+}//GEN-LAST:event_jTableMembersFocusGained
+
+private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusLost
+    jButtonAdd.setEnabled(false);
+}//GEN-LAST:event_jTableMembersFocusLost
+
     @Action
     public void Syncronize() {
         String error;
         JFrame mainFrame = KobsApp.getApplication().getMainFrame();
         if (urlDialog == null) {
-            urlDialog= new KURLDialog(mainFrame, true,KobsApp.props.getProperty("username",""),"",KobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"));
+            urlDialog= new KURLDialog(mainFrame, true,KobsApp.props.getProperty("username",""),"",KobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"),false);
             urlDialog.setLocationRelativeTo(mainFrame);
         }
         KobsApp.getApplication().show(urlDialog);
@@ -359,14 +433,15 @@ public class KobsView extends FrameView {
            }
         }
     }
-        public void getNr(String nr) {
+    
+    public void getNr(String nr) {
             System.out.println(nr);
             Toolkit.getDefaultToolkit().beep();
             HashMap<String,String> thisRecord= KobsApp.members.find("kartennummer", nr);
             if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
                 System.out.println("Insert Kartennummer");
-                KHashLink actHashKink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
-                HashMap<String,String> newRecord= actHashKink.getHashMap();
+                KHashLink actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
+                HashMap<String,String> newRecord= actHashLink.getHashMap();
                 if (thisRecord != newRecord){
                     newRecord.put("kartennummer", nr);
                     newRecord.put("modified", "true");
@@ -379,13 +454,12 @@ public class KobsView extends FrameView {
             }
             thisRecord= KobsApp.members.find("kartennummer", nr);
             if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
-            KobsApp.attendies.put(nr, thisRecord);
-            createAttendiesTable(KobsApp.attendies,jTableAttendies);
-
+                String usrId=thisRecord.get("usr_id");
+                KobsApp.attendies.put(usrId, thisRecord);
+                createAttendiesTable(KobsApp.attendies,jTableAttendies);
             }
-
         }
-
+    
     public void createAttendiesTable(HashMap<String, HashMap<String,String>> map, JTable jTable){
         ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
         Iterator<String> all = map.keySet().iterator();
@@ -412,22 +486,22 @@ public class KobsView extends FrameView {
             HashMap<String, String> thisRecord = map.get(currentall);
              ((DefaultTableModel) jTable.getModel()).addRow(
                      new Object[]{
-                     new KHashLink(thisRecord,"last_name"),
-                     new KHashLink(thisRecord,"first_name"),
-                     new KHashLink(thisRecord,"birthday"),
-                     new KHashLink(thisRecord,"city"),
-                     new KHashLink(thisRecord,"phone"),
-                     new KHashLink(thisRecord,"address"),
-                     new KHashLink(thisRecord,"zip_code"),
-                     new KHashLink(thisRecord,"kartennummer"),
-                     new KHashLink(thisRecord,"gurt")
+                     new KHashLink(thisRecord, KConstants.TableIndices[0]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[1]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[2]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[3]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[4]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[5]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[6]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[7]),
+                     new KHashLink(thisRecord,KConstants.TableIndices[8])
              });
 
 
         }
     }
     
-        public class StartThread implements Runnable {
+    public class StartThread implements Runnable {
 
         StartThread() {
             thread = new Thread(this);
@@ -460,9 +534,115 @@ public class KobsView extends FrameView {
         }
     }
 
+    @Action
+    public void setDate() {
+        JFrame mainFrame = KobsApp.getApplication().getMainFrame();
+        KDateDialog dateDialog = new KDateDialog(
+               mainFrame,
+                KobsApp.lang.getProperty("Date","Date"),
+                KobsApp.lang.getProperty("DateMessage","For which date the records are?"),
+                KobsApp.lang.getProperty("DateError","This no valid date"),
+                KobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"),
+                KobsApp.actDate);
+                KobsApp.actDate=dateDialog.date;
+                KobsApp.actDateString=dateDialog.dateString;
+                setDateTitle(mainFrame);
+    }
 
+    public void setDateTitle(JFrame mainFrame){
+        mainFrame.setTitle(KobsApp.actDateString+" - "+KConstants.AppName);
+    }
+    
+    public void tableChanged(TableModelEvent e) {
+        /* now it becomes tricky: As changing of the cell destroys the previous reference to the KHashLink by a simple String,
+         * I've to restore this information through the cell beside
+         */
+        
+        int row = e.getFirstRow();
+        int column = e.getColumn();
+        if (row<0 || column<0){
+            return;
+        }
+        // I also need a valid colcount from left or right beside the changed cell
+        int refreshCol= (column>0)? 0: 1;
+        // then we read the new value of the cell
+        TableModel model = (TableModel)e.getSource();
+        if (!(model.getValueAt(row, column) instanceof String)){
+            return;
+        }
+        String newValueString="";
+        try{
+            newValueString= (String) model.getValueAt(row, column);
+        }
+        catch (java.lang.Error ignored){};
+        // now we read the original data from the cell beside
+        KHashLink actHashLink=null;
+       try{
+            actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( row,refreshCol);
+        }
+
+        catch (java.lang.Error ignored){};
+        if (actHashLink!=null){        
+            HashMap<String,String> thisRecord= actHashLink.getHashMap();
+            if (thisRecord!=null){
+                thisRecord.put(KConstants.TableIndices[column], newValueString);
+                thisRecord.put("modified", "true");
+                model.setValueAt(new KHashLink(thisRecord,KConstants.TableIndices[column]), row, column);
+
+            }
+        }
+    }
+      
+    @Action
+    public void AddAttendie() {
+
+        KHashLink actHashLink=null;
+        // get actual Member
+        try{
+            actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
+        }
+        catch (java.lang.Error e){};
+        // valid selection?
+        if (actHashLink!=null){        
+            HashMap<String,String> thisRecord= actHashLink.getHashMap();
+            if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
+                String usrId=thisRecord.get("usr_id");
+                KobsApp.attendies.put(usrId, thisRecord);
+                createAttendiesTable(KobsApp.attendies,jTableAttendies);
+                jTableAttendies.updateUI();
+            }
+        }
+    }
+
+    @Action
+    public void RemoveAttendie() {
+
+        KHashLink actHashLink=null;
+                // get actualAttendie
+       try{
+           actHashLink= (KHashLink)jTableAttendies.getModel().getValueAt( jTableAttendies.getSelectedRow(),jTableAttendies.getSelectedColumn());
+       }
+       catch (java.lang.Error e){};
+        // valid selection?
+        if (actHashLink!=null){        
+            HashMap<String,String> thisRecord= actHashLink.getHashMap();
+            if (( thisRecord!=null) && KobsApp.attendies.containsValue(thisRecord)){
+               String usrId=thisRecord.get("usr_id");
+                KobsApp.attendies.remove(usrId);
+                createAttendiesTable(KobsApp.attendies,jTableAttendies);
+                jButtonDelete.setEnabled(KobsApp.attendies.size()>0);
+                jTableAttendies.updateUI();
+            }
+         }
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonDelete;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -492,7 +672,7 @@ public class KobsView extends FrameView {
     private JDialog aboutBox;
     private KURLDialog urlDialog;
     
-        Thread thread;
+    Thread thread;
     DatagramSocket socket;
 
 }

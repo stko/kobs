@@ -97,6 +97,8 @@ public class KReadInfoXML extends HashMap<String, HashMap<String,String>> {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
 
+        } catch (java.io.IOException ignore) {
+
         } catch (Throwable t) {
             t.printStackTrace();
         }
