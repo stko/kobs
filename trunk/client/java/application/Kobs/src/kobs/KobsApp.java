@@ -3,13 +3,12 @@
  */
 package kobs;
 
-import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.io.*;
 import java.util.*;
+import java.util.Date;
+import java.text.*;
 
 /**
  * The main class of the application.
@@ -22,6 +21,8 @@ public class KobsApp extends SingleFrameApplication {
     static HashMap<String, HashMap<String,String>> attendies;
     static KReadInfoXML locations;
     static KReadInfoXML activities;
+    static Date actDate;
+    static String actDateString;
 
     /**
      * At startup create and show the main frame of the application.
@@ -64,7 +65,10 @@ public class KobsApp extends SingleFrameApplication {
         } catch (IOException ignored) {
         }
         importUserDB();
+        actDate=new java.util.Date();
+         DateFormat df = new SimpleDateFormat(KobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"));
 
+        actDateString=df.format(actDate);
         launch(KobsApp.class, args);
     }
 
