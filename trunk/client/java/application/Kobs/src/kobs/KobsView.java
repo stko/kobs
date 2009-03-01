@@ -7,6 +7,7 @@ import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -90,7 +91,7 @@ public class KobsView extends FrameView implements TableModelListener {
         createMemberTable(KobsApp.members, jTableMembers);
         setDateTitle(this.getFrame());
         new StartThread();
-        
+
         while (KobsApp.members.size()==0){
             Syncronize();
             if(!urlDialog.res){
@@ -126,7 +127,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar2 = new javax.swing.JToolBar();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        jButtonLock = new javax.swing.JButton();
         jButtonAdd = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -182,12 +183,12 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar3.setName("jToolBar3"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KobsView.class);
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar3.add(jButton1);
+        jButtonLock.setText(resourceMap.getString("jButtonLock.text")); // NOI18N
+        jButtonLock.setFocusable(false);
+        jButtonLock.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonLock.setName("jButtonLock"); // NOI18N
+        jButtonLock.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar3.add(jButtonLock);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getActionMap(KobsView.class, this);
         jButtonAdd.setAction(actionMap.get("AddAttendie")); // NOI18N
@@ -437,7 +438,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     public void getNr(String nr) {
             System.out.println(nr);
             Toolkit.getDefaultToolkit().beep();
-            HashMap<String,String> thisRecord= KobsApp.members.find("kartennummer", nr);
+            KStringHash thisRecord= KobsApp.members.find("kartennummer", nr);
             if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
                 System.out.println("Insert Kartennummer");
                 KHashLink actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
@@ -460,12 +461,12 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
             }
         }
     
-    public void createAttendiesTable(HashMap<String, HashMap<String,String>> map, JTable jTable){
+    public void createAttendiesTable(HashMap<String, KStringHash> map, JTable jTable){
         ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
         Iterator<String> all = map.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
-            HashMap<String, String> thisRecord = map.get(currentall);
+            KStringHash thisRecord = map.get(currentall);
             Iterator<String> records = thisRecord.keySet().iterator();
 
             while (records.hasNext()) {
@@ -478,12 +479,12 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         }
     }
     
-    public void createMemberTable(HashMap<String, HashMap<String,String>> map, JTable jTable){
+    public void createMemberTable(HashMap<String, KStringHash> map, JTable jTable){
         ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
          Iterator<String> all = map.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
-            HashMap<String, String> thisRecord = map.get(currentall);
+            KStringHash thisRecord = map.get(currentall);
              ((DefaultTableModel) jTable.getModel()).addRow(
                      new Object[]{
                      new KHashLink(thisRecord, KConstants.TableIndices[0]),
@@ -539,18 +540,25 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         JFrame mainFrame = KobsApp.getApplication().getMainFrame();
         KDateDialog dateDialog = new KDateDialog(
                mainFrame,
-                KobsApp.lang.getProperty("Date","Date"),
-                KobsApp.lang.getProperty("DateMessage","For which date the records are?"),
-                KobsApp.lang.getProperty("DateError","This no valid date"),
                 KobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"),
-                KobsApp.actDate);
+                KobsApp.lang.getProperty("TimeFormat","hh:mm"),
+                KobsApp.actDate,
+                KobsApp.actStartTime,
+                KobsApp.actEndTime);
                 KobsApp.actDate=dateDialog.date;
                 KobsApp.actDateString=dateDialog.dateString;
+                KobsApp.actStartTime=dateDialog.startTime;
+                KobsApp.actStartTimeString=dateDialog.startTimeString;
+                KobsApp.actEndTime=dateDialog.endTime;
+                KobsApp.actEndTimeString=dateDialog.endTimeString;
+                KobsApp.actLocation=dateDialog.location;
+                KobsApp.ActLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
+                
                 setDateTitle(mainFrame);
     }
 
     public void setDateTitle(JFrame mainFrame){
-        mainFrame.setTitle(KobsApp.actDateString+" - "+KConstants.AppName);
+        mainFrame.setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.ActLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
     }
     
     public void tableChanged(TableModelEvent e) {
@@ -583,10 +591,10 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 
         catch (java.lang.Error ignored){};
         if (actHashLink!=null){        
-            HashMap<String,String> thisRecord= actHashLink.getHashMap();
+            KStringHash thisRecord= actHashLink.getHashMap();
             if (thisRecord!=null){
                 thisRecord.put(KConstants.TableIndices[column], newValueString);
-                thisRecord.put("modified", "true");
+                thisRecord.put(KConstants.MemModKey, KConstants.MemModValue);
                 model.setValueAt(new KHashLink(thisRecord,KConstants.TableIndices[column]), row, column);
 
             }
@@ -604,7 +612,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         catch (java.lang.Error e){};
         // valid selection?
         if (actHashLink!=null){        
-            HashMap<String,String> thisRecord= actHashLink.getHashMap();
+            KStringHash thisRecord= actHashLink.getHashMap();
             if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
                 String usrId=thisRecord.get("usr_id");
                 KobsApp.attendies.put(usrId, thisRecord);
@@ -638,9 +646,9 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonLock;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JPanel jPanel1;

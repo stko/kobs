@@ -20,28 +20,8 @@ import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class KReadInfoXML extends HashMap<String, HashMap<String,String>> {
+public class KReadInfoXML extends HashMap<String, KStringHash> {
 
-    public static void main(String argv[]) {
-
-        KReadInfoXML doc = new KReadInfoXML("kobsdata.xml", "usr_id", "members");
-        Iterator<String> all = doc.keySet().iterator();
-        while (all.hasNext()) {
-            String currentall = all.next();
-            System.out.println("Record: " + currentall);
-            HashMap<String, String> thisRecord = doc.get(currentall);
-            Iterator<String> records = thisRecord.keySet().iterator();
-
-            while (records.hasNext()) {
-                String currentKey = records.next();
-                System.out.println(currentKey + ":" + thisRecord.get(currentKey));
-            }
-
-        }
-
-    //System.exit (0);
-
-    }//end of main
 
     public KReadInfoXML(String filename, String primaryKey, String tag) {
         super();
@@ -60,7 +40,7 @@ public class KReadInfoXML extends HashMap<String, HashMap<String,String>> {
             int totalPersons = listOfPersons.getLength();
             for (Integer s = 0; s < listOfPersons.getLength(); s++) {
                 String thisPrimaryKeyValue = "";
-                HashMap<String, String> thisRecord = new HashMap<String, String>();
+                KStringHash thisRecord = new KStringHash();
                 Node firstPersonNode = listOfPersons.item(s);
                 if (firstPersonNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element firstPersonElement = (Element) firstPersonNode;
@@ -105,11 +85,11 @@ public class KReadInfoXML extends HashMap<String, HashMap<String,String>> {
 
     }
 
-    public HashMap<String, String> find(String primaryKey, String value) {
+    public KStringHash find(String primaryKey, String value) {
         Iterator<String> all = this.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
-            HashMap<String, String> thisRecord = this.get(currentall);
+            KStringHash thisRecord = this.get(currentall);
             String thisline = thisRecord.get(primaryKey);
             if (thisline !=null && thisline.equals(value)) {
                 return thisRecord;

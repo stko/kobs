@@ -12,10 +12,10 @@ import java.util.HashMap;
 
 public class KHashLink {
 
-    private HashMap<String, String> thisRecord;
+    private KStringHash thisRecord;
     private String identifier;
 
-    public KHashLink(HashMap<String, String> thisRec, String ident) {
+    public KHashLink(KStringHash thisRec, String ident) {
         thisRecord = thisRec;
         identifier = ident;
     }
@@ -24,7 +24,7 @@ public class KHashLink {
         return thisRecord.get(identifier);
     }
     
-    public HashMap<String, String> getHashMap(){
+    public KStringHash getHashMap(){
         return thisRecord;
     }
 }
