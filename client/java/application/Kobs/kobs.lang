@@ -4,7 +4,14 @@ URLDownloadErrorText Konnte keine Daten abholen - sind die Login- Daten korrekt 
 URLDownloadOkTitle Synchronisierung
 URLDownloadOkText Synchronisierung erfolgreich -aktuelle Daten empfangen
 URLSaveText Konnte Daten nicht auf Platte speichern
-Date Datum
-DateMessage FÃ¼r welches Datum gelten die Daten?
-DateError Das ist keine gÃ¼ltige Datumseingabe..
+Details Details
+DateMessage An welchem Datum findet das Training statt?
+LocationMessage Wo findet das Training statt?
+DateInputError Das ist keine gültige Datumseingabe..
 DateFormat dd.MM.yyyy
+TimeFormat HH:mm
+StartTimeMessage Wann fängt es an?
+EndTimeMessage Wann hört es auf?
+QuestionCloseSession Möchtest Du die Aufnahme beenden und das Programm schliessen?
+QuestionCloseSessionYes Aufnahme beenden
+QuestionCloseSessionNo zurück ins Programm
