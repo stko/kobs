@@ -9,8 +9,10 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -89,16 +91,29 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         });
         createMemberTable(KobsApp.members, jTableMembers);
-        setDateTitle(this.getFrame());
+        setDateTitle();
         new StartThread();
 
-        while (KobsApp.members.size()==0){
+        while (KobsApp.members.size() == 0) {
             Syncronize();
-            if(!urlDialog.res){
+            if (!urlDialog.res) {
                 System.exit(0);
             }
         }
+        JFrame mainFrame = KobsApp.getApplication().getMainFrame();
+  /*öö
+   mainFrame.addComponentListener(new ComponentAdapter() {
 
+            @Override
+            public void componentShown(ComponentEvent e) {
+                while (KobsApp.ActLocationId.contentEquals("")) {
+                    setDate();
+
+                }
+            }
+        });
+   */
+    //öö    mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     @Action
@@ -394,7 +409,7 @@ public class KobsView extends FrameView implements TableModelListener {
     }// </editor-fold>//GEN-END:initComponents
 
 private void jTableAttendiesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusGained
-    jButtonDelete.setEnabled(KobsApp.attendies.size()>0);
+    jButtonDelete.setEnabled(KobsApp.attendies.size() > 0);
 }//GEN-LAST:event_jTableAttendiesFocusGained
 
 private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusLost
@@ -402,7 +417,7 @@ private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jTableAttendiesFocusLost
 
 private void jTableMembersFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusGained
-    jButtonAdd.setEnabled(KobsApp.members.size()>0);
+    jButtonAdd.setEnabled(KobsApp.members.size() > 0);
 }//GEN-LAST:event_jTableMembersFocusGained
 
 private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusLost
@@ -554,11 +569,11 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
                 KobsApp.actLocation=dateDialog.location;
                 KobsApp.ActLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
                 
-                setDateTitle(mainFrame);
+                setDateTitle();
     }
 
-    public void setDateTitle(JFrame mainFrame){
-        mainFrame.setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.ActLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
+    public void setDateTitle(){
+        this.getFrame().setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.ActLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
     }
     
     public void tableChanged(TableModelEvent e) {
