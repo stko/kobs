@@ -181,7 +181,16 @@ class KDateDialog extends JDialog
                 JOptionPane.INPUT_VALUE_PROPERTY.equals(prop))) {
             Object value = optionPane.getValue();
 
-            if (value == JOptionPane.UNINITIALIZED_VALUE) {
+            if (optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
+                //ignore reset
+                return;
+            }
+            if (optionPane.getValue().equals( JOptionPane.CLOSED_OPTION)) {
+                //ignore reset
+                return;
+            }
+
+            if (optionPane.getValue().equals( JOptionPane.CANCEL_OPTION)) {
                 //ignore reset
                 return;
             }
