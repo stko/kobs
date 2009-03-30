@@ -159,9 +159,19 @@ echo "  </members>\n";
 // Ausgabe der Trainingsorte
 print <<<ORTE
   <orte>
-     <ort>Klippkanner Schule, Brake</ort>
-     <ort>BBZ, Brake</ort>
-  </orte>
+	<ort>
+		<ort_id>1</ort_id>
+		<name>Boitwarder Schule, Brake</name>
+	</ort>
+	<ort>
+		<ort_id>2</ort_id>
+		<name>BBZ, Brake</name>
+	</ort>
+	<ort>
+		<ort_id>3</ort_id>
+		<name>Klippkanner Schule, Brake</name>
+	</ort>
+</orte>
 ORTE;
 
 // Ausgabe der Trainingsarten
