@@ -96,13 +96,13 @@ public class KobsView extends FrameView implements TableModelListener {
 
         while (KobsApp.members.size() == 0) {
             Syncronize();
-            if (!urlDialog.res) {
+            KURLDialog.res=true;
+            if (!KURLDialog.res) {
                 System.exit(0);
             }
         }
-        JFrame mainFrame = KobsApp.getApplication().getMainFrame();
-  /*öö
-   mainFrame.addComponentListener(new ComponentAdapter() {
+/* öö dies ist der Fehler ->       JFrame mainFrame = KobsApp.getApplication().getMainFrame();
+         mainFrame.addComponentListener(new ComponentAdapter() {
 
             @Override
             public void componentShown(ComponentEvent e) {
@@ -112,8 +112,7 @@ public class KobsView extends FrameView implements TableModelListener {
                 }
             }
         });
-   */
-    //öö    mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+  */
     }
 
     @Action
@@ -427,18 +426,17 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     @Action
     public void Syncronize() {
         String error;
-        JFrame mainFrame = KobsApp.getApplication().getMainFrame();
-        if (urlDialog == null) {
-            urlDialog= new KURLDialog(mainFrame, true,KobsApp.props.getProperty("username",""),"",KobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"),false);
-            urlDialog.setLocationRelativeTo(mainFrame);
-        }
-        KobsApp.getApplication().show(urlDialog);
+        
+            KURLDialog urlDialog= new KURLDialog(null, true,KobsApp.props.getProperty("username",""),"",KobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"),false);
+
+
+        urlDialog.setVisible(true);
         if (urlDialog.res){
            if ( (error=KReadHTTPFile.readURL2File(urlDialog.URL, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("")!=0){
-              JOptionPane.showMessageDialog(mainFrame,error,KobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
+              JOptionPane.showMessageDialog(null,error,KobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
            }
            else {
-                JOptionPane.showMessageDialog(mainFrame,KobsApp.lang.getProperty("URLDownloadOkText","Syncronisation succesfull -actual Data received"),KobsApp.lang.getProperty("URLDownloadOkTitle","Syncronisation"),JOptionPane.INFORMATION_MESSAGE); 
+                JOptionPane.showMessageDialog(null,KobsApp.lang.getProperty("URLDownloadOkText","Syncronisation succesfull -actual Data received"),KobsApp.lang.getProperty("URLDownloadOkTitle","Syncronisation"),JOptionPane.INFORMATION_MESSAGE); 
                 KobsApp.props.setProperty("username",urlDialog.userName);
                 KobsApp.props.setProperty("URL",urlDialog.URL);
                 try{
