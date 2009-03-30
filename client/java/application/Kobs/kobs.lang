@@ -8,6 +8,7 @@ Details Details
 DateMessage An welchem Datum findet das Training statt?
 LocationMessage Wo findet das Training statt?
 DateInputError Das ist keine gültige Datumseingabe..
+TimeInputError Das ist keine gültige Zeitangabe...
 DateFormat dd.MM.yyyy
 TimeFormat HH:mm
 StartTimeMessage Wann fängt es an?
