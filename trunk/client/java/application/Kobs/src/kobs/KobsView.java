@@ -101,18 +101,6 @@ public class KobsView extends FrameView implements TableModelListener {
                 System.exit(0);
             }
         }
-/* öö dies ist der Fehler ->       JFrame mainFrame = KobsApp.getApplication().getMainFrame();
-         mainFrame.addComponentListener(new ComponentAdapter() {
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-                while (KobsApp.ActLocationId.contentEquals("")) {
-                    setDate();
-
-                }
-            }
-        });
-  */
     }
 
     @Action
