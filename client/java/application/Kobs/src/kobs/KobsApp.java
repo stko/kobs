@@ -30,7 +30,7 @@ public class KobsApp extends SingleFrameApplication {
     static Date actEndTime;
     static String actEndTimeString;
     static String actLocation;
-    static String ActLocationId;
+    static String ActLocationId="";
 
     /**
      * At startup create and show the main frame of the application.
@@ -64,8 +64,13 @@ public class KobsApp extends SingleFrameApplication {
             }
         });
 
+        KobsView kobsView=new KobsView(this);
+        show(kobsView);
+                        while (KobsApp.ActLocationId.contentEquals("")) {
+                    kobsView.setDate();
 
-        show(new KobsView(this));
+                }
+
     }
 
     /**
@@ -76,7 +81,8 @@ public class KobsApp extends SingleFrameApplication {
     @Override
     protected void configureWindow(java.awt.Window root) {
     }
-
+    
+ 
     /**
      * A convenient static getter for the application instance.
      * @return the instance of KobsApp
