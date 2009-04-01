@@ -52,7 +52,7 @@ public class KSessionSave {
                 doc.getDocumentElement().normalize();
                 root = doc.getDocumentElement();
                 //root.setAttribute("type", "Shakespearean");
-                // ----Abspeichern geänderter Mitlgielderdaten ---
+                // ----Abspeichern geänderter Mitgliederdaten ---
                 if (KobsApp.members.size() > 0) {
                     Element update = doc.createElement("updates");
                     KReadInfoXML data = KobsApp.members;
@@ -75,11 +75,51 @@ public class KSessionSave {
                             update.appendChild(member);
                         }
                     }
+                    root.appendChild(update);
+                }
+                // ----Ende Abspeichern geänderter Mitgliederdaten ---
+                // ----Abspeichern von Trainingszeiten ---
+                if (KobsApp.attendies.size() > 0) {
+                    Element update = doc.createElement("trainings");
+                    Element entry = doc.createElement("location");
+                    entry.appendChild(doc.createTextNode(KobsApp.actLocation));
+                    update.appendChild(entry);
+                    entry = doc.createElement("locationid");
+                    entry.appendChild(doc.createTextNode(KobsApp.actLocationId));
+                    update.appendChild(entry);
+                    entry = doc.createElement("date");
+                    entry.appendChild(doc.createTextNode(KobsApp.actDateString));
+                    update.appendChild(entry);
+                    HashMap<String, KStringHash> trainingData = KobsApp.attendies;
+                    Iterator<String> all = trainingData.keySet().iterator();
+                    while (all.hasNext()) {
+                        String currentall = all.next();
+                        Element training = doc.createElement("training");
+                        System.out.println("attendie: " + currentall);
+                        HashMap<String, String> thisRecord = trainingData.get(currentall);
+                        entry = doc.createElement(KConstants.UsrIdName);
+                        entry.appendChild(doc.createTextNode(thisRecord.get(KConstants.UsrIdName)));
+                        training.appendChild(entry);
+                        entry = doc.createElement("typ");
+                        entry.appendChild(doc.createTextNode("1"));
+                        training.appendChild(entry);
+                        entry = doc.createElement("subtyp");
+                        entry.appendChild(doc.createTextNode("1"));
+                        training.appendChild(entry);
+                        entry = doc.createElement("starttime");
+                        entry.appendChild(doc.createTextNode(KobsApp.actStartTimeString));
+                        training.appendChild(entry);
+                        entry = doc.createElement("duration");
+                        entry.appendChild(doc.createTextNode(Long.toString((KobsApp.actEndTime.getTime() - KobsApp.actStartTime.getTime()) / 60000))); //in minutes
+                        training.appendChild(entry);
+
+                        update.appendChild(training);
+                    }
 
                     root.appendChild(update);
-                // ----Ende Abspeichern geänderter Mitlgielderdaten ---
-
                 }
+            // ----Ende Abspeichern Trainingszeiten ---
+
             /*                author = doc.createElement("author");
             
             Element lastName = doc.createElement("last-name");

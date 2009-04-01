@@ -553,13 +553,13 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
                 KobsApp.actEndTime=dateDialog.endTime;
                 KobsApp.actEndTimeString=dateDialog.endTimeString;
                 KobsApp.actLocation=dateDialog.location;
-                KobsApp.ActLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
+                KobsApp.actLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
                 
                 setDateTitle();
     }
 
     public void setDateTitle(){
-        this.getFrame().setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.ActLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
+        this.getFrame().setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.actLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
     }
     
     public void tableChanged(TableModelEvent e) {

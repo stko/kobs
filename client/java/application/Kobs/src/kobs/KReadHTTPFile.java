@@ -75,4 +75,59 @@ public class KReadHTTPFile {
         }
         return "";
     }
+    
+  public static String writeFile2URL()  {
+        /*
+          byte b[] = {};
+try {
+File f = new File(<Path2File>);
+long len = f.length();
+if (len == 0) throw new IOException("No file to write!");
+DataInputStream fs = new DataInputStream(new FileInputStream(<Path2File>));
+b = new byte[(int)len];
+int bytes = fs.read(b);
+fs.close();
+if (bytes != len) throw new IOException("Error reading file, bytes read = "+bytes);
+} catch (IOException e1) {
+//log.error("File error!");
+e1.printStackTrace();
+return;
+}
+try {
+URL url = "" URL(<UrlString>);
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+conn.setDoOutput(true);
+BufferedOutputStream output = new BufferedOutputStream(conn.getOutputStream());
+output.write(b);
+output.close();
+int responseCode = conn.getResponseCode();
+if (responseCode < 200 || responseCode > 299) {
+throw new IOException("Error uploading file!" +  responseCode);
+}
+conn.disconnect();
+} catch (MalformedURLException e1) {
+//log.error("Malformed URL!");
+e1.printStackTrace();
+} catch (IOException e2) {
+//log.error("Network error!");
+e2.printStackTrace();
+}
+============
+
+Chain Method
+===========
+    public static void chain(InputStream input, OutputStream out) throws IOException {
+     byte[] buf = new byte[10000];
+     int len = 0;
+     while ((len=input.read(buf,0,1000))>0) {
+     out.write(buf,0,len);
+     }
+     }
+===========
+
+
+*/
+      
+      return "";
+}
 }
