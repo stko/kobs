@@ -1,5 +1,5 @@
 #Kobs Preferences
-#Tue Mar 31 19:47:42 CEST 2009
-URL=http\://localhost/sk/admidio/adm_program/modules/kobs/getkobsdata.php
+#Thu Apr 02 18:33:20 CEST 2009
+URL=http\://localhost/sk/admidio/adm_program/modules/kobs/syncklobs.php
 WSURL=
 username=steffen

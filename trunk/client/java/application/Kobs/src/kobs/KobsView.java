@@ -420,6 +420,12 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 
         urlDialog.setVisible(true);
         if (urlDialog.res){
+            if ( (error=KReadHTTPFile.writeFile2URL(urlDialog.URL, KConstants.DBSessionFileName, urlDialog.userName, urlDialog.userPw)).compareTo("")!=0){
+              JOptionPane.showMessageDialog(null,error,KobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
+           }
+           else {
+                JOptionPane.showMessageDialog(null,"Sessiondata übertragen??");
+           }           
            if ( (error=KReadHTTPFile.readURL2File(urlDialog.URL, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("")!=0){
               JOptionPane.showMessageDialog(null,error,KobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
            }

@@ -1,6 +1,7 @@
 URLErrorTitle Synchronisierungs- Fehler
 URLErrorText Server nicht gefunden -ist der URL korrekt?
 URLDownloadErrorText Konnte keine Daten abholen - sind die Login- Daten korrekt (Gross- und Kleinschreibung)?
+URLUploadErrorText Konnte keine Daten hochladen - sind die Login- Daten korrekt (Gross- und Kleinschreibung)?
 URLDownloadOkTitle Synchronisierung
 URLDownloadOkText Synchronisierung erfolgreich -aktuelle Daten empfangen
 URLSaveText Konnte Daten nicht auf Platte speichern
