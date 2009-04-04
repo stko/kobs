@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kobs;
+package klobs;
 
 /**
  *
@@ -10,7 +10,7 @@ package kobs;
  */
 public class KConstants {
 
-    public final static String AppName = "KobS";
+    public final static String AppName = "KlobS";
     public final static String DBDataFileName = "userdata.xml";
     public final static String DBSessionFileName = "sessiondata.xml";
     public final static String PrefsFileName = "kobs.props";

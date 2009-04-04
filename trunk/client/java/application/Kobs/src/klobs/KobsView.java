@@ -1,7 +1,7 @@
 /*
  * KobsView.java
  */
-package kobs;
+package klobs;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -90,11 +90,11 @@ public class KobsView extends FrameView implements TableModelListener {
                 }
             }
         });
-        createMemberTable(KobsApp.members, jTableMembers);
+        createMemberTable(KlobsApp.members, jTableMembers);
         setDateTitle();
         new StartThread();
 
-        while (KobsApp.members.size() == 0) {
+        while (KlobsApp.members.size() == 0) {
             Syncronize();
             KURLDialog.res=true;
             if (!KURLDialog.res) {
@@ -106,11 +106,11 @@ public class KobsView extends FrameView implements TableModelListener {
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
-            JFrame mainFrame = KobsApp.getApplication().getMainFrame();
+            JFrame mainFrame = KlobsApp.getApplication().getMainFrame();
             aboutBox = new KobsAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
-        KobsApp.getApplication().show(aboutBox);
+        KlobsApp.getApplication().show(aboutBox);
     }
 
     /** This method is called from within the constructor to
@@ -184,7 +184,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar3.setRollover(true);
         jToolBar3.setName("jToolBar3"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KobsView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
         jButtonLock.setText(resourceMap.getString("jButtonLock.text")); // NOI18N
         jButtonLock.setFocusable(false);
         jButtonLock.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -192,7 +192,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jButtonLock.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar3.add(jButtonLock);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getActionMap(KobsView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
         jButtonAdd.setAction(actionMap.get("AddAttendie")); // NOI18N
         jButtonAdd.setFocusable(false);
         jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -396,7 +396,7 @@ public class KobsView extends FrameView implements TableModelListener {
     }// </editor-fold>//GEN-END:initComponents
 
 private void jTableAttendiesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusGained
-    jButtonDelete.setEnabled(KobsApp.attendies.size() > 0);
+    jButtonDelete.setEnabled(KlobsApp.attendies.size() > 0);
 }//GEN-LAST:event_jTableAttendiesFocusGained
 
 private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusLost
@@ -404,7 +404,7 @@ private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jTableAttendiesFocusLost
 
 private void jTableMembersFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusGained
-    jButtonAdd.setEnabled(KobsApp.members.size() > 0);
+    jButtonAdd.setEnabled(KlobsApp.members.size() > 0);
 }//GEN-LAST:event_jTableMembersFocusGained
 
 private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusLost
@@ -415,23 +415,23 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     public void Syncronize() {
         String error;
         
-            KURLDialog urlDialog= new KURLDialog(null, true,KobsApp.props.getProperty("username",""),"",KobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"),false);
+            KURLDialog urlDialog= new KURLDialog(null, true,KlobsApp.props.getProperty("username",""),"",KlobsApp.props.getProperty("URL","http://localhost/admidio/adm_program/modules/kobs/getkobsdata.php"),false);
 
 
         urlDialog.setVisible(true);
         if (urlDialog.res){
             if ( (error=KReadHTTPFile.syncronize2URL(urlDialog.URL, KConstants.DBSessionFileName, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("")!=0){
-              JOptionPane.showMessageDialog(null,error,KobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
+              JOptionPane.showMessageDialog(null,error,KlobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
            }
            else {
-                JOptionPane.showMessageDialog(null,KobsApp.lang.getProperty("URLDownloadOkText","Syncronisation succesfull -actual Data received"),KobsApp.lang.getProperty("URLDownloadOkTitle","Syncronisation"),JOptionPane.INFORMATION_MESSAGE); 
-                KobsApp.props.setProperty("username",urlDialog.userName);
-                KobsApp.props.setProperty("URL",urlDialog.URL);
+                JOptionPane.showMessageDialog(null,KlobsApp.lang.getProperty("URLDownloadOkText","Syncronisation succesfull -actual Data received"),KlobsApp.lang.getProperty("URLDownloadOkTitle","Syncronisation"),JOptionPane.INFORMATION_MESSAGE); 
+                KlobsApp.props.setProperty("username",urlDialog.userName);
+                KlobsApp.props.setProperty("URL",urlDialog.URL);
                 try{
-                    KobsApp.props.store(new java.io.FileOutputStream(KConstants.PrefsFileName), "Kobs Preferences");
+                    KlobsApp.props.store(new java.io.FileOutputStream(KConstants.PrefsFileName), "Kobs Preferences");
                 } catch(java.io.IOException ignored){};
-                KobsApp.importUserDB();
-                createMemberTable(KobsApp.members,jTableMembers);
+                KlobsApp.importUserDB();
+                createMemberTable(KlobsApp.members,jTableMembers);
            }
         }
     }
@@ -439,7 +439,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     public void getNr(String nr) {
             System.out.println(nr);
             Toolkit.getDefaultToolkit().beep();
-            KStringHash thisRecord= KobsApp.members.find("kartennummer", nr);
+            KStringHash thisRecord= KlobsApp.members.find("kartennummer", nr);
             if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
                 System.out.println("Insert Kartennummer");
                 KHashLink actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
@@ -454,11 +454,11 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
                     jTableMembers.updateUI();
                 }
             }
-            thisRecord= KobsApp.members.find("kartennummer", nr);
-            if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
+            thisRecord= KlobsApp.members.find("kartennummer", nr);
+            if (( thisRecord!=null) && !KlobsApp.attendies.containsValue(thisRecord)){
                 String usrId=thisRecord.get("usr_id");
-                KobsApp.attendies.put(usrId, thisRecord);
-                createAttendiesTable(KobsApp.attendies,jTableAttendies);
+                KlobsApp.attendies.put(usrId, thisRecord);
+                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
             }
         }
     
@@ -513,7 +513,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         public void run() {
             try {
                 byte[] buffer = new byte[1024];
-                int port = Integer.valueOf(KobsApp.lang.getProperty("UDPPort", "3305")).intValue();
+                int port = Integer.valueOf(KlobsApp.lang.getProperty("UDPPort", "3305")).intValue();
                 try {
                     socket = new DatagramSocket(port);
                     while (true) {
@@ -538,28 +538,28 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 
     @Action
     public void setDate() {
-        JFrame mainFrame = KobsApp.getApplication().getMainFrame();
+        JFrame mainFrame = KlobsApp.getApplication().getMainFrame();
         KDateDialog dateDialog = new KDateDialog(
                mainFrame,
-                KobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"),
-                KobsApp.lang.getProperty("TimeFormat","hh:mm"),
-                KobsApp.actDate,
-                KobsApp.actStartTime,
-                KobsApp.actEndTime);
-                KobsApp.actDate=dateDialog.date;
-                KobsApp.actDateString=dateDialog.dateString;
-                KobsApp.actStartTime=dateDialog.startTime;
-                KobsApp.actStartTimeString=dateDialog.startTimeString;
-                KobsApp.actEndTime=dateDialog.endTime;
-                KobsApp.actEndTimeString=dateDialog.endTimeString;
-                KobsApp.actLocation=dateDialog.location;
-                KobsApp.actLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
+                KlobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"),
+                KlobsApp.lang.getProperty("TimeFormat","hh:mm"),
+                KlobsApp.actDate,
+                KlobsApp.actStartTime,
+                KlobsApp.actEndTime);
+                KlobsApp.actDate=dateDialog.date;
+                KlobsApp.actDateString=dateDialog.dateString;
+                KlobsApp.actStartTime=dateDialog.startTime;
+                KlobsApp.actStartTimeString=dateDialog.startTimeString;
+                KlobsApp.actEndTime=dateDialog.endTime;
+                KlobsApp.actEndTimeString=dateDialog.endTimeString;
+                KlobsApp.actLocation=dateDialog.location;
+                KlobsApp.actLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
                 
                 setDateTitle();
     }
 
     public void setDateTitle(){
-        this.getFrame().setTitle(KobsApp.actDateString+" - "+KobsApp.actLocation+" - "+KobsApp.actLocationId+" - "+KobsApp.actStartTimeString+" - "+KobsApp.actEndTimeString+" - "+KConstants.AppName);
+        this.getFrame().setTitle(KlobsApp.actDateString+" - "+KlobsApp.actLocation+" - "+KlobsApp.actLocationId+" - "+KlobsApp.actStartTimeString+" - "+KlobsApp.actEndTimeString+" - "+KConstants.AppName);
     }
     
     public void tableChanged(TableModelEvent e) {
@@ -614,10 +614,10 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         // valid selection?
         if (actHashLink!=null){        
             KStringHash thisRecord= actHashLink.getHashMap();
-            if (( thisRecord!=null) && !KobsApp.attendies.containsValue(thisRecord)){
+            if (( thisRecord!=null) && !KlobsApp.attendies.containsValue(thisRecord)){
                 String usrId=thisRecord.get("usr_id");
-                KobsApp.attendies.put(usrId, thisRecord);
-                createAttendiesTable(KobsApp.attendies,jTableAttendies);
+                KlobsApp.attendies.put(usrId, thisRecord);
+                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
                 jTableAttendies.updateUI();
             }
         }
@@ -635,11 +635,11 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         // valid selection?
         if (actHashLink!=null){        
             HashMap<String,String> thisRecord= actHashLink.getHashMap();
-            if (( thisRecord!=null) && KobsApp.attendies.containsValue(thisRecord)){
+            if (( thisRecord!=null) && KlobsApp.attendies.containsValue(thisRecord)){
                String usrId=thisRecord.get("usr_id");
-                KobsApp.attendies.remove(usrId);
-                createAttendiesTable(KobsApp.attendies,jTableAttendies);
-                jButtonDelete.setEnabled(KobsApp.attendies.size()>0);
+                KlobsApp.attendies.remove(usrId);
+                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
+                jButtonDelete.setEnabled(KlobsApp.attendies.size()>0);
                 jTableAttendies.updateUI();
             }
          }

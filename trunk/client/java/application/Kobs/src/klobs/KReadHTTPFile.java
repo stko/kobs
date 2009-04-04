@@ -1,4 +1,4 @@
-package kobs;
+package klobs;
 
 /*
  * To change this template, choose Tools | Templates
@@ -60,7 +60,7 @@ public class KReadHTTPFile {
                 try {
                     chain(fis, fos);
                 } catch (IOException e) {
-                    return KobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
+                    return KlobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
                 } finally {
                     if (fis != null) {
                         try {
@@ -78,7 +78,7 @@ public class KReadHTTPFile {
                     }
                 }
             } catch (IOException e) {
-                return KobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
+                return KlobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
             }
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return (conn.getResponseMessage());
@@ -89,9 +89,9 @@ public class KReadHTTPFile {
 
 
         } catch (java.net.MalformedURLException e) {
-            return KobsApp.lang.getProperty("URLErrorText", "Couldn't connect to Server- is the URL correct?");
+            return KlobsApp.lang.getProperty("URLErrorText", "Couldn't connect to Server- is the URL correct?");
         } catch (java.io.IOException e) {
-            return KobsApp.lang.getProperty("URLDownloadErrorText", "Couldn't upload data- please check login data (case sensitive)");
+            return KlobsApp.lang.getProperty("URLDownloadErrorText", "Couldn't upload data- please check login data (case sensitive)");
         }
         return "";
     }

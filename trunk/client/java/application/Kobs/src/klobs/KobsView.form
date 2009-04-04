@@ -125,7 +125,7 @@
                     <Component class="javax.swing.JButton" name="jButtonAdd">
                       <Properties>
                         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                          <action class="kobs.KobsView" id="AddAttendie" methodName="AddAttendie"/>
+                          <action class="klobs.KobsView" id="AddAttendie" methodName="AddAttendie"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -136,7 +136,7 @@
                     <Component class="javax.swing.JButton" name="jButtonDelete">
                       <Properties>
                         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                          <action class="kobs.KobsView" id="RemoveAttendie" methodName="RemoveAttendie"/>
+                          <action class="klobs.KobsView" id="RemoveAttendie" methodName="RemoveAttendie"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -330,7 +330,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="kobs.KobsView" id="Syncronize" methodName="Syncronize"/>
+                  <action class="klobs.KobsView" id="Syncronize" methodName="Syncronize"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="SyncronizeMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="SyncronizeMenuItem" noResource="true"/>
@@ -347,7 +347,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemDate">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="kobs.KobsView" id="setDate" methodName="setDate"/>
+                  <action class="klobs.KobsView" id="setDate" methodName="setDate"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="jMenuItemDate.text"/>
                 <Property name="name" type="java.lang.String" value="jMenuItemDate" noResource="true"/>
@@ -381,7 +381,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="kobs.KobsView" id="showAboutBox" methodName="showAboutBox"/>
+                  <action class="klobs.KobsView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>

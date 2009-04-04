@@ -117,7 +117,7 @@
     <Component class="javax.swing.JButton" name="jButtonCancel">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="kobs.KURLDialog" id="ButtonCancelClick" methodName="ButtonCancelClick"/>
+          <action class="klobs.KURLDialog" id="ButtonCancelClick" methodName="ButtonCancelClick"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="jButtonCancel.text"/>
         <Property name="name" type="java.lang.String" value="jButtonCancel" noResource="true"/>
@@ -129,7 +129,7 @@
     <Component class="javax.swing.JButton" name="jButtonOK">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="kobs.KURLDialog" id="ButtonOkClick" methodName="ButtonOkClick"/>
+          <action class="klobs.KURLDialog" id="ButtonOkClick" methodName="ButtonOkClick"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="jButtonOK.text"/>
         <Property name="name" type="java.lang.String" value="jButtonOK" noResource="true"/>
