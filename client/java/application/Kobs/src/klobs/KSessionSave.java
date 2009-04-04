@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kobs;
+package klobs;
 
 /**
  *
@@ -53,9 +53,9 @@ public class KSessionSave {
                 root = doc.getDocumentElement();
                 //root.setAttribute("type", "Shakespearean");
                 // ----Abspeichern geänderter Mitgliederdaten ---
-                if (KobsApp.members.size() > 0) {
+                if (KlobsApp.members.size() > 0) {
                     Element update = doc.createElement("updates");
-                    KReadInfoXML data = KobsApp.members;
+                    KReadInfoXML data = KlobsApp.members;
                     Iterator<String> all = data.keySet().iterator();
                     while (all.hasNext()) {
                         String currentall = all.next();
@@ -79,18 +79,18 @@ public class KSessionSave {
                 }
                 // ----Ende Abspeichern geänderter Mitgliederdaten ---
                 // ----Abspeichern von Trainingszeiten ---
-                if (KobsApp.attendies.size() > 0) {
+                if (KlobsApp.attendies.size() > 0) {
                     Element update = doc.createElement("trainings");
                     Element entry = doc.createElement("location");
-                    entry.appendChild(doc.createTextNode(KobsApp.actLocation));
+                    entry.appendChild(doc.createTextNode(KlobsApp.actLocation));
                     update.appendChild(entry);
                     entry = doc.createElement("locationid");
-                    entry.appendChild(doc.createTextNode(KobsApp.actLocationId));
+                    entry.appendChild(doc.createTextNode(KlobsApp.actLocationId));
                     update.appendChild(entry);
                     entry = doc.createElement("date");
-                    entry.appendChild(doc.createTextNode(KobsApp.actDateString));
+                    entry.appendChild(doc.createTextNode(KlobsApp.actDateString));
                     update.appendChild(entry);
-                    HashMap<String, KStringHash> trainingData = KobsApp.attendies;
+                    HashMap<String, KStringHash> trainingData = KlobsApp.attendies;
                     Iterator<String> all = trainingData.keySet().iterator();
                     while (all.hasNext()) {
                         String currentall = all.next();
@@ -110,10 +110,10 @@ public class KSessionSave {
                         entry.appendChild(doc.createTextNode("1"));
                         training.appendChild(entry);
                         entry = doc.createElement("starttime");
-                        entry.appendChild(doc.createTextNode(KobsApp.actStartTimeString));
+                        entry.appendChild(doc.createTextNode(KlobsApp.actStartTimeString));
                         training.appendChild(entry);
                         entry = doc.createElement("duration");
-                        entry.appendChild(doc.createTextNode(Long.toString((KobsApp.actEndTime.getTime() - KobsApp.actStartTime.getTime()) / 60000))); //in minutes
+                        entry.appendChild(doc.createTextNode(Long.toString((KlobsApp.actEndTime.getTime() - KlobsApp.actStartTime.getTime()) / 60000))); //in minutes
                         training.appendChild(entry);
 
                         update.appendChild(training);

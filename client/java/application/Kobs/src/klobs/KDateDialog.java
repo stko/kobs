@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kobs;
+package klobs;
 
 /*
  * Copyright (c) 1995 - 2008 Sun Microsystems, Inc.  All rights reserved.
@@ -86,7 +86,7 @@ class KDateDialog extends JDialog
         this.endTime = endTime;
         this.dateFormat = dateFormat;
         this.timeFormat = timeFormat;
-        setTitle(KobsApp.lang.getProperty("Details", "Details"));
+        setTitle(KlobsApp.lang.getProperty("Details", "Details"));
 
         textField = new JTextField(10);
         DateFormat df = new SimpleDateFormat(dateFormat);
@@ -103,7 +103,7 @@ class KDateDialog extends JDialog
         endTimeField.setText(tf.format(endTime));
         endTimeString = endTimeField.getText();
         KStringHash[] orte = {};
-        orte = (KStringHash[]) KobsApp.locations.values().toArray(orte);
+        orte = (KStringHash[]) KlobsApp.locations.values().toArray(orte);
         locationField = new JComboBox(orte);
         /*
         catch (ParseException e) {
@@ -115,13 +115,13 @@ class KDateDialog extends JDialog
         //  Object[] possibilities = {"ham", "spam", "yam"};
         //Create an array of the text and components to be displayed.
         Object[] array = {
-            KobsApp.lang.getProperty("DateMessage", "On which date the training takes place?") + " (" + dateFormat + ")",
+            KlobsApp.lang.getProperty("DateMessage", "On which date the training takes place?") + " (" + dateFormat + ")",
             textField,
-            KobsApp.lang.getProperty("LocationMessage", "Where is the training?"),
+            KlobsApp.lang.getProperty("LocationMessage", "Where is the training?"),
             locationField,
-            KobsApp.lang.getProperty("StartTimeMessage", "When does it start?") + " (" + timeFormat + ")",
+            KlobsApp.lang.getProperty("StartTimeMessage", "When does it start?") + " (" + timeFormat + ")",
             startTimeField,
-            KobsApp.lang.getProperty("EndTimeMessage", "When does it stop?") + " (" + timeFormat + ")",
+            KlobsApp.lang.getProperty("EndTimeMessage", "When does it stop?") + " (" + timeFormat + ")",
             endTimeField
         };
 
@@ -215,7 +215,7 @@ class KDateDialog extends JDialog
                     textField.selectAll();
                     JOptionPane.showMessageDialog(
                             KDateDialog.this,
-                            KobsApp.lang.getProperty("DateInputError", "The given date is not valid. Please check"),
+                            KlobsApp.lang.getProperty("DateInputError", "The given date is not valid. Please check"),
                             "Try again..",
                             JOptionPane.ERROR_MESSAGE);
                     textField.requestFocusInWindow();
@@ -231,7 +231,7 @@ class KDateDialog extends JDialog
                     startTimeField.selectAll();
                     JOptionPane.showMessageDialog(
                             KDateDialog.this,
-                            KobsApp.lang.getProperty("TimeInputError", "The given time is not valid. Please check"),
+                            KlobsApp.lang.getProperty("TimeInputError", "The given time is not valid. Please check"),
                             "Try again..",
                             JOptionPane.ERROR_MESSAGE);
                     textField.requestFocusInWindow();
@@ -247,7 +247,7 @@ class KDateDialog extends JDialog
                     endTimeField.selectAll();
                     JOptionPane.showMessageDialog(
                             KDateDialog.this,
-                            KobsApp.lang.getProperty("TimeInputError", "The given time is not valid. Please check"),
+                            KlobsApp.lang.getProperty("TimeInputError", "The given time is not valid. Please check"),
                             "Try again..",
                             JOptionPane.ERROR_MESSAGE);
                     textField.requestFocusInWindow();

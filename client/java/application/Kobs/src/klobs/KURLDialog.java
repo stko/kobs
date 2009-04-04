@@ -3,7 +3,7 @@
  *
  * Created on 13. Februar 2009, 20:44
  */
-package kobs;
+package klobs;
 
 import org.jdesktop.application.Action;
 
@@ -58,7 +58,7 @@ public class KURLDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getResourceMap(KURLDialog.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KURLDialog.class);
         jTextFieldUserName.setText(resourceMap.getString("jTextFieldUserName.text")); // NOI18N
         jTextFieldUserName.setName("jTextFieldUserName"); // NOI18N
 
@@ -77,7 +77,7 @@ public class KURLDialog extends javax.swing.JDialog {
         jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
         jTextField2.setName("jTextField2"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kobs.KobsApp.class).getContext().getActionMap(KURLDialog.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KURLDialog.class, this);
         jButtonCancel.setAction(actionMap.get("ButtonCancelClick")); // NOI18N
         jButtonCancel.setText(resourceMap.getString("jButtonCancel.text")); // NOI18N
         jButtonCancel.setName("jButtonCancel"); // NOI18N
