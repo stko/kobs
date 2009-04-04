@@ -31,7 +31,6 @@ public class KReadHTTPFile {
         }
     }
 
-
     public static String syncronize2URL(String URL, String sessionFileName, String userDataFileName, String userName, String passWd) {
         kuser = userName;
         kpass = passWd;
@@ -43,21 +42,24 @@ public class KReadHTTPFile {
             //conn.setUseCaches(false);
             conn.setRequestProperty("Content-Type", "text/xml; charset=\"utf-8\"");
             conn.setDoOutput(true);
- //           conn.setDoInput(true);
-           // wenn man zeichensatz-konform schreiben möchte, sollte man einen passenden Stream nehmen:
+            //           conn.setDoInput(true);
+            // wenn man zeichensatz-konform schreiben möchte, sollte man einen passenden Stream nehmen:
             //OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF8");
             // wir lesen aber binär, und darum:
-            BufferedOutputStream out = new BufferedOutputStream(conn.getOutputStream());
-             DataInputStream fs = new DataInputStream(new FileInputStream(sessionFileName));
-            chain(fs,out);
-            out.close();
-           InputStream fis = conn.getInputStream();
-           try {
+            try { //gibts überhaupt eine Sessionfile?
+                DataInputStream fs = new DataInputStream(new FileInputStream(sessionFileName));
+                BufferedOutputStream out = new BufferedOutputStream(conn.getOutputStream());
+                chain(fs, out);
+                out.close();
+            } catch (java.io.IOException e) {
+            }
+            InputStream fis = conn.getInputStream();
+            try {
                 FileOutputStream fos = new FileOutputStream(userDataFileName);
 
                 try {
-                    chain(fis,fos);
-                 } catch (IOException e) {
+                    chain(fis, fos);
+                } catch (IOException e) {
                     return KobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
                 } finally {
                     if (fis != null) {
@@ -81,10 +83,10 @@ public class KReadHTTPFile {
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return (conn.getResponseMessage());
             }
- 
+
             conn.disconnect();
 
-     
+
 
         } catch (java.net.MalformedURLException e) {
             return KobsApp.lang.getProperty("URLErrorText", "Couldn't connect to Server- is the URL correct?");
