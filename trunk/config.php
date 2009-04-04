@@ -8,13 +8,16 @@
  *
  *****************************************************************************/
 
-// Gibt den Namen der Rolle an, die ein User braucht, um die Funktionen des KOBS- Moduls nutzen zu dürfen
+// Gibt den Namen der Rolle an, die ein User braucht, um die Funktionen des klobs- Moduls nutzen zu dürfen
 
-$kobs_trainer = "Trainer";
+$klobs_trainer = "Trainer";
 // Gibt den Namen des Feldes an, in der sich die Kartennummer befindet
 
-$kobs_card = "Kartennummer";
+$klobs_card = "Kartennummer";
 // Gibt den Namen des Feldes an, in der sich die zweite Klassifizierung befindet
 
-$kobs_belt = "Gurt";
+$klobs_belt = "Gurt";
+// Gibt den Tabellennamen an, in dem sich die Trainingseinheiten befinden
+
+$klobs_training_table = "adm_klobs_training";
 ?>

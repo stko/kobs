@@ -1,7 +1,7 @@
 WindowTitle Kobs serieller Kartenleser
 HostName Zielrechner
 HostPort Zielport
-serPort serieller AnschluÃŸ
+serPort serieller Anschluß
 lastCard letzte Karte
-PortErrorText Die serielle Schnittstelle liess sich nicht Ã¶ffnen
+PortErrorText Die serielle Schnittstelle liess sich nicht öffnen
 PortErrorTitle Schnittstellen-Initialisierungsfehler

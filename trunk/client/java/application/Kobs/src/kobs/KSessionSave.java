@@ -106,6 +106,9 @@ public class KSessionSave {
                         entry = doc.createElement("subtyp");
                         entry.appendChild(doc.createTextNode("1"));
                         training.appendChild(entry);
+                        entry = doc.createElement("trainerid");
+                        entry.appendChild(doc.createTextNode("1"));
+                        training.appendChild(entry);
                         entry = doc.createElement("starttime");
                         entry.appendChild(doc.createTextNode(KobsApp.actStartTimeString));
                         training.appendChild(entry);
