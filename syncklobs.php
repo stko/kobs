@@ -14,9 +14,10 @@
 require("../../system/common.php");
 include("./config.php");
 
-
 //-Anmelden per HTTP & gültiger Trainer- Rolle
 require("./klobslogin.php");
+
+
 
 // OK, gültiger Benutzername & Passwort --------------------------------------------------------------------
 
@@ -86,6 +87,7 @@ $result_user = $g_db->query($sql);
 header ("content-type: text/xml"); 
 echo '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>';
 // echo '<?xml-stylesheet href="klobsdata.xsl" type="text/xsl">';
+echo '<!-- validdata -->';
 
 echo "<klobsdata>\n";
 

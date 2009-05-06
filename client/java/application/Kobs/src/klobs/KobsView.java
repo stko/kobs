@@ -2,6 +2,7 @@
  * KobsView.java
  */
 package klobs;
+
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -24,6 +25,8 @@ import javax.swing.event.*;
 import java.util.*;
 import java.net.*;
 import java.io.*;
+import java.io.File;
+
 /**
  * The application's main frame.
  */
@@ -96,7 +99,7 @@ public class KobsView extends FrameView implements TableModelListener {
 
         while (KlobsApp.members.size() == 0) {
             Syncronize();
-            KURLDialog.res=true;
+            KURLDialog.res = true;
             if (!KURLDialog.res) {
                 System.exit(0);
             }
@@ -429,7 +432,12 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
                 KlobsApp.props.setProperty("URL",urlDialog.URL);
                 try{
                     KlobsApp.props.store(new java.io.FileOutputStream(KConstants.PrefsFileName), "Kobs Preferences");
+                    
                 } catch(java.io.IOException ignored){};
+                File f = new File(KConstants.DBSessionFileName);
+                if (!f.delete()){
+                    JOptionPane.showMessageDialog(null,error,KlobsApp.lang.getProperty("DeleteOldSession","Can't delete old Session file"),JOptionPane.ERROR_MESSAGE); 
+                };
                 KlobsApp.importUserDB();
                 createMemberTable(KlobsApp.members,jTableMembers);
            }
