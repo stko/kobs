@@ -11,10 +11,12 @@ package klobs;
 import java.io.BufferedReader;
 import java.io.*;
 import java.io.InputStreamReader;
+import java.io.BufferedWriter;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.*;
+
 
 public class KReadHTTPFile {
 
@@ -30,23 +32,24 @@ public class KReadHTTPFile {
             return (new PasswordAuthentication(kuser, kpass.toCharArray()));
         }
     }
-
+    
     public static String syncronize2URL(String URL, String sessionFileName, String userDataFileName, String userName, String passWd) {
         kuser = userName;
         kpass = passWd;
         Authenticator.setDefault(new MyAuthenticator());
         try {
-            URL url = new URL(URL);
+            URL url = new URL(URL+"?user="+kuser+"&pw="+MD5Sum.md5Sum(kpass));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             //conn.setUseCaches(false);
             conn.setRequestProperty("Content-Type", "text/xml; charset=\"utf-8\"");
+          //  conn.setRequestProperty("Authorization", "Basic " + encode(kuser + ":"+ kpass));
             conn.setDoOutput(true);
             //           conn.setDoInput(true);
             // wenn man zeichensatz-konform schreiben möchte, sollte man einen passenden Stream nehmen:
             //OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF8");
             // wir lesen aber binär, und darum:
-            try { //gibts überhaupt eine Sessionfile?
+            try { //gibts überhaupt ein Sessionfile?
                 DataInputStream fs = new DataInputStream(new FileInputStream(sessionFileName));
                 BufferedOutputStream out = new BufferedOutputStream(conn.getOutputStream());
                 chain(fs, out);
@@ -54,31 +57,47 @@ public class KReadHTTPFile {
             } catch (java.io.IOException e) {
             }
             InputStream fis = conn.getInputStream();
-            try {
-                FileOutputStream fos = new FileOutputStream(userDataFileName);
+            String retVal = "";
+            BufferedWriter fos = null;
+            //// FileOutputStream fos = new FileOutputStream(userDataFileName);
 
-                try {
-                    chain(fis, fos);
-                } catch (IOException e) {
-                    return KlobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
-                } finally {
-                    if (fis != null) {
-                        try {
-                            fis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+            boolean validData=false;
+            try {
+                ////chain(fis, fos);
+                String line;
+                BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+                while ((line = in.readLine()) != null) {
+                    retVal += line;
+                    if (line.contains("<!-- validdata -->")){
+                        validData=true;
                     }
-                    if (fos != null) {
-                        try {
-                            fos.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    
+                }
+                if (validData) {
+                    fos = new BufferedWriter(new FileWriter(userDataFileName));
+                    fos.write(retVal, 0, retVal.length());
+                }
+                else{
+                    return retVal;
+                    //return KlobsApp.lang.getProperty("URLValidData", "Error- no valid data received");
                 }
             } catch (IOException e) {
                 return KlobsApp.lang.getProperty("URLSaveText", "Couldn't save file to disk");
+            } finally {
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return (conn.getResponseMessage());
