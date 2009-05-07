@@ -71,8 +71,8 @@ public class KReadInfoXML extends HashMap<String, KStringHash> {
             }//end of for loop with s var
 
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            System.err.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            System.err.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();

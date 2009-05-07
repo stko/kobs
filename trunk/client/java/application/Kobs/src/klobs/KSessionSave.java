@@ -45,7 +45,6 @@ public class KSessionSave {
             } catch (java.io.IOException ignore) {
                 doc = docBuilder.newDocument();
                 root = doc.createElement("klobsdata");
-                System.out.println("Datei erzeugt");
                 doc.appendChild(root);
             }
             if (doc != null) {
@@ -59,7 +58,6 @@ public class KSessionSave {
                     Iterator<String> all = data.keySet().iterator();
                     while (all.hasNext()) {
                         String currentall = all.next();
-                        System.out.println("Record: " + currentall);
                         HashMap<String, String> thisRecord = data.get(currentall);
                         if (thisRecord.containsKey(KConstants.MemModKey)) {
                             Element member = doc.createElement("member");
@@ -69,8 +67,6 @@ public class KSessionSave {
                                 Element entry = doc.createElement(currentKey);
                                 entry.appendChild(doc.createTextNode(thisRecord.get(currentKey)));
                                 member.appendChild(entry);
-
-                                System.out.println(currentKey + ":" + thisRecord.get(currentKey));
                             }
                             update.appendChild(member);
                         }
@@ -95,7 +91,6 @@ public class KSessionSave {
                     while (all.hasNext()) {
                         String currentall = all.next();
                         Element training = doc.createElement("training");
-                        System.out.println("attendie: " + currentall);
                         HashMap<String, String> thisRecord = trainingData.get(currentall);
                         entry = doc.createElement(KConstants.UsrIdName);
                         entry.appendChild(doc.createTextNode(thisRecord.get(KConstants.UsrIdName)));
@@ -219,14 +214,14 @@ public class KSessionSave {
             StreamResult result = new StreamResult(os);
             transformer.transform(source, result);
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            System.err.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            System.err.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
 
         } catch (java.io.IOException ignore) {
-            System.out.println("Datei nicht gefunden?");
+            System.err.println("Datei nicht gefunden?");
         } catch (Throwable t) {
             t.printStackTrace();
         }
