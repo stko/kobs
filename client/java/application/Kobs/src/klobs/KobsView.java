@@ -435,8 +435,8 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
                     
                 } catch(java.io.IOException ignored){};
                 File f = new File(KConstants.DBSessionFileName);
-                if (!f.delete()){
-                    JOptionPane.showMessageDialog(null,error,KlobsApp.lang.getProperty("DeleteOldSession","Can't delete old Session file"),JOptionPane.ERROR_MESSAGE); 
+                if (f.exists() &&!f.delete()){
+                    JOptionPane.showMessageDialog(null,KlobsApp.lang.getProperty("DeleteOldSession","Can't delete old Session file"),KlobsApp.lang.getProperty("DeleteOldSessionTitle","File problem"),JOptionPane.ERROR_MESSAGE); 
                 };
                 KlobsApp.importUserDB();
                 createMemberTable(KlobsApp.members,jTableMembers);
@@ -445,11 +445,9 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     }
     
     public void getNr(String nr) {
-            System.out.println(nr);
             Toolkit.getDefaultToolkit().beep();
             KStringHash thisRecord= KlobsApp.members.find("kartennummer", nr);
             if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
-                System.out.println("Insert Kartennummer");
                 KHashLink actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
                 HashMap<String,String> newRecord= actHashLink.getHashMap();
                 if (thisRecord != newRecord){
@@ -480,7 +478,6 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 
             while (records.hasNext()) {
                 String currentKey = records.next();
-                System.out.println(currentKey + ":" + thisRecord.get(currentKey));
             }
             ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord,"last_name"), new KHashLink(thisRecord,"gurt")});
 
