@@ -6,8 +6,8 @@ import java.io.*;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.Timer;
-//import javax.comm.*;// for SUN's serial/parallel port libraries
-import gnu.io.*; // for rxtxSerial library
+import javax.comm.*;// for SUN's serial/parallel port libraries
+//import gnu.io.*; // for rxtxSerial library
 
 public class ttyReader implements  SerialPortEventListener {
 	JFrame 				frame;
@@ -24,7 +24,12 @@ public class ttyReader implements  SerialPortEventListener {
 	String 				outputString = "";
 	static Properties			lang;
 	Timer					timer;
-
+	boolean					rawMode = false;
+	int					rawModeTrigger = 20; //Number of raw input chars allowed before program jumps into raw mode
+	long					actTime;
+	long					lastTime;
+	long					actDelta;
+	
 	public static void main(String[] args) {
 		Properties props = new Properties();
 		try {
@@ -131,27 +136,29 @@ public class ttyReader implements  SerialPortEventListener {
 
 	public class SendRequest{
 		SendRequest(String mess){
-			try{
-				DatagramSocket socket;
-				DatagramPacket packet;
-				InetAddress address;
-				socket = new DatagramSocket();
-				address = InetAddress.getByName(hostName);
-				int pnum = Integer.parseInt(hostPort);
-				//For send the message by the client
-				byte message[] = mess.getBytes();
-				packet = new DatagramPacket(message, message.length, address, pnum);
-				socket.send(packet);
-				label.setText(mess);
-				timer.restart();
-				//For Received message
-/*				packet = new DatagramPacket(message, message.length);
-				socket.receive(packet);
-				String recmessage = new String(packet.getData());
-				area.append("Received from server: " + recmessage);
-*/				socket.close();
+			if(!timer.isRunning()){//if a message was not just sent
+				try{
+					DatagramSocket socket;
+					DatagramPacket packet;
+					InetAddress address;
+					socket = new DatagramSocket();
+					address = InetAddress.getByName(hostName);
+					int pnum = Integer.parseInt(hostPort);
+					//For send the message by the client
+					byte message[] = mess.getBytes();
+					packet = new DatagramPacket(message, message.length, address, pnum);
+					socket.send(packet);
+					label.setText(mess);
+					timer.restart();
+					//For Received message
+	/*				packet = new DatagramPacket(message, message.length);
+					socket.receive(packet);
+					String recmessage = new String(packet.getData());
+					area.append("Received from server: " + recmessage);
+	*/				socket.close();
+				}
+				catch(IOException io){}
 			}
-			catch(IOException io){}
 		}
 	}
    /**
@@ -178,12 +185,35 @@ public class ttyReader implements  SerialPortEventListener {
 			try {
 				while (inputStream.available() > 0) {
 					int inChar = inputStream.read();
-					if (inChar >31) {
-						outputString +=(char)inChar;
-					}
-					if (inChar==10 && outputString.length()>0) {
-						new SendRequest(outputString);
-						outputString="";
+					if (rawMode){
+						actTime=System.currentTimeMillis();
+						actDelta=actTime -lastTime;
+						if (outputString.length()<21){
+							outputString+=String.format("%1$02X",inChar);
+						}
+						if (actDelta>100){ //last byte > xxx ms ago, assuming end of byte sequence
+							if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
+								new SendRequest(outputString);
+							}
+							outputString="";
+						}
+						lastTime=actTime;
+					} else {
+						if("ABCDEFabcdef01234567890\n\r".indexOf((char)inChar)>-1){
+							if (inChar >31) {
+								outputString +=(char)inChar;
+							}
+							if (inChar==10 && outputString.length()>0) {
+								new SendRequest(outputString);
+								outputString="";
+							}
+						} else { //looks like a rawmode byte
+							if (rawModeTrigger > 0){
+								rawModeTrigger--;
+							} else {
+								rawMode=true;
+							}
+						}
 					}
 				} 
 			} catch (IOException e) {}
