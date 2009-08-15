@@ -9,4 +9,5 @@ cp client/java/application/Kobs/*.lang client/java/application/Kobs/*.props  /me
 cp client/java/interface/serial/lib/* /media/ram/klobs/lib
 cp runKlobs.sh /media/ram/klobs/
 cp Klobs.desktop /media/ram/klobs/
+cp shojikido_logo_h480.png /media/ram/klobs/
 (cd /media/ram ; zip -r Klobs.zip klobs)
