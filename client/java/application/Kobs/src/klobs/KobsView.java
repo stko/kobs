@@ -135,7 +135,6 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar2 = new javax.swing.JToolBar();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
-        jButtonLock = new javax.swing.JButton();
         jButtonAdd = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -190,14 +189,6 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar3.setRollover(true);
         jToolBar3.setName("jToolBar3"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
-        jButtonLock.setText(resourceMap.getString("jButtonLock.text")); // NOI18N
-        jButtonLock.setFocusable(false);
-        jButtonLock.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonLock.setName("jButtonLock"); // NOI18N
-        jButtonLock.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar3.add(jButtonLock);
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
         jButtonAdd.setAction(actionMap.get("AddAttendie")); // NOI18N
         jButtonAdd.setFocusable(false);
@@ -219,6 +210,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        jTableAttendies.setAutoCreateRowSorter(true);
         jTableAttendies.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -254,6 +246,7 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         });
         jScrollPane1.setViewportView(jTableAttendies);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
         jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
         jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
 
@@ -658,7 +651,6 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
-    private javax.swing.JButton jButtonLock;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JPanel jPanel1;

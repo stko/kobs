@@ -35,6 +35,11 @@ public class KSessionSave {
     Element title = null;
 
     public KSessionSave(String filename) {
+        KSessionSaveSession(filename);
+        KSessionUpdateLocalUserDataFile(KConstants.DBDataFileName);
+    }
+
+    public void KSessionSaveSession(String filename) {
         Document doc;
         Element root;
         try {
@@ -116,96 +121,154 @@ public class KSessionSave {
 
                     root.appendChild(update);
                 }
-            // ----Ende Abspeichern Trainingszeiten ---
+                // ----Ende Abspeichern Trainingszeiten ---
 
-            /*                author = doc.createElement("author");
-            
-            Element lastName = doc.createElement("last-name");
-            lastName.appendChild(doc.createTextNode("Shakespeare"));
-            author.appendChild(lastName);
-            
-            Element firstName = doc.createElement("first-name");
-            firstName.appendChild(doc.createTextNode("William"));
-            author.appendChild(firstName);
-            
-            Element nationality = doc.createElement("nationality");
-            nationality.appendChild(doc.createTextNode("British"));
-            author.appendChild(nationality);
-            
-            Element yearOfBirth = doc.createElement("year-of-birth");
-            yearOfBirth.appendChild(doc.createTextNode("1564"));
-            author.appendChild(yearOfBirth);
-            
-            Element yearOfDeath = doc.createElement("year-of-death");
-            yearOfDeath.appendChild(doc.createTextNode("1616"));
-            author.appendChild(yearOfDeath);
-            
-            root.appendChild(author);
-            
-            title = doc.createElement("title");
-            title.appendChild(doc.createTextNode("Sonnet 130"));
-            root.appendChild(title);
-            
-            lines = doc.createElement("lines");
-            
-            Element line01 = doc.createElement("line");
-            line01.appendChild(doc.createTextNode("My mistress' eyes are nothing like the sun,"));
-            lines.appendChild(line01);
-            
-            Element line02 = doc.createElement("line");
-            line02.appendChild(doc.createTextNode("Coral is far more red than her lips red."));
-            lines.appendChild(line02);
-            
-            Element line03 = doc.createElement("line");
-            line03.appendChild(doc.createTextNode("If snow be white, why then her breasts are dun,"));
-            lines.appendChild(line03);
-            
-            Element line04 = doc.createElement("line");
-            line04.appendChild(doc.createTextNode("If hairs be wires, black wires grow on her head."));
-            lines.appendChild(line04);
-            
-            Element line05 = doc.createElement("line");
-            line05.appendChild(doc.createTextNode("I have seen roses damasked, red and white,"));
-            lines.appendChild(line05);
-            
-            Element line06 = doc.createElement("line");
-            line06.appendChild(doc.createTextNode("But no such roses see I in her cheeks."));
-            lines.appendChild(line06);
-            
-            Element line07 = doc.createElement("line");
-            line07.appendChild(doc.createTextNode("And in some perfumes is there more delight"));
-            lines.appendChild(line07);
-            
-            Element line08 = doc.createElement("line");
-            line08.appendChild(doc.createTextNode("Than in the breath that from my mistress reeks."));
-            lines.appendChild(line08);
-            
-            Element line09 = doc.createElement("line");
-            line09.appendChild(doc.createTextNode("I love to hear her speak, yet well I know"));
-            lines.appendChild(line09);
-            
-            Element line10 = doc.createElement("line");
-            line10.appendChild(doc.createTextNode("That music hath a far more pleasing sound."));
-            lines.appendChild(line10);
-            
-            Element line11 = doc.createElement("line");
-            line11.appendChild(doc.createTextNode("I grant I never saw a goddess go,"));
-            lines.appendChild(line11);
-            
-            Element line12 = doc.createElement("line");
-            line12.appendChild(doc.createTextNode("My mistress when she walks, treads on the ground."));
-            lines.appendChild(line12);
-            
-            Element line13 = doc.createElement("line");
-            line13.appendChild(doc.createTextNode("And yet, by Heaven, I think my love as rare"));
-            lines.appendChild(line13);
-            
-            Element line14 = doc.createElement("line");
-            line14.appendChild(doc.createTextNode("As any she belied with false compare."));
-            lines.appendChild(line14);
-            
-            root.appendChild(lines);
-             */
+                /*                author = doc.createElement("author");
+
+                Element lastName = doc.createElement("last-name");
+                lastName.appendChild(doc.createTextNode("Shakespeare"));
+                author.appendChild(lastName);
+
+                Element firstName = doc.createElement("first-name");
+                firstName.appendChild(doc.createTextNode("William"));
+                author.appendChild(firstName);
+
+                Element nationality = doc.createElement("nationality");
+                nationality.appendChild(doc.createTextNode("British"));
+                author.appendChild(nationality);
+
+                Element yearOfBirth = doc.createElement("year-of-birth");
+                yearOfBirth.appendChild(doc.createTextNode("1564"));
+                author.appendChild(yearOfBirth);
+
+                Element yearOfDeath = doc.createElement("year-of-death");
+                yearOfDeath.appendChild(doc.createTextNode("1616"));
+                author.appendChild(yearOfDeath);
+
+                root.appendChild(author);
+
+                title = doc.createElement("title");
+                title.appendChild(doc.createTextNode("Sonnet 130"));
+                root.appendChild(title);
+
+                lines = doc.createElement("lines");
+
+                Element line01 = doc.createElement("line");
+                line01.appendChild(doc.createTextNode("My mistress' eyes are nothing like the sun,"));
+                lines.appendChild(line01);
+
+                Element line02 = doc.createElement("line");
+                line02.appendChild(doc.createTextNode("Coral is far more red than her lips red."));
+                lines.appendChild(line02);
+
+                Element line03 = doc.createElement("line");
+                line03.appendChild(doc.createTextNode("If snow be white, why then her breasts are dun,"));
+                lines.appendChild(line03);
+
+                Element line04 = doc.createElement("line");
+                line04.appendChild(doc.createTextNode("If hairs be wires, black wires grow on her head."));
+                lines.appendChild(line04);
+
+                Element line05 = doc.createElement("line");
+                line05.appendChild(doc.createTextNode("I have seen roses damasked, red and white,"));
+                lines.appendChild(line05);
+
+                Element line06 = doc.createElement("line");
+                line06.appendChild(doc.createTextNode("But no such roses see I in her cheeks."));
+                lines.appendChild(line06);
+
+                Element line07 = doc.createElement("line");
+                line07.appendChild(doc.createTextNode("And in some perfumes is there more delight"));
+                lines.appendChild(line07);
+
+                Element line08 = doc.createElement("line");
+                line08.appendChild(doc.createTextNode("Than in the breath that from my mistress reeks."));
+                lines.appendChild(line08);
+
+                Element line09 = doc.createElement("line");
+                line09.appendChild(doc.createTextNode("I love to hear her speak, yet well I know"));
+                lines.appendChild(line09);
+
+                Element line10 = doc.createElement("line");
+                line10.appendChild(doc.createTextNode("That music hath a far more pleasing sound."));
+                lines.appendChild(line10);
+
+                Element line11 = doc.createElement("line");
+                line11.appendChild(doc.createTextNode("I grant I never saw a goddess go,"));
+                lines.appendChild(line11);
+
+                Element line12 = doc.createElement("line");
+                line12.appendChild(doc.createTextNode("My mistress when she walks, treads on the ground."));
+                lines.appendChild(line12);
+
+                Element line13 = doc.createElement("line");
+                line13.appendChild(doc.createTextNode("And yet, by Heaven, I think my love as rare"));
+                lines.appendChild(line13);
+
+                Element line14 = doc.createElement("line");
+                line14.appendChild(doc.createTextNode("As any she belied with false compare."));
+                lines.appendChild(line14);
+
+                root.appendChild(lines);
+                 */
+            }
+            // ---- Use a XSLT transformer for writing the new XML file ----
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            DOMSource source = new DOMSource(doc);
+            FileOutputStream os = new FileOutputStream(new File(filename));
+            StreamResult result = new StreamResult(os);
+            transformer.transform(source, result);
+        } catch (SAXParseException err) {
+            System.err.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            System.err.println(" " + err.getMessage());
+        } catch (SAXException e) {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+
+        } catch (java.io.IOException ignore) {
+            System.err.println("Datei nicht gefunden?");
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+    }
+
+    public void KSessionUpdateLocalUserDataFile(String filename) {
+        Document doc;
+        Element root;
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            doc = docBuilder.parse(new File(filename));
+            if (doc != null) {
+                doc.getDocumentElement().normalize();
+                root = doc.getDocumentElement();
+                if (KlobsApp.members.size() > 0) {
+                    NodeList listOfTags = doc.getElementsByTagName("members");
+                    Element firstTagElement = (Element) listOfTags.item(0);
+                    firstTagElement.getParentNode().removeChild(firstTagElement);
+                    Element members = doc.createElement("members");
+                    //root.setAttribute("type", "Shakespearean");
+                    // ----Abspeichern geänderter Mitgliederdaten ---
+                    KReadInfoXML data = KlobsApp.members;
+                    Iterator<String> all = data.keySet().iterator();
+                    while (all.hasNext()) {
+                        String currentall = all.next();
+                        HashMap<String, String> thisRecord = data.get(currentall);
+                        Element member = doc.createElement("member");
+                        Iterator<String> records = thisRecord.keySet().iterator();
+                        while (records.hasNext()) {
+                            String currentKey = records.next();
+                            if (!currentKey.contentEquals(KConstants.MemModKey)) {
+                                Element entry = doc.createElement(currentKey);
+                                entry.appendChild(doc.createTextNode(thisRecord.get(currentKey)));
+                                member.appendChild(entry);
+                            }
+                        }
+                        members.appendChild(member);
+                    }
+                    root.appendChild(members);
+                }
             }
             // ---- Use a XSLT transformer for writing the new XML file ----
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
