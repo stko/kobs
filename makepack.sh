@@ -10,4 +10,7 @@ cp client/java/interface/serial/lib/* /media/ram/klobs/lib
 cp runKlobs.sh /media/ram/klobs/
 cp Klobs.desktop /media/ram/klobs/
 cp shojikido_logo_h480.png /media/ram/klobs/
-(cd /media/ram ; zip -r Klobs.zip klobs)
+cp installklobs.sh /media/ram/klobs/
+# (cd /media/ram ; zip -r Klobs.zip klobs)
+
+./makeself/makeself.sh  /media/ram/klobs/ KLOBS_Installer.run "Klobs- der Kartenleser ohne besonderen Schwierigkeitsgrad" ./installklobs.sh
