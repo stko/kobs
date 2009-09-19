@@ -1,0 +1,23 @@
+#Basis Installation
+
+= Installation eines Klobs-Systems =
+
+==  Admidio auf dem Webserver installieren ==
+
+FIXME diese Anleitung ist noch im Entstehen
+
+  # Die Software auf dem Webserver ist [http://admidio.org Admidio], aktuell angepasst auf die Version 2.09. Diese wird wie auf den Admidio- Webseiten beschrieben installiert
+
+  # Dann wird in der Rollenverwaltung die neue Rolle "Trainer" angelegt. Alle Personen, die dieser Rolle angehören, können sich auf den Klobs- Client anmelden und dort Mitglieder editieren und Trainingsteilnehmer eintragen.
+  # Dann bekommen die Benutzer unter "Benutzerverwaltung/Profilfelder pflegen" folgende neue Felder verpasst:
+
+||  Name          ||  Datentyp  ||  Für alle Sichtbar  || nur für Berechtigte editierbar   || Pflichtfeld  ||  Kommentar  ||
+||  Gurt          ||  Text50    ||    Ja               ||          Ja                      ||   Nein       || Dies ist das Sortierkriterium für das Klobs- Clientprogramm ||
+||  Kartennummer  ||  Text50    ||    Nein             ||          Ja                      ||   Nein       || Dies ist die Chipkartennummer des Mitglieds ||
+||  Passnummer  ||  Text50    ||    Nein             ||          Ja                      ||   Nein       || Die ITBF- Passnummer ||
+
+
+Dann können die Mitglieder als entsprechend präparierte CSV- Datei über "Benutzerverwaltung/Benutzer importieren" importiert werden. Verwendet man aber dabei bei der Wahl, was mit bestehenden Eintraägen passieren soll, die Auswahl "Benutzer behalten", klappt der Import iregendwie nicht, jedoch bei den anderen Auswahlmöglichkeiten.
+
+== Installation der Klobs PHP- Scripte ==
+== Installation von Klobs auf dem Laptop- Client ==
