@@ -88,7 +88,6 @@ und wenn alles geklappt hat, braucht man jetzt nur noch das USB- Kabel in irgend
 
 Um die Box noch ein bischen aufzupeppen, kann man sich ja noch folgende Hinweise für vorne und hinten
 
-|| http://kobs.googlecode.com/svn/trunk/docs/pics/cardlogo.png || http://kobs.googlecode.com/svn/trunk/docs/pics/Magnetic_Fields.png ||
+http://kobs.googlecode.com/svn/trunk/docs/pics/cardlogo.png  http://kobs.googlecode.com/svn/trunk/docs/pics/Magnetic_Fields.png 
 
 mit Hilfe der [http://kobs.googlecode.com/svn/trunk/docs/pics/labeldocs.zip OpenOffice]- Vorlage passend auf Aufkleber drucken.
-
