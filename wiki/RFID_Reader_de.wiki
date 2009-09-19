@@ -19,7 +19,7 @@ Die Kabel verbindet man dann
 ||  Signal (am USB-Kabel)  ||  Kabelfarbe am USB ||  Kabelfarbe am Receiver  ||
 ||   5V     ||  Rot      ||  Rot  ||
 ||   Gnd    ||  Schwarz  ||  Blau  ||
-||   RxD    ||  Orange   ||  Gelb  ||
+||   RxD    ||  Gelb     ||  Gelb  ||
 
 
 
