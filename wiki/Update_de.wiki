@@ -1,5 +1,3 @@
-#Update einer bestehenden Klobs- Installation
-
 = Update einer bestehenden Klobs- Installation =
 
 Wenn Klobs bereits auf einem Rechner installiert ist, d.h. es sind die notwendigen Einträge vorhanden, die Klobs im jeweiligen Desktop-Menü erscheinen lassen, ist es einfach, hier ein Update zu machen, weil nur die Programmdateien selber ausgetauscht werden müssen.
