@@ -1,5 +1,4 @@
-#summary One-sentence summary of this page.
-
+#Selbstbau eines USB- 125khz RFID- Lesers
 = RFID -USB Kartenleser =
 
 Also man hat mindestens 2 Alternativen, einmal den Reader als (Fast)Fertiggerät oder als Bausatz. Das Fertiggerät ist ist auf jeden Fall vorzuziehen; nur weil der Bausatz zuerst da war und getestet wurde, gibts seine Beschreibung hier noch aus Nostalgiegründen.
