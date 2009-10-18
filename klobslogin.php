@@ -47,7 +47,6 @@ $digestHash=$row[0];
 
 
 if ($digestHash != $pw){
-	echo $digestHash."--".$pw;
 	showLogin("wrong password");
 }
 // gültiger User- ab hier dann weiter im aufrufenden Script...
@@ -55,11 +54,43 @@ if ($digestHash != $pw){
 
 function showLogin($info){
 print '
-<html><head><title>Login</title></head>
-<body>'.$info.'<br>
-<form action="'.$_SERVER['PHP_SELF'].'" method="get">User<input type="text" name="user"/> Passwort<input type="text" name="pw"/>
-<input type="submit" value="Login" />
-</form></body></html>';
+<html>
+<head>
+<title>Login</title>
+<script language="javascript" src="md5.js"></script>
+<script language="javascript">
+<!--
+  function doChallengeResponse() {
+    document.login.pw.value = MD5(document.login.password.value);
+    document.login.password.value = "";
+  }
+// -->
+</script>
+
+</head>
+
+<body>
+'.$info.'<br>
+<form name="login" action="'.$_SERVER['PHP_SELF'].'" method="post" onSubmit="doChallengeResponse(); return true;">
+<table>
+<tr>
+<td>User</td>
+<td><input type="text" name="user"/></td>
+</tr>
+<tr>
+<td>Passwort</td>
+<td><input type="password" name="password"/></td>
+</tr>
+<tr>
+<td><input type="hidden" name="pw"/></td>
+<td><input type="submit" value="Login" /></td>
+</tr></table>
+</form>
+
+After login, the training data will be transfered as a .csv file, which can be used to make pretty pivot table statistics in a spreadsheet programm like OpenOffice Calc
+
+
+</body></html>';
 exit;
 }
 
