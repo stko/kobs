@@ -24,7 +24,9 @@ require("./klobslogin.php");
 
 
     //Falls gefordert, aufrufen alle Leute aus der Datenbank
-    $sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.location as location, training.date as date
+    $sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.location as location, training.date as date, training.year as year, training.mon as mon, training.mday as mday, training.wday as wday, training.typ as typ, training.subtyp as subtyp, training.trainerid as trainerid, training.duration as duration
+
+
             FROM ". TBL_USERS. "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
@@ -49,7 +51,15 @@ header('Content-Disposition: attachment; filename="Trainingsdata.txt"');
 	echo "last_name\t";
 	echo "first_name\t";
 	echo "location\t";
-	echo "date\n";
+	echo "date\t";
+	echo "year\t";
+	echo "mon\t";
+	echo "mday\t";
+	echo "wday\t";
+	echo "typ\t";
+	echo "subtyp\t";
+	echo "trainerid\t";
+	echo "duration\n";
 while($row = $g_db->fetch_array($db_result))
 {
 /*	foreach ($row as $key => $value){
@@ -62,7 +72,15 @@ while($row = $g_db->fetch_array($db_result))
 	echo $row[last_name]."\t";
 	echo $row[first_name]."\t";
 	echo $row[location]."\t";
-	echo $row[date]."\n";
+	echo $row[date]."\t";
+	echo $row[year]."\t";
+	echo $row[mon]."\t";
+	echo $row[mday]."\t";
+	echo $row[wday]."\t";
+	echo $row[typ]."\t";
+	echo $row[subtyp]."\t";
+	echo $row[trainerid]."\t";
+	echo $row[duration]."\n";
 }
 
 
