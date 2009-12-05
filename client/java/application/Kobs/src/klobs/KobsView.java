@@ -100,10 +100,10 @@ public class KobsView extends FrameView implements TableModelListener {
         while (KlobsApp.members.size() == 0) {
             Syncronize();
             if (!KURLDialog.res) {
-              JOptionPane.showMessageDialog(null,
-                      KlobsApp.lang.getProperty("ProgramQuitText","Without first sync the program is useless and will quit now"),
-                      KlobsApp.lang.getProperty("ProgramQuitTitle","Sync cancelled"),
-                      JOptionPane.ERROR_MESSAGE); 
+                JOptionPane.showMessageDialog(null,
+                        KlobsApp.lang.getProperty("ProgramQuitText", "Without first sync the program is useless and will quit now"),
+                        KlobsApp.lang.getProperty("ProgramQuitTitle", "Sync cancelled"),
+                        JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             }
         }
@@ -216,19 +216,12 @@ public class KobsView extends FrameView implements TableModelListener {
 
             },
             new String [] {
-                "Name", "Gurt"
+                "Name", "Vorname", "Gurt"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -248,13 +241,15 @@ public class KobsView extends FrameView implements TableModelListener {
         jScrollPane1.setViewportView(jTableAttendies);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
         jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
-        jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
+        jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title2")); // NOI18N
+        jTableAttendies.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
+        jTableMembers.setAutoCreateRowSorter(true);
         jTableMembers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -414,58 +409,60 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     @Action
     public void Syncronize() {
         String error;
-        
-            KURLDialog urlDialog= new KURLDialog(null, true,KlobsApp.props.getProperty("username",""),"",KlobsApp.props.getProperty("URL","http://mitglieder.shojikido.de/adm_program/modules/kobs/syncklobs.php"),false);
+
+        KURLDialog urlDialog = new KURLDialog(null, true, KlobsApp.props.getProperty("username", ""), "", KlobsApp.props.getProperty("URL", "http://mitglieder.shojikido.de/adm_program/modules/kobs/syncklobs.php"), false);
 
 
         urlDialog.setVisible(true);
-        if (urlDialog.res){
-            if ( (error=KReadHTTPFile.syncronize2URL(urlDialog.URL, KConstants.DBSessionFileName, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("")!=0){
-              JOptionPane.showMessageDialog(null,error,KlobsApp.lang.getProperty("URLErrorTitle","Syncronisation Error"),JOptionPane.ERROR_MESSAGE); 
-           }
-           else {
-                JOptionPane.showMessageDialog(null,KlobsApp.lang.getProperty("URLDownloadOkText","Syncronisation succesfull -actual Data received"),KlobsApp.lang.getProperty("URLDownloadOkTitle","Syncronisation"),JOptionPane.INFORMATION_MESSAGE); 
-                KlobsApp.props.setProperty("username",urlDialog.userName);
-                KlobsApp.props.setProperty("URL",urlDialog.URL);
-                try{
+        if (urlDialog.res) {
+            if ((error = KReadHTTPFile.syncronize2URL(urlDialog.URL, KConstants.DBSessionFileName, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("") != 0) {
+                JOptionPane.showMessageDialog(null, error, KlobsApp.lang.getProperty("URLErrorTitle", "Syncronisation Error"), JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, KlobsApp.lang.getProperty("URLDownloadOkText", "Syncronisation succesfull -actual Data received"), KlobsApp.lang.getProperty("URLDownloadOkTitle", "Syncronisation"), JOptionPane.INFORMATION_MESSAGE);
+                KlobsApp.props.setProperty("username", urlDialog.userName);
+                KlobsApp.props.setProperty("URL", urlDialog.URL);
+                try {
                     KlobsApp.props.store(new java.io.FileOutputStream(KConstants.PrefsFileName), "Kobs Preferences");
-                    
-                } catch(java.io.IOException ignored){};
+
+                } catch (java.io.IOException ignored) {
+                }
+                ;
                 File f = new File(KConstants.DBSessionFileName);
-                if (f.exists() &&!f.delete()){
-                    JOptionPane.showMessageDialog(null,KlobsApp.lang.getProperty("DeleteOldSession","Can't delete old Session file"),KlobsApp.lang.getProperty("DeleteOldSessionTitle","File problem"),JOptionPane.ERROR_MESSAGE); 
-                };
+                if (f.exists() && !f.delete()) {
+                    JOptionPane.showMessageDialog(null, KlobsApp.lang.getProperty("DeleteOldSession", "Can't delete old Session file"), KlobsApp.lang.getProperty("DeleteOldSessionTitle", "File problem"), JOptionPane.ERROR_MESSAGE);
+                }
+                ;
                 KlobsApp.importUserDB();
-                createMemberTable(KlobsApp.members,jTableMembers);
-           }
+                createMemberTable(KlobsApp.members, jTableMembers);
+            }
         }
     }
-    
+
     public void getNr(String nr) {
-            Toolkit.getDefaultToolkit().beep();
-            KStringHash thisRecord= KlobsApp.members.find("kartennummer", nr);
-            if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn()==7 && jTableMembers.getSelectedRowCount() ==1 && jTableMembers.getSelectedColumnCount() ==1){
-                KHashLink actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
-                HashMap<String,String> newRecord= actHashLink.getHashMap();
-                if (thisRecord != newRecord){
-                    newRecord.put("kartennummer", nr);
-                    newRecord.put("modified", "true");
-                    if (thisRecord!=null){
-                        thisRecord.put("kartennummer", "");
-                        thisRecord.put("modified", "true");
-                    }
-                    jTableMembers.updateUI();
+        Toolkit.getDefaultToolkit().beep();
+        KStringHash thisRecord = KlobsApp.members.find("kartennummer", nr);
+        if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
+            KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getSelectedRow(), jTableMembers.getSelectedColumn());
+            HashMap<String, String> newRecord = actHashLink.getHashMap();
+            if (thisRecord != newRecord) {
+                newRecord.put("kartennummer", nr);
+                newRecord.put("modified", "true");
+                if (thisRecord != null) {
+                    thisRecord.put("kartennummer", "");
+                    thisRecord.put("modified", "true");
                 }
-            }
-            thisRecord= KlobsApp.members.find("kartennummer", nr);
-            if (( thisRecord!=null) && !KlobsApp.attendies.containsValue(thisRecord)){
-                String usrId=thisRecord.get("usr_id");
-                KlobsApp.attendies.put(usrId, thisRecord);
-                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
+                jTableMembers.updateUI();
             }
         }
-    
-    public void createAttendiesTable(HashMap<String, KStringHash> map, JTable jTable){
+        thisRecord = KlobsApp.members.find("kartennummer", nr);
+        if ((thisRecord != null) && !KlobsApp.attendies.containsValue(thisRecord)) {
+            String usrId = thisRecord.get("usr_id");
+            KlobsApp.attendies.put(usrId, thisRecord);
+            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
+        }
+    }
+
+    public void createAttendiesTable(HashMap<String, KStringHash> map, JTable jTable) {
         ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
         Iterator<String> all = map.keySet().iterator();
         while (all.hasNext()) {
@@ -476,35 +473,35 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
             while (records.hasNext()) {
                 String currentKey = records.next();
             }
-            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord,"last_name"), new KHashLink(thisRecord,"gurt")});
+            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord, "last_name"),new KHashLink(thisRecord, "first_name"), new KHashLink(thisRecord, "gurt")});
 
 
         }
     }
-    
-    public void createMemberTable(HashMap<String, KStringHash> map, JTable jTable){
+
+    public void createMemberTable(HashMap<String, KStringHash> map, JTable jTable) {
         ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
-         Iterator<String> all = map.keySet().iterator();
+        Iterator<String> all = map.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
             KStringHash thisRecord = map.get(currentall);
-             ((DefaultTableModel) jTable.getModel()).addRow(
-                     new Object[]{
-                     new KHashLink(thisRecord, KConstants.TableIndices[0]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[1]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[2]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[3]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[4]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[5]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[6]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[7]),
-                     new KHashLink(thisRecord,KConstants.TableIndices[8])
-             });
+            ((DefaultTableModel) jTable.getModel()).addRow(
+                    new Object[]{
+                        new KHashLink(thisRecord, KConstants.TableIndices[0]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[1]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[2]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[3]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[4]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[5]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[6]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[7]),
+                        new KHashLink(thisRecord, KConstants.TableIndices[8])
+                    });
 
 
         }
     }
-    
+
     public class StartThread implements Runnable {
 
         StartThread() {
@@ -542,112 +539,123 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     public void setDate() {
         JFrame mainFrame = KlobsApp.getApplication().getMainFrame();
         KDateDialog dateDialog = new KDateDialog(
-               mainFrame,
-                KlobsApp.lang.getProperty("DateFormat","MM/dd/yyyy"),
-                KlobsApp.lang.getProperty("TimeFormat","hh:mm"),
+                mainFrame,
+                KlobsApp.lang.getProperty("DateFormat", "MM/dd/yyyy"),
+                KlobsApp.lang.getProperty("TimeFormat", "hh:mm"),
                 KlobsApp.actDate,
                 KlobsApp.actStartTime,
                 KlobsApp.actEndTime);
-                KlobsApp.actDate=dateDialog.date;
-                KlobsApp.actDateString=dateDialog.dateString;
-                KlobsApp.actStartTime=dateDialog.startTime;
-                KlobsApp.actStartTimeString=dateDialog.startTimeString;
-                KlobsApp.actEndTime=dateDialog.endTime;
-                KlobsApp.actEndTimeString=dateDialog.endTimeString;
-                KlobsApp.actLocation=dateDialog.location;
-                KlobsApp.actLocationId=((KStringHash)dateDialog.locationHash).get(KConstants.LocIdName);
-                
-                setDateTitle();
+        KlobsApp.actDate = dateDialog.date;
+        KlobsApp.actDateString = dateDialog.dateString;
+        KlobsApp.actStartTime = dateDialog.startTime;
+        KlobsApp.actStartTimeString = dateDialog.startTimeString;
+        KlobsApp.actEndTime = dateDialog.endTime;
+        KlobsApp.actEndTimeString = dateDialog.endTimeString;
+        KlobsApp.actLocation = dateDialog.location;
+        KlobsApp.actLocationId = ((KStringHash) dateDialog.locationHash).get(KConstants.LocIdName);
+
+        setDateTitle();
     }
 
-    public void setDateTitle(){
-        this.getFrame().setTitle(KlobsApp.actDateString+" - "+KlobsApp.actLocation+" - "+KlobsApp.actLocationId+" - "+KlobsApp.actStartTimeString+" - "+KlobsApp.actEndTimeString+" - "+KConstants.AppName);
+    public void setDateTitle() {
+        this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation + " - " + KlobsApp.actLocationId + " - " + KlobsApp.actStartTimeString + " - " + KlobsApp.actEndTimeString + " - " + KConstants.AppName);
     }
-    
+
     public void tableChanged(TableModelEvent e) {
         /* now it becomes tricky: As changing of the cell destroys the previous reference to the KHashLink by a simple String,
          * I've to restore this information through the cell beside
          */
-        
+
         int row = e.getFirstRow();
         int column = e.getColumn();
-        if (row<0 || column<0){
+        if (row < 0 || column < 0) {
             return;
         }
         // I also need a valid colcount from left or right beside the changed cell
-        int refreshCol= (column>0)? 0: 1;
+        int refreshCol = (column > 0) ? 0 : 1;
         // then we read the new value of the cell
-        TableModel model = (TableModel)e.getSource();
-        if (!(model.getValueAt(row, column) instanceof String)){
+        TableModel model = (TableModel) e.getSource();
+        if (!(model.getValueAt(row, column) instanceof String)) {
             return;
         }
-        String newValueString="";
-        try{
-            newValueString= (String) model.getValueAt(row, column);
+        String newValueString = "";
+        try {
+            newValueString = (String) model.getValueAt(row, column);
+        } catch (java.lang.Error ignored) {
         }
-        catch (java.lang.Error ignored){};
+        ;
         // now we read the original data from the cell beside
-        KHashLink actHashLink=null;
-       try{
-            actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( row,refreshCol);
+        KHashLink actHashLink = null;
+        try {
+            actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(row, refreshCol);
+        } catch (java.lang.Error ignored) {
         }
-
-        catch (java.lang.Error ignored){};
-        if (actHashLink!=null){        
-            KStringHash thisRecord= actHashLink.getHashMap();
-            if (thisRecord!=null){
+        ;
+        if (actHashLink != null) {
+            KStringHash thisRecord = actHashLink.getHashMap();
+            if (thisRecord != null) {
                 thisRecord.put(KConstants.TableIndices[column], newValueString);
                 thisRecord.put(KConstants.MemModKey, KConstants.MemModValue);
-                model.setValueAt(new KHashLink(thisRecord,KConstants.TableIndices[column]), row, column);
+                model.setValueAt(new KHashLink(thisRecord, KConstants.TableIndices[column]), row, column);
 
             }
         }
     }
-      
+
     @Action
     public void AddAttendie() {
 
-        KHashLink actHashLink=null;
-        // get actual Member
-        try{
-            actHashLink= (KHashLink)jTableMembers.getModel().getValueAt( jTableMembers.getSelectedRow(),jTableMembers.getSelectedColumn());
-        }
-        catch (java.lang.Error e){};
-        // valid selection?
-        if (actHashLink!=null){        
-            KStringHash thisRecord= actHashLink.getHashMap();
-            if (( thisRecord!=null) && !KlobsApp.attendies.containsValue(thisRecord)){
-                String usrId=thisRecord.get("usr_id");
-                KlobsApp.attendies.put(usrId, thisRecord);
-                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
-                jTableAttendies.updateUI();
+        KHashLink actHashLink = null;
+        int[] rowIndices = jTableMembers.getSelectedRows();
+        for (int row : rowIndices) {
+            // get actual Member
+            try {
+                actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(row), 0);
+            } catch (java.lang.Error e) {
+            }
+            // valid selection?
+            if (actHashLink != null) {
+                KStringHash thisRecord = actHashLink.getHashMap();
+                if ((thisRecord != null) && !KlobsApp.attendies.containsValue(thisRecord)) {
+                    String usrId = thisRecord.get("usr_id");
+                    KlobsApp.attendies.put(usrId, thisRecord);
+                }
             }
         }
+        if (actHashLink != null) {
+            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
+            jTableAttendies.updateUI();
+        }
+
     }
 
     @Action
     public void RemoveAttendie() {
 
-        KHashLink actHashLink=null;
-                // get actualAttendie
-       try{
-           actHashLink= (KHashLink)jTableAttendies.getModel().getValueAt( jTableAttendies.getSelectedRow(),jTableAttendies.getSelectedColumn());
-       }
-       catch (java.lang.Error e){};
-        // valid selection?
-        if (actHashLink!=null){        
-            HashMap<String,String> thisRecord= actHashLink.getHashMap();
-            if (( thisRecord!=null) && KlobsApp.attendies.containsValue(thisRecord)){
-               String usrId=thisRecord.get("usr_id");
-                KlobsApp.attendies.remove(usrId);
-                createAttendiesTable(KlobsApp.attendies,jTableAttendies);
-                jButtonDelete.setEnabled(KlobsApp.attendies.size()>0);
-                jTableAttendies.updateUI();
+        KHashLink actHashLink = null;
+        int[] rowIndices = jTableAttendies.getSelectedRows();
+        for (int row : rowIndices) {
+            // get actualAttendie
+            try {
+                actHashLink = (KHashLink) jTableAttendies.getModel().getValueAt(jTableAttendies.getRowSorter().convertRowIndexToModel(row), 0);
+            } catch (java.lang.Error e) {
             }
-         }
+
+            // valid selection?
+            if (actHashLink != null) {
+                HashMap<String, String> thisRecord = actHashLink.getHashMap();
+                if ((thisRecord != null) && KlobsApp.attendies.containsValue(thisRecord)) {
+                    String usrId = thisRecord.get("usr_id");
+                    KlobsApp.attendies.remove(usrId);
+                }
+            }
+        }
+        if (actHashLink != null) {
+            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
+            jButtonDelete.setEnabled(KlobsApp.attendies.size() > 0);
+            jTableAttendies.updateUI();
+        }
     }
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
@@ -672,17 +680,13 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
-
     private final Timer messageTimer;
     private final Timer busyIconTimer;
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
     private KURLDialog urlDialog;
-    
     Thread thread;
     DatagramSocket socket;
-
 }
