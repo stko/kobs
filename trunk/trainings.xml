@@ -1,0 +1,6 @@
+  <trainings>
+     <typ id="0" name="Anwesend">
+	     <subtyp id="0" name="Anwesend"/>
+	     <subtyp id="1" name="Krank/Verletzt"/>
+     </typ>
+  </trainings>

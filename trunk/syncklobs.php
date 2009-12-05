@@ -43,12 +43,38 @@ while($row = $g_db->fetch_array($db_result))
 }
 
 
+//Array aller User-IDs erstellen, die Mitglied sind
+$sql    = "SELECT ". TBL_USERS.".usr_id
+FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
+WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
+AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
+AND ". TBL_ROLES . ".rol_name = \"".$klobs_member."\"";
+
+
+
+
+$db_result = $g_db->query($sql);
+ 
+while($row = $g_db->fetch_array($db_result))
+{
+	$member_Ids[$row[0]]=1;
+}
+
+
 
     //Falls gefordert, aufrufen alle Leute aus der Datenbank
-    $sql = "SELECT usr_id, last_name.usd_value as last_name, first_name.usd_value as first_name, birthday.usd_value as birthday, 
-                   city.usd_value as city, phone.usd_value as phone, address.usd_value as address, zip_code.usd_value as zip_code,
-                   kartennummer.usd_value as kartennummer, gurt.usd_value as gurt
-            FROM ". TBL_USERS. "
+    $sql = "SELECT
+		  ". TBL_USERS. ".usr_id as usr_id,
+		  last_name.usd_value as last_name,
+		  first_name.usd_value as first_name,
+		  birthday.usd_value as birthday, 
+                  city.usd_value as city,
+		  phone.usd_value as phone,
+		  address.usd_value as address,
+		  zip_code.usd_value as zip_code,
+                  kartennummer.usd_value as kartennummer, 
+		  gurt.usd_value as gurt
+	    FROM ". TBL_USERS . "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = usr_id
              AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
@@ -96,46 +122,27 @@ echo "  <members>\n";
 
 while($row = $g_db->fetch_array($result_user))
 {
-	echo "  <member>\n";
-	foreach ($row as $key => $value){
-		if (!is_numeric($key)) {
-			echo "    <$key>$value</$key>\n";
-		}
+	if (isset($member_Ids[$row["usr_id"]])){// wenn Mitglied, dann
+//	if (1){// wenn Mitglied, dann
+	  echo "  <member>\n";
+	  foreach ($row as $key => $value){
+		  if (!is_numeric($key)) {
+			  echo "    <$key>$value</$key>\n";
+		  }
+	  }
+	  echo "    <trainer>".(isset($trainer_Ids[$row["usr_id"]]) ? "True" : "False")."</trainer>\n";
+	  echo "  </member>\n";
 	}
-	echo "    <trainer>".(isset($trainer_Ids[$row["usr_id"]]) ? "True" : "False")."</trainer>\n";
-	echo "  </member>\n";
 }
 echo "  </members>\n";
 
 
 
 // Ausgabe der Trainingsorte
-print <<<ORTE
-  <orte>
-	<ort>
-		<ort_id>1</ort_id>
-		<name>Boitwarder Schule, Brake</name>
-	</ort>
-	<ort>
-		<ort_id>2</ort_id>
-		<name>BBZ, Brake</name>
-	</ort>
-	<ort>
-		<ort_id>3</ort_id>
-		<name>Klippkanner Schule, Brake</name>
-	</ort>
-</orte>
-ORTE;
+readfile("locations.xml");
 
 // Ausgabe der Trainingsarten
-print <<<TRAININGS
-  <trainings>
-     <typ id="0" name="Anwesend">
-	     <subtyp id="0" name="Anwesend"/>
-	     <subtyp id="1" name="Krank/Verletzt"/>
-     </typ>
-  </trainings>
-TRAININGS;
+readfile("trainings.xml");
 
 //Ende der XML -Datei
 echo "</klobsdata>\n";

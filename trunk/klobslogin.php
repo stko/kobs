@@ -21,6 +21,10 @@ if (!isset($klobs_trainer)) {
 	$klobs_trainer="Trainer"; //default
 }
 
+if (!isset($klobs_member)) {
+	$klobs_member="Mitglied"; //default
+}
+
 if(!(isset($user) && isset($pw) && $user!="" && $pw!="")){
 	showlogin("Login");
 }
