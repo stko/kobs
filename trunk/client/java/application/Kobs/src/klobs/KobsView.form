@@ -169,15 +169,21 @@
                           <Properties>
                             <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="2" rowCount="0">
-                                <Column editable="false" title="Name" type="java.lang.String"/>
-                                <Column editable="false" title="Gurt" type="java.lang.String"/>
+                              <Table columnCount="3" rowCount="0">
+                                <Column editable="false" title="Name" type="java.lang.Object"/>
+                                <Column editable="false" title="Vorname" type="java.lang.Object"/>
+                                <Column editable="false" title="Gurt" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title resourceKey="jTableAttendies.columnModel.title0"/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                  <Title resourceKey="jTableAttendies.columnModel.title2"/>
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
@@ -221,6 +227,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JTable" name="jTableMembers">
                           <Properties>
+                            <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="9" rowCount="0">
                                 <Column editable="true" title="Last Name" type="java.lang.Object"/>

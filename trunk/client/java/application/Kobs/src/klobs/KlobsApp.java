@@ -113,6 +113,9 @@ public class KlobsApp extends SingleFrameApplication {
         DateFormat df = new SimpleDateFormat(KlobsApp.lang.getProperty("DateFormat", "MM/dd/yyyy"));
         actDateString = df.format(actDate);
         actStartTime = new java.util.Date();
+        long now = actStartTime.getTime();
+        now = ((now + 15 * 60 * 1000)/(15 * 60 * 1000)) * 15 * 60 * 1000;
+        actStartTime.setTime(now);
         df = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
         actStartTimeString = df.format(actStartTime);
         actEndTime = new java.util.Date();
