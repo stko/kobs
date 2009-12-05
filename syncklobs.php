@@ -43,11 +43,12 @@ while($row = $g_db->fetch_array($db_result))
 }
 
 
-//Array aller User-IDs erstellen, die Mitglied sind
+//Array aller User-IDs erstellen, die Mitglied und valid sind
 $sql    = "SELECT ". TBL_USERS.".usr_id
 FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
 WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
 AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
+AND ". TBL_MEMBERS . ".mem_valid = 1 
 AND ". TBL_ROLES . ".rol_name = \"".$klobs_member."\"";
 
 
