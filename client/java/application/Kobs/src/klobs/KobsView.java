@@ -442,7 +442,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         Toolkit.getDefaultToolkit().beep();
         KStringHash thisRecord = KlobsApp.members.find("kartennummer", nr);
         if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
-            KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getSelectedRow(), jTableMembers.getSelectedColumn());
+            KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(jTableMembers.getSelectedRow()), jTableMembers.getSelectedColumn());
             HashMap<String, String> newRecord = actHashLink.getHashMap();
             if (thisRecord != newRecord) {
                 newRecord.put("kartennummer", nr);
