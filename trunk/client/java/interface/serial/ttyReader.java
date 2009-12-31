@@ -33,12 +33,12 @@ public class ttyReader implements  SerialPortEventListener {
 	public static void main(String[] args) {
 		Properties props = new Properties();
 		try {
-			props.load(new FileInputStream("kobsserial.props"));
+			props.load(new FileInputStream("klobsserial.props"));
 		}
 		catch (IOException ignored) {}
 		lang = new Properties();
 		try {
-			lang.load(new FileInputStream("kobsserial.lang"));
+			lang.load(new FileInputStream("klobsserial.lang"));
 		}
 		catch (IOException ignored) {}
 		String osname = System.getProperty("os.name","").toLowerCase();
@@ -80,7 +80,7 @@ public class ttyReader implements  SerialPortEventListener {
 		} 
 		else {
 			try {
-				ttyReader u = new ttyReader( (SerialPort) portId.open("KobsReader", 2000));
+				ttyReader u = new ttyReader( (SerialPort) portId.open("KlobsReader", 2000));
 			} 
 			catch (PortInUseException e) {} 
 		}
@@ -89,7 +89,7 @@ public class ttyReader implements  SerialPortEventListener {
 	public ttyReader(SerialPort serialPort){
 
 		
-		frame = new JFrame(lang.getProperty("WindowTitle","Kobs Card Reader"));
+		frame = new JFrame(lang.getProperty("WindowTitle","Klobs Card Reader"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
@@ -185,19 +185,18 @@ public class ttyReader implements  SerialPortEventListener {
 			try {
 				while (inputStream.available() > 0) {
 					int inChar = inputStream.read();
+					actTime=System.currentTimeMillis();
+					actDelta=actTime -lastTime;
+					lastTime=actTime;
+					if (actDelta>100){ //last byte > 100 ms ago, so clear input buffer
+						outputString="";
+					}
 					if (rawMode){
-						actTime=System.currentTimeMillis();
-						actDelta=actTime -lastTime;
-						if (outputString.length()<21){
-							outputString+=String.format("%1$02X",inChar);
-						}
-						if (actDelta>100){ //last byte > xxx ms ago, assuming end of byte sequence
-							if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
-								new SendRequest(outputString);
-							}
+						outputString+=String.format("%1$02X",inChar);
+						if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
+							new SendRequest(outputString);
 							outputString="";
 						}
-						lastTime=actTime;
 					} else {
 						if("ABCDEFabcdef01234567890\n\r".indexOf((char)inChar)>-1){
 							if (inChar >31) {

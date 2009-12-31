@@ -1,5 +1,5 @@
-#kobsserial.props
-# Configfile for the KOBS serial Card Reader
+#klobsserial.props
+# Configfile for the KLOBS serial Card Reader
 # the following setting are also the defaults
 # to change, uncomment and change the values
 
