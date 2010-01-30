@@ -133,6 +133,16 @@ public class KobsView extends FrameView implements TableModelListener {
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
+        jToolBar4 = new javax.swing.JToolBar();
+        jLabel1 = new javax.swing.JLabel();
+        timeComboBox = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        taskComboBox = new javax.swing.JComboBox();
+        subtaskComboBox = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        trainerComboBox = new javax.swing.JComboBox();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TimeTree = new javax.swing.JTree();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         jButtonAdd = new javax.swing.JButton();
@@ -169,17 +179,59 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar2.setRollover(true);
         jToolBar2.setName("jToolBar2"); // NOI18N
 
+        jToolBar4.setRollover(true);
+        jToolBar4.setName("jToolBar4"); // NOI18N
+
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+        jToolBar4.add(jLabel1);
+
+        timeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        timeComboBox.setName("timeComboBox"); // NOI18N
+        jToolBar4.add(timeComboBox);
+
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+        jToolBar4.add(jLabel2);
+
+        taskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        taskComboBox.setName("taskComboBox"); // NOI18N
+        jToolBar4.add(taskComboBox);
+
+        subtaskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subtaskComboBox.setName("subtaskComboBox"); // NOI18N
+        jToolBar4.add(subtaskComboBox);
+
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+        jToolBar4.add(jLabel3);
+
+        trainerComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        trainerComboBox.setName("trainerComboBox"); // NOI18N
+        jToolBar4.add(trainerComboBox);
+
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        TimeTree.setName("timeTree"); // NOI18N
+        jScrollPane3.setViewportView(TimeTree);
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jToolBar4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(445, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jToolBar4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -239,7 +291,6 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         });
         jScrollPane1.setViewportView(jTableAttendies);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
         jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
         jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title2")); // NOI18N
         jTableAttendies.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
@@ -285,8 +336,8 @@ public class KobsView extends FrameView implements TableModelListener {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
+            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -303,7 +354,10 @@ public class KobsView extends FrameView implements TableModelListener {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
+                .add(23, 23, 23)
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 957, Short.MAX_VALUE)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -657,14 +711,19 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree TimeTree;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -673,12 +732,17 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JToolBar jToolBar4;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JComboBox subtaskComboBox;
+    private javax.swing.JComboBox taskComboBox;
+    private javax.swing.JComboBox timeComboBox;
+    private javax.swing.JComboBox trainerComboBox;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
