@@ -13,7 +13,4 @@ $klobs_download_date = "Abodatum";
 
 // Gibt das Verzeichnis an, wo sich die downloads befinden
 $klobs_download_path = "downloadfiles/";
-
-// Gibt den Mimetype an, der für den Download angenommen werden soll
-$klobs_download_mimetype = "application/pdf";
 ?>

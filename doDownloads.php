@@ -15,10 +15,10 @@
 	include("./config.php");
 	include("./downloadconfig.php");
 	require("../../system/login_valid.php");
+
 	$a_user_id = $g_current_user->getValue("usr_id");
 
-
-	$filename=$_REQUEST["filename"];
+ 	$filename=escapeshellcmd($_REQUEST["filename"]);
 
 	if (!isset($filename) || $filename=="") {
 		showError( "interner Fehler...<br>Der Dateiname fehlt");
@@ -62,8 +62,13 @@
 	if (strtotime($actDate)<time()){
 		showError("Leider ist dein Abo schon am $actDate abgelaufen...");
 	}
-	//Beginn der Ausgabe
+	// define some personal output values
+	$firstName=escapeshellcmd(utf8_encode($row["first_name"]));
+	$lastName=utf8_decode(utf8_encode($row["last_name"]));
+	$thisDate = date('d.m.Y');
 
+
+	//start output
 	header("Pragma: public");
 	header("Expires: 0"); // set expiration time
 	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -78,19 +83,23 @@
 	// force the browser to display the save dialog.
 	header("Content-Disposition: attachment; filename=".basename($filename).";");
 
-	/*
-	The Content-transfer-encoding header should be binary, since the file will be read
-	directly from the disk and the raw bytes passed to the downloading computer.
-	The Content-length header is useful to set for downloads. The browser will be able to
-	show a progress meter as a file downloads. The content-lenght can be determines by
-	filesize function returns the size of a file.
-	*/
+	
+	// The Content-transfer-encoding header should be binary, since the file will be read
+	// directly from the disk and the raw bytes passed to the downloading computer.
+	// The Content-length header is useful to set for downloads. The browser will be able to
+	// show a progress meter as a file downloads. The content-lenght can be determines by
+	// filesize function returns the size of a file.
+	
 	header("Content-Transfer-Encoding: binary");
-	header("Content-Length: ".filesize($filename));
-
-	@readfile($filename);
+	if (0){ // switch between stamped and unsigned PDF- Output
+		// The file length can only be used if the file is not generated on the fly
+		header("Content-Length: ".filesize($filename));
+		@readfile($filename);
+	} else {
+		$command=	"convert -size 1500x2100 xc:white -stroke black -strokewidth 1  -pointsize 20 -draw \" gravity SouthEast text 50,50 'Persönliche Ausgabe von ".$firstName." ".$lastName." (".$thisDate.") - Weitergabe verboten, sonst 40€ in die Vereinskasse'\" pdf:- | pdftk ".$filename." background - output -";
+		passthru($command);
+	}
 	exit(0);
-
 
 	function showError($info){
 		print '
@@ -107,8 +116,5 @@
 		</body></html>';
 		exit;
 	}
-
-
-
 
 ?>
