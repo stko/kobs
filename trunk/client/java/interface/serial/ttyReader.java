@@ -42,41 +42,42 @@ public class ttyReader implements  SerialPortEventListener {
 		}
 		catch (IOException ignored) {}
 		String osname = System.getProperty("os.name","").toLowerCase();
-		String defaultPort ="";
 		if ( osname.startsWith("windows") ) {
 			// windows
-			defaultPort = "COM1";
+			serPortName = "COM1";
 		} else if (osname.startsWith("linux")) {
 			// linux
-		defaultPort = "/dev/ttyUSB0";
+		serPortName = "/dev/ttyUSB0";
 		} else if ( osname.startsWith("mac") ) {
 			// mac
-			defaultPort = "????";
+			serPortName = "????";
 		} else {
 			System.out.println("Sorry, your operating system is not supported");
 			return;
 		}
 			
 		if (args.length > 0) {
-			defaultPort = args[0];
-		} 
+			serPortName = args[0];
+		} else {
+			serPortName = props.getProperty("SerialPort",serPortName);
+		}
 
 
 		boolean portFound = false;
-		serPortName = props.getProperty("SerialPort",defaultPort);
 		hostPort = props.getProperty("HostPort","3305");
 		hostName = props.getProperty("HostName","127.0.0.1");
 		portList = CommPortIdentifier.getPortIdentifiers();
 		while (portList.hasMoreElements()&& !portFound) {
 			portId = (CommPortIdentifier) portList.nextElement();
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+				System.out.println("port found"+portId.getName()+"\n");
 				if (portId.getName().equals(serPortName)) {
 					portFound = true;
 				} 
 			} 
 		} 
 		if (!portFound) {
-			JOptionPane.showMessageDialog(null,lang.getProperty("PortErrorText","Couldn't open serial Port"),lang.getProperty("PortErrorTitle","Port Initalisation Error"),JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,lang.getProperty("PortErrorText","Couldn't open serial Port")+"\n"+serPortName,lang.getProperty("PortErrorTitle","Port Initalisation Error"),JOptionPane.ERROR_MESSAGE);
 		} 
 		else {
 			try {
@@ -185,32 +186,36 @@ public class ttyReader implements  SerialPortEventListener {
 			try {
 				while (inputStream.available() > 0) {
 					int inChar = inputStream.read();
-					actTime=System.currentTimeMillis();
-					actDelta=actTime -lastTime;
-					lastTime=actTime;
-					if (actDelta>100){ //last byte > 100 ms ago, so clear input buffer
-						outputString="";
-					}
-					if (rawMode){
-						outputString+=String.format("%1$02X",inChar);
-						if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
-							new SendRequest(outputString);
+					if(inChar > -1){
+						actTime=System.currentTimeMillis();
+						actDelta=actTime -lastTime;
+						lastTime=actTime;
+						if (actDelta>100){ //last byte > 100 ms ago, so clear input buffer
 							outputString="";
 						}
-					} else {
-						if("ABCDEFabcdef01234567890\n\r".indexOf((char)inChar)>-1){
-							if (inChar >31) {
-								outputString +=(char)inChar;
-							}
-							if (inChar==10 && outputString.length()>0) {
+						if (rawMode){
+							outputString+=String.format("%1$02X",inChar);
+							if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
 								new SendRequest(outputString);
 								outputString="";
 							}
-						} else { //looks like a rawmode byte
-							if (rawModeTrigger > 0){
-								rawModeTrigger--;
-							} else {
-								rawMode=true;
+						} else {
+							if("ABCDEFabcdef01234567890\n\r".indexOf((char)inChar)>-1){
+								if (inChar >31) {
+									outputString +=(char)inChar;
+								}
+								if (inChar==10){
+									if(outputString.length()>9) {
+									new SendRequest(outputString);
+									}
+									outputString="";
+								}
+							} else { //looks like a rawmode byte
+								if (rawModeTrigger > 0){
+									rawModeTrigger--;
+								} else {
+									rawMode=true;
+								}
 							}
 						}
 					}
