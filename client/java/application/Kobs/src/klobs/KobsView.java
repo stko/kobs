@@ -142,7 +142,6 @@ public class KobsView extends FrameView implements TableModelListener {
         jLabel3 = new javax.swing.JLabel();
         trainerComboBox = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
-        TimeTree = new javax.swing.JTree();
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         jButtonAdd = new javax.swing.JButton();
@@ -213,16 +212,13 @@ public class KobsView extends FrameView implements TableModelListener {
 
         jScrollPane3.setName("jScrollPane3"); // NOI18N
 
-        TimeTree.setName("timeTree"); // NOI18N
-        jScrollPane3.setViewportView(TimeTree);
-
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jToolBar4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jToolBar4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -260,6 +256,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setFont(resourceMap.getFont("jScrollPane1.font")); // NOI18N
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         jTableAttendies.setAutoCreateRowSorter(true);
@@ -336,8 +333,8 @@ public class KobsView extends FrameView implements TableModelListener {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -354,10 +351,9 @@ public class KobsView extends FrameView implements TableModelListener {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
-                .add(23, 23, 23)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 957, Short.MAX_VALUE)
-                .addContainerGap())
+            .add(mainPanelLayout.createSequentialGroup()
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+                .add(12, 12, 12))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -497,22 +493,32 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         KStringHash thisRecord = KlobsApp.members.find("kartennummer", nr);
         if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
             KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(jTableMembers.getSelectedRow()), jTableMembers.getSelectedColumn());
-            HashMap<String, String> newRecord = actHashLink.getHashMap();
+            //HashMap<String, String> newRecord = (KStringHash) actHashLink.getHashMap();
+           KStringHash newRecord = (KStringHash) actHashLink.getHashMap();
             if (thisRecord != newRecord) {
-                newRecord.put("kartennummer", nr);
-                newRecord.put("modified", "true");
                 if (thisRecord != null) {
                     thisRecord.put("kartennummer", "");
                     thisRecord.put("modified", "true");
                 }
+                newRecord.put("kartennummer", nr);
+                newRecord.put("modified", "true");
+                thisRecord = newRecord;
                 jTableMembers.updateUI();
             }
         }
-        thisRecord = KlobsApp.members.find("kartennummer", nr);
-        if ((thisRecord != null) && !KlobsApp.attendies.containsValue(thisRecord)) {
-            String usrId = thisRecord.get("usr_id");
-            KlobsApp.attendies.put(usrId, thisRecord);
-            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
+        //thisRecord = KlobsApp.members.find("kartennummer", nr);
+        if (thisRecord != null) {
+            if (!KlobsApp.attendies.containsValue(thisRecord)) {
+                String usrId = thisRecord.get("usr_id");
+                KlobsApp.attendies.put(usrId, thisRecord);
+                createAttendiesTable(KlobsApp.attendies, jTableAttendies);
+            }
+            statusMessageLabel.setText(KlobsApp.lang.getProperty("LastCardText", "Last Card: ") + thisRecord.get("first_name") + " " + thisRecord.get("last_name"));
+            messageTimer.start();
+        } else {
+            statusMessageLabel.setText(KlobsApp.lang.getProperty("UnkonwnCard", "Unknown Card!"));
+            messageTimer.start();
+
         }
     }
 
@@ -527,7 +533,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
             while (records.hasNext()) {
                 String currentKey = records.next();
             }
-            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord, "last_name"),new KHashLink(thisRecord, "first_name"), new KHashLink(thisRecord, "gurt")});
+            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord, "last_name"), new KHashLink(thisRecord, "first_name"), new KHashLink(thisRecord, "gurt")});
 
 
         }
@@ -711,7 +717,6 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTree TimeTree;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JLabel jLabel1;
