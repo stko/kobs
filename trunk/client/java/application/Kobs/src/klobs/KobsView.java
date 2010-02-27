@@ -145,10 +145,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jPanel2 = new javax.swing.JPanel();
         jToolBar3 = new javax.swing.JToolBar();
         jButtonAdd = new javax.swing.JButton();
-        jButtonDelete = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableAttendies = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableMembers = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
@@ -238,61 +235,16 @@ public class KobsView extends FrameView implements TableModelListener {
         jToolBar3.setName("jToolBar3"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
-        jButtonAdd.setAction(actionMap.get("AddAttendie")); // NOI18N
+        jButtonAdd.setAction(actionMap.get("toggleAttendie")); // NOI18N
+        jButtonAdd.setText(resourceMap.getString("jButtonAdd.text")); // NOI18N
         jButtonAdd.setFocusable(false);
         jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonAdd.setName("jButtonAdd"); // NOI18N
         jButtonAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar3.add(jButtonAdd);
 
-        jButtonDelete.setAction(actionMap.get("RemoveAttendie")); // NOI18N
-        jButtonDelete.setFocusable(false);
-        jButtonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonDelete.setName("jButtonDelete"); // NOI18N
-        jButtonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar3.add(jButtonDelete);
-
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(0, 0));
-
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setFont(resourceMap.getFont("jScrollPane1.font")); // NOI18N
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        jTableAttendies.setAutoCreateRowSorter(true);
-        jTableAttendies.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Name", "Vorname", "Gurt"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTableAttendies.setDragEnabled(true);
-        jTableAttendies.setName("jTableAttendies"); // NOI18N
-        jTableAttendies.getTableHeader().setReorderingAllowed(false);
-        jTableAttendies.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTableAttendiesFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTableAttendiesFocusLost(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTableAttendies);
-        jTableAttendies.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title0")); // NOI18N
-        jTableAttendies.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title2")); // NOI18N
-        jTableAttendies.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableAttendies.columnModel.title1")); // NOI18N
-
-        jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setName("jScrollPane2"); // NOI18N
@@ -307,14 +259,7 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         ));
         jTableMembers.setName("jTableMembers"); // NOI18N
-        jTableMembers.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTableMembersFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTableMembersFocusLost(evt);
-            }
-        });
+        jTableMembers.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
         jScrollPane2.setViewportView(jTableMembers);
         jTableMembers.getModel().addTableModelListener(this);
         jTableMembers.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title0")); // NOI18N
@@ -440,22 +385,6 @@ public class KobsView extends FrameView implements TableModelListener {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-private void jTableAttendiesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusGained
-    jButtonDelete.setEnabled(KlobsApp.attendies.size() > 0);
-}//GEN-LAST:event_jTableAttendiesFocusGained
-
-private void jTableAttendiesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableAttendiesFocusLost
-    jButtonDelete.setEnabled(false);
-}//GEN-LAST:event_jTableAttendiesFocusLost
-
-private void jTableMembersFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusGained
-    jButtonAdd.setEnabled(KlobsApp.members.size() > 0);
-}//GEN-LAST:event_jTableMembersFocusGained
-
-private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableMembersFocusLost
-    jButtonAdd.setEnabled(false);
-}//GEN-LAST:event_jTableMembersFocusLost
-
     @Action
     public void Syncronize() {
         String error;
@@ -494,7 +423,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
             KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(jTableMembers.getSelectedRow()), jTableMembers.getSelectedColumn());
             //HashMap<String, String> newRecord = (KStringHash) actHashLink.getHashMap();
-           KStringHash newRecord = (KStringHash) actHashLink.getHashMap();
+            KStringHash newRecord = (KStringHash) actHashLink.getHashMap();
             if (thisRecord != newRecord) {
                 if (thisRecord != null) {
                     thisRecord.put("kartennummer", "");
@@ -508,33 +437,12 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
         }
         //thisRecord = KlobsApp.members.find("kartennummer", nr);
         if (thisRecord != null) {
-            if (!KlobsApp.attendies.containsValue(thisRecord)) {
-                String usrId = thisRecord.get("usr_id");
-                KlobsApp.attendies.put(usrId, thisRecord);
-                createAttendiesTable(KlobsApp.attendies, jTableAttendies);
-            }
+            thisRecord.put(KConstants.MemOnside, KConstants.TrueValue);
             statusMessageLabel.setText(KlobsApp.lang.getProperty("LastCardText", "Last Card: ") + thisRecord.get("first_name") + " " + thisRecord.get("last_name"));
             messageTimer.start();
         } else {
             statusMessageLabel.setText(KlobsApp.lang.getProperty("UnkonwnCard", "Unknown Card!"));
             messageTimer.start();
-
-        }
-    }
-
-    public void createAttendiesTable(HashMap<String, KStringHash> map, JTable jTable) {
-        ((DefaultTableModel) jTable.getModel()).getDataVector().removeAllElements();
-        Iterator<String> all = map.keySet().iterator();
-        while (all.hasNext()) {
-            String currentall = all.next();
-            KStringHash thisRecord = map.get(currentall);
-            Iterator<String> records = thisRecord.keySet().iterator();
-
-            while (records.hasNext()) {
-                String currentKey = records.next();
-            }
-            ((DefaultTableModel) jTable.getModel()).addRow(new Object[]{new KHashLink(thisRecord, "last_name"), new KHashLink(thisRecord, "first_name"), new KHashLink(thisRecord, "gurt")});
-
 
         }
     }
@@ -655,7 +563,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
             KStringHash thisRecord = actHashLink.getHashMap();
             if (thisRecord != null) {
                 thisRecord.put(KConstants.TableIndices[column], newValueString);
-                thisRecord.put(KConstants.MemModKey, KConstants.MemModValue);
+                thisRecord.put(KConstants.MemModKey, KConstants.TrueValue);
                 model.setValueAt(new KHashLink(thisRecord, KConstants.TableIndices[column]), row, column);
 
             }
@@ -663,7 +571,7 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     }
 
     @Action
-    public void AddAttendie() {
+    public void toggleAttendie() {
 
         KHashLink actHashLink = null;
         int[] rowIndices = jTableMembers.getSelectedRows();
@@ -676,49 +584,21 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
             // valid selection?
             if (actHashLink != null) {
                 KStringHash thisRecord = actHashLink.getHashMap();
-                if ((thisRecord != null) && !KlobsApp.attendies.containsValue(thisRecord)) {
-                    String usrId = thisRecord.get("usr_id");
-                    KlobsApp.attendies.put(usrId, thisRecord);
+                if (thisRecord != null) {
+                    String onsideValue = thisRecord.get(KConstants.MemOnside);
+                    if (onsideValue != null && onsideValue.compareTo(KConstants.TrueValue) == 0) {
+                        thisRecord.put(KConstants.MemOnside, KConstants.FalseValue);
+                    } else {
+                        thisRecord.put(KConstants.MemOnside, KConstants.TrueValue);
+                    }
                 }
+                jTableMembers.updateUI();
             }
         }
-        if (actHashLink != null) {
-            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
-            jTableAttendies.updateUI();
-        }
-
     }
 
-    @Action
-    public void RemoveAttendie() {
-
-        KHashLink actHashLink = null;
-        int[] rowIndices = jTableAttendies.getSelectedRows();
-        for (int row : rowIndices) {
-            // get actualAttendie
-            try {
-                actHashLink = (KHashLink) jTableAttendies.getModel().getValueAt(jTableAttendies.getRowSorter().convertRowIndexToModel(row), 0);
-            } catch (java.lang.Error e) {
-            }
-
-            // valid selection?
-            if (actHashLink != null) {
-                HashMap<String, String> thisRecord = actHashLink.getHashMap();
-                if ((thisRecord != null) && KlobsApp.attendies.containsValue(thisRecord)) {
-                    String usrId = thisRecord.get("usr_id");
-                    KlobsApp.attendies.remove(usrId);
-                }
-            }
-        }
-        if (actHashLink != null) {
-            createAttendiesTable(KlobsApp.attendies, jTableAttendies);
-            jButtonDelete.setEnabled(KlobsApp.attendies.size() > 0);
-            jTableAttendies.updateUI();
-        }
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
-    private javax.swing.JButton jButtonDelete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -726,13 +606,11 @@ private void jTableMembersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTableAttendies;
     private javax.swing.JTable jTableMembers;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;

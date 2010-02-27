@@ -20,7 +20,6 @@ public class KlobsApp extends SingleFrameApplication {
     static Properties lang;
     static Properties props;
     static KReadInfoXML members;
-    static HashMap<String, KStringHash> attendies;
     static KReadInfoXML locations;
     static KReadInfoXML activities;
     static Date actDate;
@@ -130,6 +129,5 @@ public class KlobsApp extends SingleFrameApplication {
         members = new KReadInfoXML(KConstants.DBDataFileName, KConstants.UsrIdName, "members");
         locations = new KReadInfoXML(KConstants.DBDataFileName, KConstants.LocIdName, "orte");
         activities = new KReadInfoXML(KConstants.DBDataFileName, "usr_id", "trainings");
-        attendies = new HashMap<String, KStringHash>();
     }
 }
