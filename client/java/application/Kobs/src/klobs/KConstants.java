@@ -19,5 +19,7 @@ public class KConstants {
     public final static String LocIdName = "ort_id";
     public final static String UsrIdName = "usr_id";
     public final static String MemModKey = "modified";
-    public final static String MemModValue = "true";
+    public final static String MemOnside = "onside";
+    public final static String TrueValue = "true";
+    public final static String FalseValue = "false";
 }
