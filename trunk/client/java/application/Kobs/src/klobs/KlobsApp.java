@@ -29,7 +29,7 @@ public class KlobsApp extends SingleFrameApplication {
     static Date actEndTime;
     static String actEndTimeString;
     static String actLocation;
-    static String actLocationId="";
+    static String actLocationId = "";
 
     /**
      * At startup create and show the main frame of the application.
@@ -42,7 +42,6 @@ public class KlobsApp extends SingleFrameApplication {
                 Object[] options = {
                     KlobsApp.lang.getProperty("QuestionCloseSessionYes", "Close record and Quit"),
                     KlobsApp.lang.getProperty("QuestionCloseSessionNo", "Return to program")
-                
                 };
                 if (JOptionPane.showOptionDialog(null,
                         KlobsApp.lang.getProperty("QuestionCloseSession", "Do you want to close your record and finish the program?"),
@@ -54,7 +53,7 @@ public class KlobsApp extends SingleFrameApplication {
                         options[1]//default button title
                         //default button title
                         ) == 0) { // Bedingung des Herunterfahrens testen
-                    KSessionSave saveSession= new KSessionSave(KConstants.DBSessionFileName);
+                    KSessionSave saveSession = new KSessionSave(KConstants.DBSessionFileName);
                     return true;
                 }
                 return false;
@@ -65,12 +64,12 @@ public class KlobsApp extends SingleFrameApplication {
             }
         });
 
-        KobsView kobsView=new KobsView(this);
+        KobsView kobsView = new KobsView(this);
         show(kobsView);
-                        while (KlobsApp.actLocationId.contentEquals("")) {
-                    kobsView.setDate();
+        while (KlobsApp.actLocationId.contentEquals("")) {
+            kobsView.setDate();
 
-                }
+        }
 
     }
 
@@ -82,8 +81,7 @@ public class KlobsApp extends SingleFrameApplication {
     @Override
     protected void configureWindow(java.awt.Window root) {
     }
-    
- 
+
     /**
      * A convenient static getter for the application instance.
      * @return the instance of KobsApp
@@ -113,7 +111,7 @@ public class KlobsApp extends SingleFrameApplication {
         actDateString = df.format(actDate);
         actStartTime = new java.util.Date();
         long now = actStartTime.getTime();
-        now = ((now + 15 * 60 * 1000)/(15 * 60 * 1000)) * 15 * 60 * 1000;
+        now = ((now + 15 * 60 * 1000) / (15 * 60 * 1000)) * 15 * 60 * 1000;
         actStartTime.setTime(now);
         df = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
         actStartTimeString = df.format(actStartTime);
