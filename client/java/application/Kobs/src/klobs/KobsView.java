@@ -107,6 +107,18 @@ public class KobsView extends FrameView implements TableModelListener {
                 System.exit(0);
             }
         }
+        //Make textField get the focus whenever frame is activated.
+        this.getFrame().addWindowFocusListener(new WindowAdapter() {
+
+            public void windowGainedFocus(WindowEvent e) {
+                jTableMembers.requestFocusInWindow();
+            }
+        });
+
+        jTableMembers.requestFocusInWindow();
+       // ((TableRowSorter) jTableMembers.getModel()).setSortingStatus(0, 1);
+        ((javax.swing.DefaultRowSorter) jTableMembers.getRowSorter()).toggleSortOrder(0);
+
     }
 
     @Action
@@ -127,13 +139,18 @@ public class KobsView extends FrameView implements TableModelListener {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         mainPanel = new javax.swing.JPanel();
-        jToolBar1 = new javax.swing.JToolBar();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
-        jToolBar2 = new javax.swing.JToolBar();
-        jToolBar4 = new javax.swing.JToolBar();
+        mainToolBar = new javax.swing.JToolBar();
+        mainTabbedPane = new javax.swing.JTabbedPane();
+        memberPanel = new javax.swing.JPanel();
+        memberScrollPane = new javax.swing.JScrollPane();
+        jTableMembers = new javax.swing.JTable();
+        memberToolBar = new javax.swing.JToolBar();
+        jButtonAdd = new javax.swing.JButton();
+        timePanel = new javax.swing.JPanel();
+        timeBottomToolBar = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
         timeComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
@@ -141,13 +158,21 @@ public class KobsView extends FrameView implements TableModelListener {
         subtaskComboBox = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         trainerComboBox = new javax.swing.JComboBox();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
-        jToolBar3 = new javax.swing.JToolBar();
-        jButtonAdd = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTableMembers = new javax.swing.JTable();
+        timeSplitPane = new javax.swing.JSplitPane();
+        timeCanvasPanel = new javax.swing.JPanel();
+        timeTopToolBar = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        timeScrollPane = new javax.swing.JScrollPane();
+        TimeTree = new javax.swing.JTree();
+        onsidePanel = new javax.swing.JPanel();
+        onsideAllScrollPane = new javax.swing.JScrollPane();
+        onsideAllTree = new javax.swing.JTree();
+        onsideSelectedScrollPane = new javax.swing.JScrollPane();
+        onsideSelectedTree = new javax.swing.JTree();
+        moveInButton = new javax.swing.JButton();
+        moveOutButton = new javax.swing.JButton();
+        onsideLabel = new javax.swing.JLabel();
+        attendieLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -163,91 +188,19 @@ public class KobsView extends FrameView implements TableModelListener {
         progressBar = new javax.swing.JProgressBar();
 
         mainPanel.setName("mainPanel"); // NOI18N
+        mainPanel.setLayout(new java.awt.BorderLayout());
 
-        jToolBar1.setRollover(true);
-        jToolBar1.setName("jToolBar1"); // NOI18N
+        mainToolBar.setRollover(true);
+        mainToolBar.setName("mainToolBar"); // NOI18N
+        mainPanel.add(mainToolBar, java.awt.BorderLayout.NORTH);
 
-        jSplitPane1.setDividerLocation(400);
-        jSplitPane1.setName("jSplitPane1"); // NOI18N
+        mainTabbedPane.setName("mainTabbedPane"); // NOI18N
 
-        jPanel1.setName("jPanel1"); // NOI18N
+        memberPanel.setName("memberPanel"); // NOI18N
+        memberPanel.setLayout(new java.awt.BorderLayout());
 
-        jToolBar2.setRollover(true);
-        jToolBar2.setName("jToolBar2"); // NOI18N
-
-        jToolBar4.setRollover(true);
-        jToolBar4.setName("jToolBar4"); // NOI18N
-
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-        jToolBar4.add(jLabel1);
-
-        timeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        timeComboBox.setName("timeComboBox"); // NOI18N
-        jToolBar4.add(timeComboBox);
-
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-        jToolBar4.add(jLabel2);
-
-        taskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        taskComboBox.setName("taskComboBox"); // NOI18N
-        jToolBar4.add(taskComboBox);
-
-        subtaskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        subtaskComboBox.setName("subtaskComboBox"); // NOI18N
-        jToolBar4.add(subtaskComboBox);
-
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
-        jToolBar4.add(jLabel3);
-
-        trainerComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        trainerComboBox.setName("trainerComboBox"); // NOI18N
-        jToolBar4.add(trainerComboBox);
-
-        jScrollPane3.setName("jScrollPane3"); // NOI18N
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jToolBar4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jToolBar4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jSplitPane1.setLeftComponent(jPanel1);
-
-        jPanel2.setName("jPanel2"); // NOI18N
-
-        jToolBar3.setRollover(true);
-        jToolBar3.setName("jToolBar3"); // NOI18N
-
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
-        jButtonAdd.setAction(actionMap.get("toggleAttendie")); // NOI18N
-        jButtonAdd.setText(resourceMap.getString("jButtonAdd.text")); // NOI18N
-        jButtonAdd.setFocusable(false);
-        jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonAdd.setName("jButtonAdd"); // NOI18N
-        jButtonAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar3.add(jButtonAdd);
-
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
-        jTabbedPane1.setPreferredSize(new java.awt.Dimension(0, 0));
-
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
+        memberScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        memberScrollPane.setName("memberScrollPane"); // NOI18N
 
         jTableMembers.setAutoCreateRowSorter(true);
         jTableMembers.setModel(new javax.swing.table.DefaultTableModel(
@@ -258,55 +211,190 @@ public class KobsView extends FrameView implements TableModelListener {
                 "Last Name", "First Name", "Birthday", "City", "Phone", "Address", "Zip Code", "Kartennummer", "Gurt"
             }
         ));
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getResourceMap(KobsView.class);
+        jTableMembers.setToolTipText(resourceMap.getString("jTableMembers.toolTipText")); // NOI18N
         jTableMembers.setName("jTableMembers"); // NOI18N
+        jTableMembers.setRowSelectionAllowed(false);
         jTableMembers.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
-        jScrollPane2.setViewportView(jTableMembers);
+        jTableMembers.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTableMembersKeyTyped(evt);
+            }
+        });
+        memberScrollPane.setViewportView(jTableMembers);
         jTableMembers.getModel().addTableModelListener(this);
+        jTableMembers.getColumnModel().getColumn(0).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title0")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(1).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title1")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(2).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title2")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(3).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title3")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(4).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title4")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(5).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title5")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(6).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title6")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(7).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title7")); // NOI18N
+        jTableMembers.getColumnModel().getColumn(8).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title8")); // NOI18N
 
-        jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
+        memberPanel.add(memberScrollPane, java.awt.BorderLayout.CENTER);
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(jToolBar3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE))
-        );
+        memberToolBar.setRollover(true);
+        memberToolBar.setName("memberToolBar"); // NOI18N
 
-        jSplitPane1.setRightComponent(jPanel2);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
+        jButtonAdd.setAction(actionMap.get("toggleAttendie")); // NOI18N
+        jButtonAdd.setText(resourceMap.getString("jButtonAdd.text")); // NOI18N
+        jButtonAdd.setFocusable(false);
+        jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonAdd.setName("jButtonAdd"); // NOI18N
+        jButtonAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        memberToolBar.add(jButtonAdd);
 
-        org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
-            .add(mainPanelLayout.createSequentialGroup()
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
-                .add(12, 12, 12))
-        );
-        mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(mainPanelLayout.createSequentialGroup()
-                .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
-        );
+        memberPanel.add(memberToolBar, java.awt.BorderLayout.NORTH);
+
+        mainTabbedPane.addTab(resourceMap.getString("memberPanel.TabConstraints.tabTitle"), memberPanel); // NOI18N
+
+        timePanel.setName("timePanel"); // NOI18N
+        timePanel.setLayout(new java.awt.BorderLayout());
+
+        timeBottomToolBar.setRollover(true);
+        timeBottomToolBar.setName("timeBottomToolBar"); // NOI18N
+
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+        timeBottomToolBar.add(jLabel1);
+
+        timeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        timeComboBox.setName("timeComboBox"); // NOI18N
+        timeBottomToolBar.add(timeComboBox);
+
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+        timeBottomToolBar.add(jLabel2);
+
+        taskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        taskComboBox.setName("taskComboBox"); // NOI18N
+        timeBottomToolBar.add(taskComboBox);
+
+        subtaskComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subtaskComboBox.setName("subtaskComboBox"); // NOI18N
+        timeBottomToolBar.add(subtaskComboBox);
+
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+        timeBottomToolBar.add(jLabel3);
+
+        trainerComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        trainerComboBox.setName("trainerComboBox"); // NOI18N
+        timeBottomToolBar.add(trainerComboBox);
+
+        timePanel.add(timeBottomToolBar, java.awt.BorderLayout.SOUTH);
+
+        timeSplitPane.setDividerLocation(400);
+        timeSplitPane.setResizeWeight(0.5);
+        timeSplitPane.setName("timeSplitPane"); // NOI18N
+        timeSplitPane.setPreferredSize(new java.awt.Dimension(0, 0));
+
+        timeCanvasPanel.setName("timeCanvasPanel"); // NOI18N
+        timeCanvasPanel.setPreferredSize(new java.awt.Dimension(0, 0));
+        timeCanvasPanel.setLayout(new java.awt.BorderLayout());
+
+        timeTopToolBar.setRollover(true);
+        timeTopToolBar.setMaximumSize(new java.awt.Dimension(0, 0));
+        timeTopToolBar.setName("timeTopToolBar"); // NOI18N
+        timeTopToolBar.setPreferredSize(new java.awt.Dimension(100, 18));
+
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        timeTopToolBar.add(jButton1);
+
+        timeCanvasPanel.add(timeTopToolBar, java.awt.BorderLayout.NORTH);
+
+        timeScrollPane.setName("timeScrollPane"); // NOI18N
+
+        TimeTree.setName("TimeTree"); // NOI18N
+        timeScrollPane.setViewportView(TimeTree);
+
+        timeCanvasPanel.add(timeScrollPane, java.awt.BorderLayout.CENTER);
+
+        timeSplitPane.setLeftComponent(timeCanvasPanel);
+
+        onsidePanel.setName("onsidePanel"); // NOI18N
+        onsidePanel.setLayout(new java.awt.GridBagLayout());
+
+        onsideAllScrollPane.setName("onsideAllScrollPane"); // NOI18N
+
+        onsideAllTree.setName("onsideAllTree"); // NOI18N
+        onsideAllScrollPane.setViewportView(onsideAllTree);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        onsidePanel.add(onsideAllScrollPane, gridBagConstraints);
+
+        onsideSelectedScrollPane.setName("onsideSelectedScrollPane"); // NOI18N
+
+        onsideSelectedTree.setName("onsideSelectedTree"); // NOI18N
+        onsideSelectedScrollPane.setViewportView(onsideSelectedTree);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        onsidePanel.add(onsideSelectedScrollPane, gridBagConstraints);
+
+        moveInButton.setText(resourceMap.getString("moveInButton.text")); // NOI18N
+        moveInButton.setName("moveInButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        onsidePanel.add(moveInButton, gridBagConstraints);
+
+        moveOutButton.setText(resourceMap.getString("moveOutButton.text")); // NOI18N
+        moveOutButton.setName("moveOutButton"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        onsidePanel.add(moveOutButton, gridBagConstraints);
+
+        onsideLabel.setText(resourceMap.getString("onsideLabel.text")); // NOI18N
+        onsideLabel.setName("onsideLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        onsidePanel.add(onsideLabel, gridBagConstraints);
+
+        attendieLabel.setText(resourceMap.getString("attendieLabel.text")); // NOI18N
+        attendieLabel.setName("attendieLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        onsidePanel.add(attendieLabel, gridBagConstraints);
+
+        timeSplitPane.setRightComponent(onsidePanel);
+
+        timePanel.add(timeSplitPane, java.awt.BorderLayout.CENTER);
+
+        mainTabbedPane.addTab(resourceMap.getString("timePanel.TabConstraints.tabTitle"), timePanel); // NOI18N
+
+        mainPanel.add(mainTabbedPane, java.awt.BorderLayout.CENTER);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -358,11 +446,11 @@ public class KobsView extends FrameView implements TableModelListener {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 808, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 783, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -384,6 +472,12 @@ public class KobsView extends FrameView implements TableModelListener {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTableMembersKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableMembersKeyTyped
+        if (evt.getKeyChar() == ' ') {
+            toggleAttendie();
+        }
+    }//GEN-LAST:event_jTableMembersKeyTyped
 
     @Action
     public void Syncronize() {
@@ -596,35 +690,46 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         }
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree TimeTree;
+    private javax.swing.JLabel attendieLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableMembers;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JToolBar jToolBar3;
-    private javax.swing.JToolBar jToolBar4;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTabbedPane mainTabbedPane;
+    private javax.swing.JToolBar mainToolBar;
+    private javax.swing.JPanel memberPanel;
+    private javax.swing.JScrollPane memberScrollPane;
+    private javax.swing.JToolBar memberToolBar;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton moveInButton;
+    private javax.swing.JButton moveOutButton;
+    private javax.swing.JScrollPane onsideAllScrollPane;
+    private javax.swing.JTree onsideAllTree;
+    private javax.swing.JLabel onsideLabel;
+    private javax.swing.JPanel onsidePanel;
+    private javax.swing.JScrollPane onsideSelectedScrollPane;
+    private javax.swing.JTree onsideSelectedTree;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JComboBox subtaskComboBox;
     private javax.swing.JComboBox taskComboBox;
+    private javax.swing.JToolBar timeBottomToolBar;
+    private javax.swing.JPanel timeCanvasPanel;
     private javax.swing.JComboBox timeComboBox;
+    private javax.swing.JPanel timePanel;
+    private javax.swing.JScrollPane timeScrollPane;
+    private javax.swing.JSplitPane timeSplitPane;
+    private javax.swing.JToolBar timeTopToolBar;
     private javax.swing.JComboBox trainerComboBox;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
