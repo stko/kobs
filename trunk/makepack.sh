@@ -14,4 +14,7 @@ cp installklobs.sh /media/ram/klobs/
 # (cd /media/ram ; zip -r Klobs.zip klobs)
 
 ./makeself/makeself.sh  /media/ram/klobs/ KLOBS_Installer_LINUX.run "Klobs- der Kartenleser ohne besonderen Schwierigkeitsgrad" ./installklobs.sh
-zip KLOBS_Installer.zip KLOBS_Installer_LINUX.run
+~/bin/nsis-2.46/bin/makensis klobs_windows_setup.nsi
+zip KLOBS_Linux_Setup.zip KLOBS_Installer_LINUX.run
+zip KLOBS_Windows_Setup.zip KLOBS_Windows_Setup.exe
+
