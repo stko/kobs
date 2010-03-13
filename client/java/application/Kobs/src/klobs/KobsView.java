@@ -34,7 +34,6 @@ public class KobsView extends FrameView implements TableModelListener {
 
     public KobsView(SingleFrameApplication app) {
         super(app);
-
         initComponents();
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -116,7 +115,7 @@ public class KobsView extends FrameView implements TableModelListener {
         });
 
         jTableMembers.requestFocusInWindow();
-       // ((TableRowSorter) jTableMembers.getModel()).setSortingStatus(0, 1);
+        // ((TableRowSorter) jTableMembers.getModel()).setSortingStatus(0, 1);
         ((javax.swing.DefaultRowSorter) jTableMembers.getRowSorter()).toggleSortOrder(0);
 
     }
@@ -215,7 +214,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jTableMembers.setToolTipText(resourceMap.getString("jTableMembers.toolTipText")); // NOI18N
         jTableMembers.setName("jTableMembers"); // NOI18N
         jTableMembers.setRowSelectionAllowed(false);
-        jTableMembers.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
+        jTableMembers.getTableHeader().setReorderingAllowed(false);
         jTableMembers.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTableMembersKeyTyped(evt);
@@ -241,6 +240,7 @@ public class KobsView extends FrameView implements TableModelListener {
         jTableMembers.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title7")); // NOI18N
         jTableMembers.getColumnModel().getColumn(8).setMinWidth(5);
         jTableMembers.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTableMembers.columnModel.title8")); // NOI18N
+        jTableMembers.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
 
         memberPanel.add(memberScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -446,11 +446,11 @@ public class KobsView extends FrameView implements TableModelListener {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
+            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 846, Short.MAX_VALUE)
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 783, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 662, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -526,7 +526,9 @@ public class KobsView extends FrameView implements TableModelListener {
                 newRecord.put("kartennummer", nr);
                 newRecord.put("modified", "true");
                 thisRecord = newRecord;
-                jTableMembers.updateUI();
+                jTableMembers.invalidate();
+                jTableMembers.validate();
+                jTableMembers.repaint();
             }
         }
         //thisRecord = KlobsApp.members.find("kartennummer", nr);
@@ -684,9 +686,11 @@ public class KobsView extends FrameView implements TableModelListener {
                         thisRecord.put(KConstants.MemOnside, KConstants.FalseValue);
                     } else {
                         thisRecord.put(KConstants.MemOnside, KConstants.TrueValue);
-                    }
+                   }
                 }
-                jTableMembers.updateUI();
+                jTableMembers.invalidate();
+                jTableMembers.validate();
+                jTableMembers.repaint();
             }
         }
     }
