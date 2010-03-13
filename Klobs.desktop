@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Klobs
+Comment=Der Kartenleser ohne besonderen Schwierigkeitsgrad
+TryExec=/home/knoppix/bin/klobs/runKlobs.sh
+Exec=/home/knoppix/bin/klobs/runKlobs.sh
+Icon=/home/knoppix/bin/klobs/Klobslogo_48.xpm
