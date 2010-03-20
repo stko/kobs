@@ -19,6 +19,7 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.*;
+import javax.swing.tree.*;
 import javax.swing.table.*;
 import javax.swing.table.TableModel;
 import javax.swing.event.*;
@@ -160,9 +161,12 @@ public class KobsView extends FrameView implements TableModelListener {
         timeSplitPane = new javax.swing.JSplitPane();
         timeCanvasPanel = new javax.swing.JPanel();
         timeTopToolBar = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        addTimeButton = new javax.swing.JButton();
+        splitTimeButton = new javax.swing.JButton();
+        addTaskButton = new javax.swing.JButton();
+        deleteNodeButton = new javax.swing.JButton();
         timeScrollPane = new javax.swing.JScrollPane();
-        TimeTree = new javax.swing.JTree();
+        timeTreeView = new javax.swing.JTree();
         onsidePanel = new javax.swing.JPanel();
         onsideAllScrollPane = new javax.swing.JScrollPane();
         onsideAllTree = new javax.swing.JTree();
@@ -310,19 +314,54 @@ public class KobsView extends FrameView implements TableModelListener {
         timeTopToolBar.setName("timeTopToolBar"); // NOI18N
         timeTopToolBar.setPreferredSize(new java.awt.Dimension(100, 18));
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        timeTopToolBar.add(jButton1);
+        addTimeButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        addTimeButton.setText(resourceMap.getString("addTimeButton.text")); // NOI18N
+        addTimeButton.setActionCommand(resourceMap.getString("addTimeButton.actionCommand")); // NOI18N
+        addTimeButton.setFocusable(false);
+        addTimeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addTimeButton.setName("addTimeButton"); // NOI18N
+        addTimeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        timeTopToolBar.add(addTimeButton);
+
+        splitTimeButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        splitTimeButton.setText(resourceMap.getString("splitTimeButton.text")); // NOI18N
+        splitTimeButton.setActionCommand(resourceMap.getString("splitTimeButton.actionCommand")); // NOI18N
+        splitTimeButton.setFocusable(false);
+        splitTimeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        splitTimeButton.setName("splitTimeButton"); // NOI18N
+        splitTimeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        timeTopToolBar.add(splitTimeButton);
+        splitTimeButton.getAccessibleContext().setAccessibleName(resourceMap.getString("jButton2.AccessibleContext.accessibleName")); // NOI18N
+
+        addTaskButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        addTaskButton.setText(resourceMap.getString("addTaskButton.text")); // NOI18N
+        addTaskButton.setActionCommand(resourceMap.getString("addTaskButton.actionCommand")); // NOI18N
+        addTaskButton.setFocusable(false);
+        addTaskButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addTaskButton.setName("addTaskButton"); // NOI18N
+        addTaskButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        timeTopToolBar.add(addTaskButton);
+        addTaskButton.getAccessibleContext().setAccessibleName(resourceMap.getString("jButton3.AccessibleContext.accessibleName")); // NOI18N
+
+        deleteNodeButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        deleteNodeButton.setText(resourceMap.getString("deleteNodeButton.text")); // NOI18N
+        deleteNodeButton.setActionCommand(resourceMap.getString("deleteNodeButton.actionCommand")); // NOI18N
+        deleteNodeButton.setFocusable(false);
+        deleteNodeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteNodeButton.setName("deleteNodeButton"); // NOI18N
+        deleteNodeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        timeTopToolBar.add(deleteNodeButton);
+        deleteNodeButton.getAccessibleContext().setAccessibleName(resourceMap.getString("jButton4.AccessibleContext.accessibleName")); // NOI18N
 
         timeCanvasPanel.add(timeTopToolBar, java.awt.BorderLayout.NORTH);
 
         timeScrollPane.setName("timeScrollPane"); // NOI18N
 
-        TimeTree.setName("TimeTree"); // NOI18N
-        timeScrollPane.setViewportView(TimeTree);
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        timeTreeView.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        timeTreeView.setEditable(true);
+        timeTreeView.setName("timeTreeView"); // NOI18N
+        timeScrollPane.setViewportView(timeTreeView);
 
         timeCanvasPanel.add(timeScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -686,7 +725,7 @@ public class KobsView extends FrameView implements TableModelListener {
                         thisRecord.put(KConstants.MemOnside, KConstants.FalseValue);
                     } else {
                         thisRecord.put(KConstants.MemOnside, KConstants.TrueValue);
-                   }
+                    }
                 }
                 jTableMembers.invalidate();
                 jTableMembers.validate();
@@ -694,10 +733,64 @@ public class KobsView extends FrameView implements TableModelListener {
             }
         }
     }
+
+    @Action
+    public void doTimeViewAction(ActionEvent evt) {
+        String command = evt.getActionCommand();
+
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) timeTreeView.getLastSelectedPathComponent();
+
+
+        if (node != null) {
+
+
+
+
+            // Compare the action command to the known actions.
+
+            if (command.equals(addTimeButton.getActionCommand())) {
+                System.out.println("addTime");
+                DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(new KTimePlanNode(1));
+                System.out.println(node.getChildCount());
+                node.add(childNode);
+                ((DefaultTreeModel) timeTreeView.getModel()).reload(node);
+
+                //timeTreeView.scrollPathToVisible(new TreePath(childNode.getPath()));
+            }
+
+            if (command.equals(splitTimeButton.getActionCommand())) {
+                System.out.println("splitTime");
+
+            }
+
+            if (command.equals(addTaskButton.getActionCommand())) {
+                System.out.println("addTask");
+
+            }
+
+            if (command.equals(deleteNodeButton.getActionCommand())) {
+                System.out.println("deleteNode");
+                TreePath currentSelection = timeTreeView.getSelectionPath();
+                if (currentSelection != null) {
+                    DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+                    MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
+                    if (parent != null) {
+                        ((DefaultTreeModel) timeTreeView.getModel()).removeNodeFromParent(currentNode);
+                        return;
+                    }
+                }
+
+
+            }
+        }
+
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTree TimeTree;
+    private javax.swing.JButton addTaskButton;
+    private javax.swing.JButton addTimeButton;
     private javax.swing.JLabel attendieLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteNodeButton;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -722,6 +815,7 @@ public class KobsView extends FrameView implements TableModelListener {
     private javax.swing.JScrollPane onsideSelectedScrollPane;
     private javax.swing.JTree onsideSelectedTree;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JButton splitTimeButton;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
@@ -734,6 +828,7 @@ public class KobsView extends FrameView implements TableModelListener {
     private javax.swing.JScrollPane timeScrollPane;
     private javax.swing.JSplitPane timeSplitPane;
     private javax.swing.JToolBar timeTopToolBar;
+    private javax.swing.JTree timeTreeView;
     private javax.swing.JComboBox trainerComboBox;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;

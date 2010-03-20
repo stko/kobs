@@ -129,7 +129,7 @@ class KDateDialog extends JDialog
         //Create the JOptionPane.
         optionPane = new JOptionPane(array,
                 JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.DEFAULT_OPTION,
                 null,
                 null,
                 null);
@@ -165,6 +165,7 @@ class KDateDialog extends JDialog
         //Register an event handler that reacts to option pane state changes.
         optionPane.addPropertyChangeListener(this);
         this.pack();
+        this.setLocationRelativeTo(aFrame);
         this.setVisible(true);
 
     }
