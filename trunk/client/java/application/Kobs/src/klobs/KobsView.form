@@ -404,12 +404,15 @@
                           <SubComponents>
                             <Component class="javax.swing.JTree" name="timeTreeView">
                               <Properties>
-                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                                  <TreeModel code=""/>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new javax.swing.tree.DefaultTreeModel(new KTimePlanNode())" type="code"/>
                                 </Property>
-                                <Property name="editable" type="boolean" value="true"/>
                                 <Property name="name" type="java.lang.String" value="timeTreeView" noResource="true"/>
                               </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="timeTreeView.addTreeSelectionListener(this);"/>
+                                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="timeTreeView.getSelectionModel().setSelectionMode&#xa;            (TreeSelectionModel.SINGLE_TREE_SELECTION);"/>
+                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
