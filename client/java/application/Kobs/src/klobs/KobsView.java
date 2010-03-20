@@ -31,7 +31,7 @@ import java.io.File;
 /**
  * The application's main frame.
  */
-public class KobsView extends FrameView implements TableModelListener {
+public class KobsView extends FrameView implements TableModelListener,TreeSelectionListener {
 
     public KobsView(SingleFrameApplication app) {
         super(app);
@@ -167,6 +167,8 @@ public class KobsView extends FrameView implements TableModelListener {
         deleteNodeButton = new javax.swing.JButton();
         timeScrollPane = new javax.swing.JScrollPane();
         timeTreeView = new javax.swing.JTree();
+        timeTreeView.getSelectionModel().setSelectionMode
+        (TreeSelectionModel.SINGLE_TREE_SELECTION);
         onsidePanel = new javax.swing.JPanel();
         onsideAllScrollPane = new javax.swing.JScrollPane();
         onsideAllTree = new javax.swing.JTree();
@@ -357,11 +359,10 @@ public class KobsView extends FrameView implements TableModelListener {
 
         timeScrollPane.setName("timeScrollPane"); // NOI18N
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        timeTreeView.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        timeTreeView.setEditable(true);
+        timeTreeView.setModel(new javax.swing.tree.DefaultTreeModel(new KTimePlanNode()));
         timeTreeView.setName("timeTreeView"); // NOI18N
         timeScrollPane.setViewportView(timeTreeView);
+        timeTreeView.addTreeSelectionListener(this);
 
         timeCanvasPanel.add(timeScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -662,7 +663,28 @@ public class KobsView extends FrameView implements TableModelListener {
 
     public void setDateTitle() {
         this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation + " - " + KlobsApp.actLocationId + " - " + KlobsApp.actStartTimeString + " - " + KlobsApp.actEndTimeString + " - " + KConstants.AppName);
+        KTimePlanNode rootNode = (KTimePlanNode) timeTreeView.getModel().getRoot();
+        rootNode.setInitalData(KlobsApp.actLocation, KlobsApp.actStartTime.getTime(), KlobsApp.actEndTime.getTime());
+        ((DefaultTreeModel) timeTreeView.getModel()).reload();
+
     }
+public void valueChanged(TreeSelectionEvent e) {
+//Returns the last path element of the selection.
+//This method is useful only when the selection model allows a single selection.
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                       timeTreeView.getLastSelectedPathComponent();
+
+    if (node == null)
+    //Nothing is selected.
+    return;
+    System.out.println("Selection changed");
+    Object nodeInfo = node.getUserObject();
+    if (node.isLeaf()) {
+
+    } else {
+
+    }
+}
 
     public void tableChanged(TableModelEvent e) {
         /* now it becomes tricky: As changing of the cell destroys the previous reference to the KHashLink by a simple String,
@@ -750,24 +772,18 @@ public class KobsView extends FrameView implements TableModelListener {
 
             if (command.equals(addTimeButton.getActionCommand())) {
                 System.out.println("addTime");
-                DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(new KTimePlanNode(1));
+                KTimePlanNode childNode = new KTimePlanNode();
                 System.out.println(node.getChildCount());
                 node.add(childNode);
-                ((DefaultTreeModel) timeTreeView.getModel()).reload(node);
-
-                //timeTreeView.scrollPathToVisible(new TreePath(childNode.getPath()));
+                timeTreeView.scrollPathToVisible(new TreePath(childNode.getPath()));
             }
-
             if (command.equals(splitTimeButton.getActionCommand())) {
                 System.out.println("splitTime");
-
             }
 
             if (command.equals(addTaskButton.getActionCommand())) {
                 System.out.println("addTask");
-
             }
-
             if (command.equals(deleteNodeButton.getActionCommand())) {
                 System.out.println("deleteNode");
                 TreePath currentSelection = timeTreeView.getSelectionPath();
@@ -779,12 +795,9 @@ public class KobsView extends FrameView implements TableModelListener {
                         return;
                     }
                 }
-
-
             }
+            ((DefaultTreeModel) timeTreeView.getModel()).reload();
         }
-
-
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTaskButton;
