@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.6">
+<Form version="1.7" maxVersion="1.7">
   <NonVisualComponents>
     <Container class="javax.swing.JPanel" name="mainPanel">
       <Properties>
@@ -324,14 +324,66 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JButton" name="jButton1">
+                            <Component class="javax.swing.JButton" name="addTimeButton">
                               <Properties>
-                                <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
+                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" resourceKey="addTimeButton.text"/>
+                                <Property name="actionCommand" type="java.lang.String" resourceKey="addTimeButton.actionCommand"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
-                                <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
+                                <Property name="name" type="java.lang.String" value="addTimeButton" noResource="true"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
                               </Properties>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="splitTimeButton">
+                              <Properties>
+                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" resourceKey="splitTimeButton.text"/>
+                                <Property name="actionCommand" type="java.lang.String" resourceKey="splitTimeButton.actionCommand"/>
+                                <Property name="focusable" type="boolean" value="false"/>
+                                <Property name="horizontalTextPosition" type="int" value="0"/>
+                                <Property name="name" type="java.lang.String" value="splitTimeButton" noResource="true"/>
+                                <Property name="verticalTextPosition" type="int" value="3"/>
+                              </Properties>
+                              <AccessibilityProperties>
+                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jButton2.AccessibleContext.accessibleName"/>
+                              </AccessibilityProperties>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="addTaskButton">
+                              <Properties>
+                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" resourceKey="addTaskButton.text"/>
+                                <Property name="actionCommand" type="java.lang.String" resourceKey="addTaskButton.actionCommand"/>
+                                <Property name="focusable" type="boolean" value="false"/>
+                                <Property name="horizontalTextPosition" type="int" value="0"/>
+                                <Property name="name" type="java.lang.String" value="addTaskButton" noResource="true"/>
+                                <Property name="verticalTextPosition" type="int" value="3"/>
+                              </Properties>
+                              <AccessibilityProperties>
+                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jButton3.AccessibleContext.accessibleName"/>
+                              </AccessibilityProperties>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="deleteNodeButton">
+                              <Properties>
+                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" resourceKey="deleteNodeButton.text"/>
+                                <Property name="actionCommand" type="java.lang.String" resourceKey="deleteNodeButton.actionCommand"/>
+                                <Property name="focusable" type="boolean" value="false"/>
+                                <Property name="horizontalTextPosition" type="int" value="0"/>
+                                <Property name="name" type="java.lang.String" value="deleteNodeButton" noResource="true"/>
+                                <Property name="verticalTextPosition" type="int" value="3"/>
+                              </Properties>
+                              <AccessibilityProperties>
+                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jButton4.AccessibleContext.accessibleName"/>
+                              </AccessibilityProperties>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -350,9 +402,13 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JTree" name="TimeTree">
+                            <Component class="javax.swing.JTree" name="timeTreeView">
                               <Properties>
-                                <Property name="name" type="java.lang.String" value="TimeTree" noResource="true"/>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
+                                  <TreeModel code=""/>
+                                </Property>
+                                <Property name="editable" type="boolean" value="true"/>
+                                <Property name="name" type="java.lang.String" value="timeTreeView" noResource="true"/>
                               </Properties>
                             </Component>
                           </SubComponents>
