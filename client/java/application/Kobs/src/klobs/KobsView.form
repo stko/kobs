@@ -209,14 +209,10 @@
                     </Component>
                     <Component class="javax.swing.JComboBox" name="timeComboBox">
                       <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
+                        <Property name="actionCommand" type="java.lang.String" resourceKey="timeComboBox.actionCommand"/>
                         <Property name="name" type="java.lang.String" value="timeComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -228,28 +224,20 @@
                     </Component>
                     <Component class="javax.swing.JComboBox" name="taskComboBox">
                       <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
+                        <Property name="actionCommand" type="java.lang.String" resourceKey="taskComboBox.actionCommand"/>
                         <Property name="name" type="java.lang.String" value="taskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="subtaskComboBox">
+                    <Component class="javax.swing.JComboBox" name="subTaskComboBox">
                       <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="klobs.KobsView" id="SubTypPropertyChangedAction" methodName="SubTypPropertyChangedAction"/>
                         </Property>
-                        <Property name="name" type="java.lang.String" value="subtaskComboBox" noResource="true"/>
+                        <Property name="actionCommand" type="java.lang.String" resourceKey="subTaskComboBox.actionCommand"/>
+                        <Property name="name" type="java.lang.String" value="subTaskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -260,14 +248,10 @@
                     </Component>
                     <Component class="javax.swing.JComboBox" name="trainerComboBox">
                       <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                          </StringArray>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
+                        <Property name="actionCommand" type="java.lang.String" resourceKey="trainerComboBox.actionCommand"/>
                         <Property name="name" type="java.lang.String" value="trainerComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -337,38 +321,6 @@
                                 <Property name="verticalTextPosition" type="int" value="3"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JButton" name="splitTimeButton">
-                              <Properties>
-                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" resourceKey="splitTimeButton.text"/>
-                                <Property name="actionCommand" type="java.lang.String" resourceKey="splitTimeButton.actionCommand"/>
-                                <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="horizontalTextPosition" type="int" value="0"/>
-                                <Property name="name" type="java.lang.String" value="splitTimeButton" noResource="true"/>
-                                <Property name="verticalTextPosition" type="int" value="3"/>
-                              </Properties>
-                              <AccessibilityProperties>
-                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jButton2.AccessibleContext.accessibleName"/>
-                              </AccessibilityProperties>
-                            </Component>
-                            <Component class="javax.swing.JButton" name="addTaskButton">
-                              <Properties>
-                                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                                  <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" resourceKey="addTaskButton.text"/>
-                                <Property name="actionCommand" type="java.lang.String" resourceKey="addTaskButton.actionCommand"/>
-                                <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="horizontalTextPosition" type="int" value="0"/>
-                                <Property name="name" type="java.lang.String" value="addTaskButton" noResource="true"/>
-                                <Property name="verticalTextPosition" type="int" value="3"/>
-                              </Properties>
-                              <AccessibilityProperties>
-                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jButton3.AccessibleContext.accessibleName"/>
-                              </AccessibilityProperties>
-                            </Component>
                             <Component class="javax.swing.JButton" name="deleteNodeButton">
                               <Properties>
                                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -405,7 +357,7 @@
                             <Component class="javax.swing.JTree" name="timeTreeView">
                               <Properties>
                                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                  <Connection code="new javax.swing.tree.DefaultTreeModel(new KTimePlanNode())" type="code"/>
+                                  <Connection code="new javax.swing.tree.DefaultTreeModel(new KTimePlanNode(null))" type="code"/>
                                 </Property>
                                 <Property name="name" type="java.lang.String" value="timeTreeView" noResource="true"/>
                               </Properties>

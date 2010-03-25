@@ -9,7 +9,6 @@ package klobs;
  * @author steffen
  */
 import java.io.File;
-import org.w3c.dom.Document;
 import org.w3c.dom.*;
 
 import java.util.HashMap;
@@ -37,7 +36,6 @@ public class KReadInfoXML extends HashMap<String, KStringHash> {
             NodeList listOfTags = doc.getElementsByTagName(tag);
             Element firstTagElement = (Element) listOfTags.item(0);
             NodeList listOfPersons = firstTagElement.getChildNodes();
-            int totalPersons = listOfPersons.getLength();
             for (Integer s = 0; s < listOfPersons.getLength(); s++) {
                 String thisPrimaryKeyValue = "";
                 KStringHash thisRecord = new KStringHash();
@@ -57,7 +55,7 @@ public class KReadInfoXML extends HashMap<String, KStringHash> {
                                 thisValue = ((Node) textFNList.item(0)).getNodeValue().trim();
                                 thisKey = ((Node) allChildNodes.item(s2)).getNodeName().trim();
                                 thisRecord.put(thisKey, thisValue);
-                                if (thisKey == primaryKey) {
+                                if (thisKey.matches(primaryKey)) {
                                     thisPrimaryKeyValue = thisValue;
                                 }
                             } catch (java.lang.NullPointerException e) {
@@ -65,7 +63,7 @@ public class KReadInfoXML extends HashMap<String, KStringHash> {
                         }
                     }
                 }//end of if clause
-                if (thisPrimaryKeyValue != "") {
+                if (!thisPrimaryKeyValue.matches("")) {
                     this.put(thisPrimaryKeyValue, thisRecord);
                 }
             }//end of for loop with s var

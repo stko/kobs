@@ -1,6 +1,94 @@
-  <trainings>
-     <typ id="0" name="Anwesend">
-	     <subtyp id="0" name="Anwesend"/>
-	     <subtyp id="1" name="Krank/Verletzt"/>
-     </typ>
-  </trainings>
+<trainings>
+  <typ>
+    <name>Anwesend</name>
+    <id>0</id>
+    <subtyp>
+      <name>Allgemein</name>
+      <id>0</id>
+    </subtyp>
+    <subtyp>
+      <id>1</id>
+      <name>Verletzt/Krank</name>
+    </subtyp>
+  </typ>
+  <typ>
+    <name>Prüfung</name>
+    <id>1</id>
+    <subtyp>
+      <name>9. Kiu</name>
+      <id>0</id>
+    </subtyp>
+    <subtyp>
+      <name>8. Kiu</name>
+      <id>1</id>
+    </subtyp>
+    <subtyp>
+      <name>7. Kiu</name>
+      <id>2</id>
+    </subtyp>
+    <subtyp>
+      <name>6. Kiu</name>
+      <id>3</id>
+    </subtyp>
+    <subtyp>
+      <name>5. Kiu</name>
+      <id>4</id>
+    </subtyp>
+    <subtyp>
+      <name>4. Kiu</name>
+      <id>5</id>
+    </subtyp>
+    <subtyp>
+      <name>3. Kiu</name>
+      <id>6</id>
+    </subtyp>
+    <subtyp>
+      <name>2. Kiu</name>
+      <id>7</id>
+    </subtyp>
+    <subtyp>
+      <name>1. Kiu</name>
+      <id>8</id>
+    </subtyp>
+  </typ>
+  <typ>
+    <name>Vorprüfung</name>
+    <id>2</id>
+    <subtyp>
+      <name>9. Kiu</name>
+      <id>0</id>
+    </subtyp>
+    <subtyp>
+      <name>8. Kiu</name>
+      <id>1</id>
+    </subtyp>
+    <subtyp>
+      <name>7. Kiu</name>
+      <id>2</id>
+    </subtyp>
+    <subtyp>
+      <name>6. Kiu</name>
+      <id>3</id>
+    </subtyp>
+    <subtyp>
+      <name>5. Kiu</name>
+      <id>4</id>
+    </subtyp>
+    <subtyp>
+      <name>4. Kiu</name>
+      <id>5</id>
+    </subtyp>
+    <subtyp>
+      <name>3. Kiu</name>
+      <id>6</id>
+    </subtyp>
+    <subtyp>
+      <name>2. Kiu</name>
+      <id>7</id>
+    </subtyp>
+    <subtyp>
+      <name>1. Kiu</name>
+      <id>8</id>
+    </subtyp>
+  </typ>
+</trainings>

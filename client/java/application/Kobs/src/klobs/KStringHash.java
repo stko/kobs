@@ -13,8 +13,9 @@ import java.util.HashMap;
 
 public class KStringHash extends HashMap<String,String> {
     
+    @Override
     public String toString(){
-        return this.get(this.keySet().toArray()[0]);
+        return this.get((String)this.keySet().toArray()[0]);
     }
 
 }

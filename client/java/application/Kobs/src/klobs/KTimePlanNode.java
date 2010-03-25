@@ -17,6 +17,26 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
     public long duration = 5;
     public long startTime = 0;
     String location = "";
+    public String typ = "";
+    public String subTyp = "";
+
+    public KTimePlanNode(KTimePlanNode parent) {
+        if (parent == null) {
+            duration = 5;
+            startTime = 0;
+            location = "";
+            typ = "";
+            subTyp = "";
+
+        } else {
+            duration = parent.duration;
+            startTime = parent.startTime;
+            location = "";
+            typ = parent.typ;
+            subTyp = parent.subTyp;
+
+        }
+    }
 
     @Override
     public String toString() {
@@ -37,9 +57,10 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
         if (!this.isLeaf() || parentNode == null) {
             return location + " " + int2Time(startTime) + "-" + int2Time(startTime + duration) + " (" + Long.toString(duration) + "min)";
         } else {
-            return "Action";
+            return typ + ":" + subTyp;
         }
     }
+
     /**
      * calculates the duration times for all subnodes, but also sets that time for all subnodes at the same time
      * @return duration times for all subnodes
@@ -55,9 +76,9 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
                     durationTime += thisChild.getDuration();
                 }
             }
-        if (durationTime>0){
-            duration=durationTime;
-        }
+            if (durationTime > 0) {
+                duration = durationTime;
+            }
             return duration;
 
         }
@@ -70,10 +91,10 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
     }
 
     public void setInitalData(String location, long startTime, long endTime) {
-        startTime =(startTime % (1000*3600*24))/(1000*60);//calculating minutes out of a date
-        endTime =(endTime % (1000*3600*24))/(1000*60);//calculating minutes out of a date
+        startTime = (startTime % (1000 * 3600 * 24)) / (1000 * 60);//calculating minutes out of a date
+        endTime = (endTime % (1000 * 3600 * 24)) / (1000 * 60);//calculating minutes out of a date
         this.location = location;
         this.startTime = startTime;
-        this.duration = endTime - startTime; 
+        this.duration = endTime - startTime;
     }
 }
