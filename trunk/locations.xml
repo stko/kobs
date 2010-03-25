@@ -1,14 +1,26 @@
-  <orte>
-	<ort>
-		<ort_id>1</ort_id>
-		<name>Boitwarder Schule, Brake</name>
-	</ort>
-	<ort>
-		<ort_id>2</ort_id>
-		<name>BBZ, Brake</name>
-	</ort>
-	<ort>
-		<ort_id>3</ort_id>
-		<name>Klippkanner Schule, Brake</name>
-	</ort>
+<orte>
+  <ort>
+    <ort_id>1</ort_id>
+    <name>Boitwarder Schule, Brake</name>
+  </ort>
+  <ort>
+    <ort_id>2</ort_id>
+    <name>BBZ, Brake</name>
+  </ort>
+  <ort>
+    <ort_id>3</ort_id>
+    <name>Klippkanner Schule, Brake</name>
+  </ort>
+  <ort>
+    <ort_id>4</ort_id>
+    <name>Grundschule Haasenstraße, Brake</name>
+  </ort>
+  <ort>
+    <ort_id>5</ort_id>
+    <name>Grundschule Kantstraße, Brake</name>
+  </ort>
+  <ort>
+    <ort_id>6</ort_id>
+    <name>Grundschule, Ovelgönne</name>
+  </ort>
 </orte>
