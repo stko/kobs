@@ -147,6 +147,7 @@
                 </Container>
                 <Container class="javax.swing.JToolBar" name="memberToolBar">
                   <Properties>
+                    <Property name="floatable" type="boolean" value="false"/>
                     <Property name="rollover" type="boolean" value="true"/>
                     <Property name="name" type="java.lang.String" value="memberToolBar" noResource="true"/>
                   </Properties>
@@ -163,6 +164,7 @@
                         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                           <action class="klobs.KobsView" id="toggleAttendie" methodName="toggleAttendie"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="jButtonAdd.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="jButtonAdd.text"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -203,6 +205,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel1">
                       <Properties>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="jLabel1.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
                         <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
                       </Properties>
@@ -218,6 +221,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel2">
                       <Properties>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="jLabel2.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
                         <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
                       </Properties>
@@ -291,13 +295,17 @@
                       <SubComponents>
                         <Container class="javax.swing.JToolBar" name="timeTopToolBar">
                           <Properties>
+                            <Property name="floatable" type="boolean" value="false"/>
                             <Property name="rollover" type="boolean" value="true"/>
                             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[0, 0]"/>
                             </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[107, 64]"/>
+                            </Property>
                             <Property name="name" type="java.lang.String" value="timeTopToolBar" noResource="true"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[100, 18]"/>
+                              <Dimension value="[100, 48]"/>
                             </Property>
                           </Properties>
                           <Constraints>
@@ -313,6 +321,7 @@
                                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                                   <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
                                 </Property>
+                                <Property name="icon" type="javax.swing.Icon" resourceKey="addTimeButton.icon"/>
                                 <Property name="text" type="java.lang.String" resourceKey="addTimeButton.text"/>
                                 <Property name="actionCommand" type="java.lang.String" resourceKey="addTimeButton.actionCommand"/>
                                 <Property name="focusable" type="boolean" value="false"/>
@@ -326,6 +335,7 @@
                                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                                   <action class="klobs.KobsView" id="doTimeViewAction" methodName="doTimeViewAction"/>
                                 </Property>
+                                <Property name="icon" type="javax.swing.Icon" resourceKey="deleteNodeButton.icon"/>
                                 <Property name="text" type="java.lang.String" resourceKey="deleteNodeButton.text"/>
                                 <Property name="actionCommand" type="java.lang.String" resourceKey="deleteNodeButton.actionCommand"/>
                                 <Property name="focusable" type="boolean" value="false"/>
@@ -428,6 +438,7 @@
                         </Container>
                         <Component class="javax.swing.JButton" name="moveInButton">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" resourceKey="moveInButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="moveInButton.text"/>
                             <Property name="name" type="java.lang.String" value="moveInButton" noResource="true"/>
                           </Properties>
@@ -439,6 +450,7 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="moveOutButton">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" resourceKey="moveOutButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="moveOutButton.text"/>
                             <Property name="name" type="java.lang.String" value="moveOutButton" noResource="true"/>
                           </Properties>
@@ -450,6 +462,7 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="onsideLabel">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" resourceKey="onsideLabel.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="onsideLabel.text"/>
                             <Property name="name" type="java.lang.String" value="onsideLabel" noResource="true"/>
                           </Properties>
@@ -461,6 +474,7 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="attendieLabel">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" resourceKey="attendieLabel.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="attendieLabel.text"/>
                             <Property name="name" type="java.lang.String" value="attendieLabel" noResource="true"/>
                           </Properties>
@@ -491,6 +505,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="fileMenu.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
@@ -504,6 +519,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="klobs.KobsView" id="Syncronize" methodName="Syncronize"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="SyncronizeMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="SyncronizeMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="SyncronizeMenuItem" noResource="true"/>
               </Properties>
@@ -511,18 +527,19 @@
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" resourceKey="jMenuItem1.AccessibleContext.accessibleName"/>
               </AccessibilityProperties>
             </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemDate">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="klobs.KobsView" id="setDate" methodName="setDate"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jMenuItemDate.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="jMenuItemDate.text"/>
                 <Property name="name" type="java.lang.String" value="jMenuItemDate" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
@@ -530,6 +547,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="exitMenuItem.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="exitMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
               </Properties>
@@ -542,6 +560,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="helpMenu.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
             <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
           </Properties>
@@ -555,6 +574,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="klobs.KobsView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="aboutMenuItem.icon"/>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>

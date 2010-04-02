@@ -6,6 +6,10 @@ package klobs;
 
 import javax.swing.tree.*;
 import java.util.Enumeration;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  *
@@ -15,22 +19,24 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
 //public class KTimePlanNode  {
 
     public long duration = 5;
-    public long startTime = 0;
+    public Date startTime;
+    DateFormat timeFormat = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
     String location = "";
     public String typ = "";
     public String subTyp = "";
 
     public KTimePlanNode(KTimePlanNode parent) {
+        super();
         if (parent == null) {
             duration = 5;
-            startTime = 0;
+            startTime = new Date(0);
             location = "";
             typ = "";
             subTyp = "";
 
         } else {
             duration = parent.duration;
-            startTime = parent.startTime;
+            startTime = new Date(parent.startTime.getTime());
             location = "";
             typ = parent.typ;
             subTyp = parent.subTyp;
@@ -42,20 +48,20 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
     public String toString() {
 
 
-        MutableTreeNode parentNode = this.parent;
-        if (parentNode != null && parentNode instanceof KTimePlanNode) {
-            startTime = ((KTimePlanNode) parentNode).startTime;
+        getDuration();
+        KTimePlanNode parentNode = (KTimePlanNode) this.parent;
+        if (parentNode != null) {
+            startTime = new Date(parentNode.startTime.getTime());
         }
         KTimePlanNode preNode = (KTimePlanNode) this.getPreviousSibling();
         while (preNode != null) {
             if (!preNode.isLeaf()) {
-                startTime += preNode.duration;
+                startTime.setTime(startTime.getTime() + preNode.duration * 60000);
             }
             preNode = (KTimePlanNode) preNode.getPreviousSibling();
         }
-        getDuration();
         if (!this.isLeaf() || parentNode == null) {
-            return location + " " + int2Time(startTime) + "-" + int2Time(startTime + duration) + " (" + Long.toString(duration) + "min)";
+            return location + " " + timeFormat.format(startTime) + "-" + timeFormat.format(new Date(startTime.getTime() + duration * 60 * 1000)) + " (" + Long.toString(duration) + "min)";
         } else {
             return typ + ":" + subTyp;
         }
@@ -67,7 +73,7 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
      */
     public long getDuration() {
         if (this.isLeaf()) {
-            return 0; //an actin itself does not have a endTime startTime
+            return 0; //an action itself does not have a endTime startTime
         } else {
             long durationTime = 0;
             for (Enumeration<KTimePlanNode> childrens = this.children(); childrens.hasMoreElements();) {
@@ -85,16 +91,12 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
     }
 
     public String int2Time(long min) {
-        long secs = 60;
-
-        return String.format("%02d:%02d", min / 60, min % secs);
+        return String.format("%02d:%02d", min / 60, min % 60);
     }
 
-    public void setInitalData(String location, long startTime, long endTime) {
-        startTime = (startTime % (1000 * 3600 * 24)) / (1000 * 60);//calculating minutes out of a date
-        endTime = (endTime % (1000 * 3600 * 24)) / (1000 * 60);//calculating minutes out of a date
+    public void setInitalData(String location, Date startTime, Date endTime) {
         this.location = location;
-        this.startTime = startTime;
-        this.duration = endTime - startTime;
+        this.startTime = new Date(startTime.getTime());
+        this.duration = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
     }
 }
