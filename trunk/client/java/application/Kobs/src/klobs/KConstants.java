@@ -23,4 +23,5 @@ public class KConstants {
     public final static String MemOnside = "onside";
     public final static String TrueValue = "true";
     public final static String FalseValue = "false";
+    public final static long TimeSlice = 10;
 }

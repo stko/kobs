@@ -24,6 +24,9 @@ import javax.swing.table.*;
 import javax.swing.table.TableModel;
 import javax.swing.event.*;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import java.net.*;
 import java.io.*;
 import java.io.File;
@@ -179,8 +182,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
         jMenuItemDate = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
@@ -248,11 +251,13 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         memberPanel.add(memberScrollPane, java.awt.BorderLayout.CENTER);
 
+        memberToolBar.setFloatable(false);
         memberToolBar.setRollover(true);
         memberToolBar.setName("memberToolBar"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(klobs.KlobsApp.class).getContext().getActionMap(KobsView.class, this);
         jButtonAdd.setAction(actionMap.get("toggleAttendie")); // NOI18N
+        jButtonAdd.setIcon(resourceMap.getIcon("jButtonAdd.icon")); // NOI18N
         jButtonAdd.setText(resourceMap.getString("jButtonAdd.text")); // NOI18N
         jButtonAdd.setFocusable(false);
         jButtonAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -270,6 +275,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeBottomToolBar.setRollover(true);
         timeBottomToolBar.setName("timeBottomToolBar"); // NOI18N
 
+        jLabel1.setIcon(resourceMap.getIcon("jLabel1.icon")); // NOI18N
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         timeBottomToolBar.add(jLabel1);
@@ -279,6 +285,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeComboBox.setName("timeComboBox"); // NOI18N
         timeBottomToolBar.add(timeComboBox);
 
+        jLabel2.setIcon(resourceMap.getIcon("jLabel2.icon")); // NOI18N
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
         timeBottomToolBar.add(jLabel2);
@@ -313,12 +320,15 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeCanvasPanel.setPreferredSize(new java.awt.Dimension(0, 0));
         timeCanvasPanel.setLayout(new java.awt.BorderLayout());
 
+        timeTopToolBar.setFloatable(false);
         timeTopToolBar.setRollover(true);
         timeTopToolBar.setMaximumSize(new java.awt.Dimension(0, 0));
+        timeTopToolBar.setMinimumSize(new java.awt.Dimension(107, 64));
         timeTopToolBar.setName("timeTopToolBar"); // NOI18N
-        timeTopToolBar.setPreferredSize(new java.awt.Dimension(100, 18));
+        timeTopToolBar.setPreferredSize(new java.awt.Dimension(100, 48));
 
         addTimeButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        addTimeButton.setIcon(resourceMap.getIcon("addTimeButton.icon")); // NOI18N
         addTimeButton.setText(resourceMap.getString("addTimeButton.text")); // NOI18N
         addTimeButton.setActionCommand(resourceMap.getString("addTimeButton.actionCommand")); // NOI18N
         addTimeButton.setFocusable(false);
@@ -328,6 +338,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeTopToolBar.add(addTimeButton);
 
         deleteNodeButton.setAction(actionMap.get("doTimeViewAction")); // NOI18N
+        deleteNodeButton.setIcon(resourceMap.getIcon("deleteNodeButton.icon")); // NOI18N
         deleteNodeButton.setText(resourceMap.getString("deleteNodeButton.text")); // NOI18N
         deleteNodeButton.setActionCommand(resourceMap.getString("deleteNodeButton.actionCommand")); // NOI18N
         deleteNodeButton.setFocusable(false);
@@ -380,6 +391,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.weighty = 1.0;
         onsidePanel.add(onsideSelectedScrollPane, gridBagConstraints);
 
+        moveInButton.setIcon(resourceMap.getIcon("moveInButton.icon")); // NOI18N
         moveInButton.setText(resourceMap.getString("moveInButton.text")); // NOI18N
         moveInButton.setName("moveInButton"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -388,6 +400,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         onsidePanel.add(moveInButton, gridBagConstraints);
 
+        moveOutButton.setIcon(resourceMap.getIcon("moveOutButton.icon")); // NOI18N
         moveOutButton.setText(resourceMap.getString("moveOutButton.text")); // NOI18N
         moveOutButton.setName("moveOutButton"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -396,6 +409,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         onsidePanel.add(moveOutButton, gridBagConstraints);
 
+        onsideLabel.setIcon(resourceMap.getIcon("onsideLabel.icon")); // NOI18N
         onsideLabel.setText(resourceMap.getString("onsideLabel.text")); // NOI18N
         onsideLabel.setName("onsideLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -403,6 +417,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.gridy = 0;
         onsidePanel.add(onsideLabel, gridBagConstraints);
 
+        attendieLabel.setIcon(resourceMap.getIcon("attendieLabel.icon")); // NOI18N
         attendieLabel.setText(resourceMap.getString("attendieLabel.text")); // NOI18N
         attendieLabel.setName("attendieLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -420,34 +435,40 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         menuBar.setName("menuBar"); // NOI18N
 
+        fileMenu.setIcon(resourceMap.getIcon("fileMenu.icon")); // NOI18N
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
         jMenuItem1.setAction(actionMap.get("Syncronize")); // NOI18N
+        jMenuItem1.setIcon(resourceMap.getIcon("SyncronizeMenuItem.icon")); // NOI18N
         jMenuItem1.setText(resourceMap.getString("SyncronizeMenuItem.text")); // NOI18N
         jMenuItem1.setName("SyncronizeMenuItem"); // NOI18N
         fileMenu.add(jMenuItem1);
         jMenuItem1.getAccessibleContext().setAccessibleName(resourceMap.getString("jMenuItem1.AccessibleContext.accessibleName")); // NOI18N
 
-        jSeparator1.setName("jSeparator1"); // NOI18N
-        fileMenu.add(jSeparator1);
-
         jMenuItemDate.setAction(actionMap.get("setDate")); // NOI18N
+        jMenuItemDate.setIcon(resourceMap.getIcon("jMenuItemDate.icon")); // NOI18N
         jMenuItemDate.setText(resourceMap.getString("jMenuItemDate.text")); // NOI18N
         jMenuItemDate.setName("jMenuItemDate"); // NOI18N
         fileMenu.add(jMenuItemDate);
 
+        jSeparator1.setName("jSeparator1"); // NOI18N
+        fileMenu.add(jSeparator1);
+
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setIcon(resourceMap.getIcon("exitMenuItem.icon")); // NOI18N
         exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
+        helpMenu.setIcon(resourceMap.getIcon("helpMenu.icon")); // NOI18N
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setIcon(resourceMap.getIcon("aboutMenuItem.icon")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -646,7 +667,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     public void setDateTitle() {
         this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation + " - " + KlobsApp.actLocationId + " - " + KlobsApp.actStartTimeString + " - " + KlobsApp.actEndTimeString + " - " + KConstants.AppName);
         KTimePlanNode rootNode = (KTimePlanNode) timeTreeView.getModel().getRoot();
-        rootNode.setInitalData(KlobsApp.actLocation, KlobsApp.actStartTime.getTime(), KlobsApp.actEndTime.getTime());
+        rootNode.setInitalData(KlobsApp.actLocation, KlobsApp.actStartTime, KlobsApp.actEndTime);
         if (rootNode.isLeaf()) {// initial Setup
             KTimePlanNode node = new KTimePlanNode(rootNode);
             String[] types = KlobsApp.activities.getTypValues();
@@ -655,10 +676,10 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 taskComboBox.addItem(types[i]);
             }
             taskComboBox.setSelectedIndex(0);
+            types = KlobsApp.activities.getSubTypValues(types[0]);
             subTaskComboBox.removeAllItems();
 
             for (Integer i = 0; i < types.length; i++) {
-                System.out.println("Type " + i.toString() + ":" + types[i]);
                 subTaskComboBox.addItem(types[i]);
             }
             subTaskComboBox.setSelectedIndex(0);
@@ -679,11 +700,19 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         if (node == null) //Nothing is selected.
         {
-            System.out.println("nothing selected");
             return;
 
         }
-        System.out.println("Select:" + node.toString());
+        DateFormat tf = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
+        Date dateTime = new Date();
+        System.out.println("Select:" + node.toString() + " Index:" + Integer.toString(node.getRoot().getIndex(node)));
+        System.out.println("Duration:" + Long.toString(node.duration));
+        if (!node.isRoot()) {
+            System.out.println("parent Duration:" + Long.toString((((KTimePlanNode) node.getParent()).duration)));
+            dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime());
+            //dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + node.duration * 60000);
+            System.out.println("Parent time:" + tf.format(dateTime));
+        }
 
         //KTimePlanNode nodeInfo = (KTimePlanNode) node.getUserObject();
         String oldTyp = node.typ; // we have to store the old value, as the Combobox change event might override the value
@@ -714,26 +743,36 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 }
 
             }
-            if (!oldSubTyp.matches((String) subTaskComboBox.getSelectedItem())) {
-
-                if (oldSubTyp.matches("")) {
-
-                    System.out.println("Subtyp leer!");
-                    node.subTyp = (String) subTaskComboBox.getItemAt(0); // intialize node subtyp
-                } else {
-                    subTaskComboBox.setSelectedItem(oldSubTyp);
-                    System.out.println("Rücksetzen des subnodeweets auf" + oldSubTyp);
-                    node.subTyp = oldSubTyp;
-                }
-                timeTreeView.revalidate();
-            }
-
-
-        } else {
         }
-        System.out.println("Selection change finished");
+        if (!oldSubTyp.matches((String) subTaskComboBox.getSelectedItem())) {
 
+            if (oldSubTyp.matches("")) {
 
+                node.subTyp = (String) subTaskComboBox.getItemAt(0); // intialize node subtyp
+                } else {
+                subTaskComboBox.setSelectedItem(oldSubTyp);
+                node.subTyp = oldSubTyp;
+            }
+            timeTreeView.revalidate();
+        }
+        // Setting the duration field
+        if (node.isLeaf() && !node.isRoot()) {
+            // Round up to
+            // the parent duration will be changed when we add the first item to the combobox,
+            // so we've to save the value before
+            Long parentDuration = ((KTimePlanNode) node.getParent()).duration; // the parent duration will be changed when we add the first
+            System.out.println("Parent duration time:" + Long.toString(parentDuration));
+            long roundUp = ((((KTimePlanNode) node.getParent()).startTime.getTime() / 60000 + KConstants.TimeSlice) / KConstants.TimeSlice) * KConstants.TimeSlice;
+            timeComboBox.removeAllItems();
+            for (Integer i = 0; i < 24; i++) {
+                dateTime.setTime((roundUp + i * KConstants.TimeSlice) * 60000);
+                timeComboBox.addItem(tf.format(dateTime));
+            }
+            dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + parentDuration * 60000);
+            //dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + node.duration * 60000);
+            System.out.println("Selected time:" + tf.format(dateTime));
+            timeComboBox.setSelectedItem(tf.format(dateTime));
+        }
     }
 
     public void tableChanged(TableModelEvent e) {
@@ -809,26 +848,16 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     @Action
     public void doTimeViewAction(ActionEvent evt) {
         String command = evt.getActionCommand();
-
         KTimePlanNode node = (KTimePlanNode) timeTreeView.getLastSelectedPathComponent();
-
-
         if (node != null) {
-
-
-
-
             // Compare the action command to the known actions.
-
             if (command.equals(addTimeButton.getActionCommand())) {
-                System.out.println("addTime");
                 KTimePlanNode childNode = new KTimePlanNode(node);
-                System.out.println(node.getChildCount());
                 node.add(childNode);
                 timeTreeView.scrollPathToVisible(new TreePath(childNode.getPath()));
+                timeTreeView.setSelectionRow(node.getRoot().getIndex(node));
             }
             if (command.equals(deleteNodeButton.getActionCommand())) {
-                System.out.println("deleteNode");
                 TreePath currentSelection = timeTreeView.getSelectionPath();
                 if (currentSelection != null) {
                     DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
@@ -839,34 +868,33 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                     }
                 }
             }
+
             ((DefaultTreeModel) timeTreeView.getModel()).reload();
         }
     }
 
     @Action
     public void TimePropertyChangedAction(ActionEvent evt) {
-        System.out.println("TypCommand...");
         String command = evt.getActionCommand();
         KTimePlanNode node = (KTimePlanNode) timeTreeView.getLastSelectedPathComponent();
         if (node != null && command != null) {
-            System.out.println("Command=" + command);
             // Compare the action command to the known actions.
             if (command.equals(timeComboBox.getActionCommand())) {
+                if (node.isLeaf() && !node.isRoot()) {
+                    ((KTimePlanNode) node.getParent()).duration = KConstants.TimeSlice * (timeComboBox.getSelectedIndex() + 1);
+                }
             }
             if (command.equals(taskComboBox.getActionCommand())) {
                 subTaskComboBox.removeAllItems();
                 String selectedTyp = (String) taskComboBox.getSelectedItem();
                 if (selectedTyp == null || selectedTyp.matches("")) {
-                    System.out.println("Typbox: no item selected");
                     selectedTyp = (String) taskComboBox.getItemAt(0);
                 }
                 node.typ = selectedTyp;
-                System.out.println("Typbox selected item:" + selectedTyp);
                 String[] types = KlobsApp.activities.getSubTypValues(selectedTyp);
 
 
                 for (Integer i = 0; i < types.length; i++) {
-                    System.out.println("Type " + i.toString() + ":" + types[i]);
                     subTaskComboBox.addItem(types[i]);
                 }
                 if (types.length > 0) {
@@ -876,7 +904,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
             }
             if (command.equals(subTaskComboBox.getActionCommand())) {
-                System.out.println("Setzen des subtypes auf:" + (String) subTaskComboBox.getSelectedItem());
                 node.subTyp = (String) subTaskComboBox.getSelectedItem();
             }
             if (command.equals(trainerComboBox.getActionCommand())) {
@@ -887,26 +914,20 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             timeTreeView.validate();
             timeTreeView.repaint();
         } else {
-            System.out.println("no node or no command");
         }
     }
-
 
     /**
      * @bug Combobox selection only works correct with cursor, but not with Mouse! Seems to be a SWING- Bug :-(
      * @param evt
      */
-
     @Action
     public void SubTypPropertyChangedAction(ActionEvent evt) {
-        System.out.println("subTypActionClassCommand...");
         String command = evt.getActionCommand();
         KTimePlanNode node = (KTimePlanNode) timeTreeView.getLastSelectedPathComponent();
         if (node != null && command != null) {
-            System.out.println("Command=" + command);
             // Compare the action command to the known actions.
             if (command.equals(subTaskComboBox.getActionCommand())) {
-                System.out.println("Setzen des subtypes auf:" + (String) subTaskComboBox.getSelectedItem());
                 node.subTyp = (String) subTaskComboBox.getSelectedItem();
             }
             //((DefaultTreeModel) timeTreeView.getModel()).reload(node);
@@ -914,8 +935,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             timeTreeView.invalidate();
             timeTreeView.validate();
             timeTreeView.repaint();
-        } else {
-            System.out.println("no node or no command");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

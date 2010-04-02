@@ -111,7 +111,7 @@ public class KlobsApp extends SingleFrameApplication {
         actDateString = df.format(actDate);
         actStartTime = new java.util.Date();
         long now = actStartTime.getTime();
-        now = ((now + 15 * 60 * 1000) / (15 * 60 * 1000)) * 15 * 60 * 1000;
+        now = ((now + KConstants.TimeSlice * 60 * 1000) / (KConstants.TimeSlice * 60 * 1000)) * KConstants.TimeSlice * 60 * 1000;
         actStartTime.setTime(now);
         df = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
         actStartTimeString = df.format(actStartTime);
