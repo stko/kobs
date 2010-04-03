@@ -192,6 +192,7 @@
               <SubComponents>
                 <Container class="javax.swing.JToolBar" name="timeBottomToolBar">
                   <Properties>
+                    <Property name="floatable" type="boolean" value="false"/>
                     <Property name="rollover" type="boolean" value="true"/>
                     <Property name="name" type="java.lang.String" value="timeBottomToolBar" noResource="true"/>
                   </Properties>
@@ -216,6 +217,7 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="timeComboBox.actionCommand"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="timeComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -232,6 +234,7 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="taskComboBox.actionCommand"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="taskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -241,6 +244,7 @@
                           <action class="klobs.KobsView" id="SubTypPropertyChangedAction" methodName="SubTypPropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="subTaskComboBox.actionCommand"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="subTaskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -256,6 +260,7 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="trainerComboBox.actionCommand"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="trainerComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -372,7 +377,7 @@
                                 <Property name="name" type="java.lang.String" value="timeTreeView" noResource="true"/>
                               </Properties>
                               <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="timeTreeView.addTreeSelectionListener(this);"/>
+                                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="timeTreeView.addTreeSelectionListener(this);&#xa;timeTreeView.setCellRenderer(new klobs.TimeTreeRenderer());&#xa;timeTreeView.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
                                 <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="timeTreeView.getSelectionModel().setSelectionMode&#xa;            (TreeSelectionModel.SINGLE_TREE_SELECTION);"/>
                               </AuxValues>
                             </Component>
@@ -409,8 +414,16 @@
                           <SubComponents>
                             <Component class="javax.swing.JTree" name="onsideAllTree">
                               <Properties>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
+                                  <TreeModel code="JTree&#xa; -&#xa;  M&#xfc;ller, Hans&#xa;  Klaus Mustermann&#xa; Kiu 9&#xa;  Klickerklacker, Susanne&#xa; Kiu 8&#xa;  Ernie &amp; Bert&#xa; Kiu 7&#xa;  Kr&#xfc;melmonster&#xa; Dan 1&#xa;  Chuck Norris&#xa;  Bruce Lee&#xa;  Kung Fu Panda"/>
+                                </Property>
                                 <Property name="name" type="java.lang.String" value="onsideAllTree" noResource="true"/>
+                                <Property name="rootVisible" type="boolean" value="false"/>
+                                <Property name="showsRootHandles" type="boolean" value="true"/>
                               </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="onsideAllTree.setCellRenderer(new klobs.GroupTreeRenderer());&#xa;onsideAllTree.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
+                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -431,8 +444,16 @@
                           <SubComponents>
                             <Component class="javax.swing.JTree" name="onsideSelectedTree">
                               <Properties>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
+                                  <TreeModel code="JTree&#xa; -&#xa;  M&#xfc;ller, Hans&#xa;  Klaus Mustermann&#xa; Kiu 9&#xa;  Klickerklacker, Susanne&#xa; Kiu 8&#xa;  Ernie &amp; Bert&#xa; Kiu 7&#xa;  Kr&#xfc;melmonster&#xa; Dan 1&#xa;  Chuck Norris&#xa;  Bruce Lee&#xa;  Kung Fu Panda"/>
+                                </Property>
                                 <Property name="name" type="java.lang.String" value="onsideSelectedTree" noResource="true"/>
+                                <Property name="rootVisible" type="boolean" value="false"/>
+                                <Property name="showsRootHandles" type="boolean" value="true"/>
                               </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="onsideSelectedTree.setCellRenderer(new klobs.GroupTreeRenderer());&#xa;onsideSelectedTree.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
+                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>

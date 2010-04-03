@@ -23,6 +23,7 @@ import javax.swing.tree.*;
 import javax.swing.table.*;
 import javax.swing.table.TableModel;
 import javax.swing.event.*;
+import javax.swing.ImageIcon;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -272,6 +273,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timePanel.setName("timePanel"); // NOI18N
         timePanel.setLayout(new java.awt.BorderLayout());
 
+        timeBottomToolBar.setFloatable(false);
         timeBottomToolBar.setRollover(true);
         timeBottomToolBar.setName("timeBottomToolBar"); // NOI18N
 
@@ -282,6 +284,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         timeComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         timeComboBox.setActionCommand(resourceMap.getString("timeComboBox.actionCommand")); // NOI18N
+        timeComboBox.setEnabled(false);
         timeComboBox.setName("timeComboBox"); // NOI18N
         timeBottomToolBar.add(timeComboBox);
 
@@ -292,11 +295,13 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         taskComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         taskComboBox.setActionCommand(resourceMap.getString("taskComboBox.actionCommand")); // NOI18N
+        taskComboBox.setEnabled(false);
         taskComboBox.setName("taskComboBox"); // NOI18N
         timeBottomToolBar.add(taskComboBox);
 
         subTaskComboBox.setAction(actionMap.get("SubTypPropertyChangedAction")); // NOI18N
         subTaskComboBox.setActionCommand(resourceMap.getString("subTaskComboBox.actionCommand")); // NOI18N
+        subTaskComboBox.setEnabled(false);
         subTaskComboBox.setName("subTaskComboBox"); // NOI18N
         timeBottomToolBar.add(subTaskComboBox);
 
@@ -306,6 +311,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         trainerComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         trainerComboBox.setActionCommand(resourceMap.getString("trainerComboBox.actionCommand")); // NOI18N
+        trainerComboBox.setEnabled(false);
         trainerComboBox.setName("trainerComboBox"); // NOI18N
         timeBottomToolBar.add(trainerComboBox);
 
@@ -356,6 +362,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeTreeView.setName("timeTreeView"); // NOI18N
         timeScrollPane.setViewportView(timeTreeView);
         timeTreeView.addTreeSelectionListener(this);
+        timeTreeView.setCellRenderer(new klobs.TimeTreeRenderer());
+        timeTreeView.putClientProperty("JTree.lineStyle", "None");
 
         timeCanvasPanel.add(timeScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -366,8 +374,40 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         onsideAllScrollPane.setName("onsideAllScrollPane"); // NOI18N
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
+        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("-");
+        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Müller, Hans");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klaus Mustermann");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 9");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klickerklacker, Susanne");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 8");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Ernie & Bert");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 7");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Krümelmonster");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Dan 1");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Chuck Norris");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Bruce Lee");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Kung Fu Panda");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        onsideAllTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         onsideAllTree.setName("onsideAllTree"); // NOI18N
+        onsideAllTree.setRootVisible(false);
+        onsideAllTree.setShowsRootHandles(true);
         onsideAllScrollPane.setViewportView(onsideAllTree);
+        onsideAllTree.setCellRenderer(new klobs.GroupTreeRenderer());
+        onsideAllTree.putClientProperty("JTree.lineStyle", "None");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -379,8 +419,40 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         onsideSelectedScrollPane.setName("onsideSelectedScrollPane"); // NOI18N
 
+        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("-");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Müller, Hans");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klaus Mustermann");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 9");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klickerklacker, Susanne");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 8");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Ernie & Bert");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 7");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Krümelmonster");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Dan 1");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Chuck Norris");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Bruce Lee");
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Kung Fu Panda");
+        treeNode2.add(treeNode3);
+        treeNode1.add(treeNode2);
+        onsideSelectedTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         onsideSelectedTree.setName("onsideSelectedTree"); // NOI18N
+        onsideSelectedTree.setRootVisible(false);
+        onsideSelectedTree.setShowsRootHandles(true);
         onsideSelectedScrollPane.setViewportView(onsideSelectedTree);
+        onsideSelectedTree.setCellRenderer(new klobs.GroupTreeRenderer());
+        onsideSelectedTree.putClientProperty("JTree.lineStyle", "None");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -665,7 +737,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     }
 
     public void setDateTitle() {
-        this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation + " - " + KlobsApp.actLocationId + " - " + KlobsApp.actStartTimeString + " - " + KlobsApp.actEndTimeString + " - " + KConstants.AppName);
+        this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation +  /*" - " +KlobsApp.actLocationId +*/ " - " + KlobsApp.actStartTimeString /*+ " - " + KlobsApp.actEndTimeString */ + " - " + KConstants.AppName);
         KTimePlanNode rootNode = (KTimePlanNode) timeTreeView.getModel().getRoot();
         rootNode.setInitalData(KlobsApp.actLocation, KlobsApp.actStartTime, KlobsApp.actEndTime);
         if (rootNode.isLeaf()) {// initial Setup
@@ -698,6 +770,10 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 //This method is useful only when the selection model allows a single selection.
         KTimePlanNode node = (KTimePlanNode) timeTreeView.getLastSelectedPathComponent();
 
+        timeComboBox.setEnabled(node != null && !node.isLeaf() && node.durationIsEditable());
+        taskComboBox.setEnabled(node != null && node.isLeaf());
+        subTaskComboBox.setEnabled(node != null && node.isLeaf());
+        trainerComboBox.setEnabled(node != null && node.isLeaf());
         if (node == null) //Nothing is selected.
         {
             return;
@@ -705,14 +781,14 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         }
         DateFormat tf = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
         Date dateTime = new Date();
-        System.out.println("Select:" + node.toString() + " Index:" + Integer.toString(node.getRoot().getIndex(node)));
-        System.out.println("Duration:" + Long.toString(node.duration));
-        if (!node.isRoot()) {
-            System.out.println("parent Duration:" + Long.toString((((KTimePlanNode) node.getParent()).duration)));
-            dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime());
-            //dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + node.duration * 60000);
-            System.out.println("Parent time:" + tf.format(dateTime));
-        }
+//        System.out.println("Select:" + node.toString() + " Index:" + Integer.toString(node.getRoot().getIndex(node)));
+//        System.out.println("Duration:" + Long.toString(node.duration));
+//        if (!node.isRoot()) {
+//            System.out.println("parent Duration:" + Long.toString((((KTimePlanNode) node.getParent()).duration)));
+//            dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime());
+//            //dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + node.duration * 60000);
+//            System.out.println("Parent time:" + tf.format(dateTime));
+//        }
 
         //KTimePlanNode nodeInfo = (KTimePlanNode) node.getUserObject();
         String oldTyp = node.typ; // we have to store the old value, as the Combobox change event might override the value
@@ -756,21 +832,20 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             timeTreeView.revalidate();
         }
         // Setting the duration field
-        if (node.isLeaf() && !node.isRoot()) {
+        if (!node.isLeaf()) {
             // Round up to
-            // the parent duration will be changed when we add the first item to the combobox,
+            // the  duration will already be changed when we add the first item to the combobox,
             // so we've to save the value before
-            Long parentDuration = ((KTimePlanNode) node.getParent()).duration; // the parent duration will be changed when we add the first
-            System.out.println("Parent duration time:" + Long.toString(parentDuration));
-            long roundUp = ((((KTimePlanNode) node.getParent()).startTime.getTime() / 60000 + KConstants.TimeSlice) / KConstants.TimeSlice) * KConstants.TimeSlice;
+            Long oldDuration = node.duration;
+//            System.out.println("Duration time:" + Long.toString(oldDuration));
+            long roundUp = ((node.startTime.getTime() / 60000 + KConstants.TimeSlice) / KConstants.TimeSlice) * KConstants.TimeSlice;
             timeComboBox.removeAllItems();
             for (Integer i = 0; i < 24; i++) {
                 dateTime.setTime((roundUp + i * KConstants.TimeSlice) * 60000);
                 timeComboBox.addItem(tf.format(dateTime));
             }
-            dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + parentDuration * 60000);
-            //dateTime.setTime(((KTimePlanNode) node.getParent()).startTime.getTime() + node.duration * 60000);
-            System.out.println("Selected time:" + tf.format(dateTime));
+            dateTime.setTime(node.startTime.getTime() + oldDuration * 60000);
+//            System.out.println("Selected time:" + tf.format(dateTime));
             timeComboBox.setSelectedItem(tf.format(dateTime));
         }
     }
@@ -852,10 +927,12 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         if (node != null) {
             // Compare the action command to the known actions.
             if (command.equals(addTimeButton.getActionCommand())) {
-                KTimePlanNode childNode = new KTimePlanNode(node);
+                KTimePlanNode childNode = new KTimePlanNode(node.getParent() != null ? (KTimePlanNode) node.getParent() : node);
                 node.add(childNode);
+                ((DefaultTreeModel) timeTreeView.getModel()).reload();
+                timeTreeView.setSelectionPath(new TreePath(node.getPath()));
                 timeTreeView.scrollPathToVisible(new TreePath(childNode.getPath()));
-                timeTreeView.setSelectionRow(node.getRoot().getIndex(node));
+//                System.out.println("Node Index:"+node.getRoot().getIndex(node));
             }
             if (command.equals(deleteNodeButton.getActionCommand())) {
                 TreePath currentSelection = timeTreeView.getSelectionPath();
@@ -869,7 +946,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 }
             }
 
-            ((DefaultTreeModel) timeTreeView.getModel()).reload();
+            // ((DefaultTreeModel) timeTreeView.getModel()).reload();
         }
     }
 
@@ -880,8 +957,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         if (node != null && command != null) {
             // Compare the action command to the known actions.
             if (command.equals(timeComboBox.getActionCommand())) {
-                if (node.isLeaf() && !node.isRoot()) {
-                    ((KTimePlanNode) node.getParent()).duration = KConstants.TimeSlice * (timeComboBox.getSelectedIndex() + 1);
+                if (!node.isLeaf()) {
+                    node.duration = KConstants.TimeSlice * (timeComboBox.getSelectedIndex() + 1);
                 }
             }
             if (command.equals(taskComboBox.getActionCommand())) {
@@ -986,7 +1063,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
-    private KURLDialog urlDialog;
     Thread thread;
     DatagramSocket socket;
 }
