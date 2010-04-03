@@ -46,8 +46,6 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
 
     @Override
     public String toString() {
-
-
         getDuration();
         KTimePlanNode parentNode = (KTimePlanNode) this.parent;
         if (parentNode != null) {
@@ -98,5 +96,16 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
         this.location = location;
         this.startTime = new Date(startTime.getTime());
         this.duration = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
+    }
+
+    public boolean durationIsEditable() {
+        boolean isEditable = true;
+        for (Enumeration<KTimePlanNode> childrens = this.children(); childrens.hasMoreElements();) {
+            KTimePlanNode thisChild = (KTimePlanNode) childrens.nextElement();
+            if (!thisChild.isLeaf()) {
+                isEditable = false;
+            }
+        }
+        return isEditable;
     }
 }
