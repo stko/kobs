@@ -217,7 +217,6 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="timeComboBox.actionCommand"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="timeComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -234,7 +233,6 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="taskComboBox.actionCommand"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="taskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -244,7 +242,6 @@
                           <action class="klobs.KobsView" id="SubTypPropertyChangedAction" methodName="SubTypPropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="subTaskComboBox.actionCommand"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="subTaskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -260,7 +257,6 @@
                           <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" resourceKey="trainerComboBox.actionCommand"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="trainerComboBox" noResource="true"/>
                       </Properties>
                     </Component>
@@ -459,6 +455,9 @@
                         </Container>
                         <Component class="javax.swing.JButton" name="moveInButton">
                           <Properties>
+                            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                              <action class="klobs.KobsView" id="changeActionAttendies" methodName="changeActionAttendies"/>
+                            </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="moveInButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="moveInButton.text"/>
                             <Property name="name" type="java.lang.String" value="moveInButton" noResource="true"/>

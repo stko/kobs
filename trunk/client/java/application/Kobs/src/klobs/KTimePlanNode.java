@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -20,13 +21,15 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
 
     public long duration = 5;
     public Date startTime;
-    DateFormat timeFormat = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
+    static DateFormat timeFormat = new SimpleDateFormat(KlobsApp.lang.getProperty("TimeFormat", "hh:mm"));
     String location = "";
     public String typ = "";
     public String subTyp = "";
+    HashMap<String, KStringHash>memberList;
 
     public KTimePlanNode(KTimePlanNode parent) {
         super();
+        this.memberList=new HashMap<String, KStringHash>();
         if (parent == null) {
             duration = 5;
             startTime = new Date(0);

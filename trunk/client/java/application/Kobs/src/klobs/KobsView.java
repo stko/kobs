@@ -284,7 +284,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         timeComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         timeComboBox.setActionCommand(resourceMap.getString("timeComboBox.actionCommand")); // NOI18N
-        timeComboBox.setEnabled(false);
         timeComboBox.setName("timeComboBox"); // NOI18N
         timeBottomToolBar.add(timeComboBox);
 
@@ -295,13 +294,11 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         taskComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         taskComboBox.setActionCommand(resourceMap.getString("taskComboBox.actionCommand")); // NOI18N
-        taskComboBox.setEnabled(false);
         taskComboBox.setName("taskComboBox"); // NOI18N
         timeBottomToolBar.add(taskComboBox);
 
         subTaskComboBox.setAction(actionMap.get("SubTypPropertyChangedAction")); // NOI18N
         subTaskComboBox.setActionCommand(resourceMap.getString("subTaskComboBox.actionCommand")); // NOI18N
-        subTaskComboBox.setEnabled(false);
         subTaskComboBox.setName("subTaskComboBox"); // NOI18N
         timeBottomToolBar.add(subTaskComboBox);
 
@@ -311,7 +308,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         trainerComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
         trainerComboBox.setActionCommand(resourceMap.getString("trainerComboBox.actionCommand")); // NOI18N
-        trainerComboBox.setEnabled(false);
         trainerComboBox.setName("trainerComboBox"); // NOI18N
         timeBottomToolBar.add(trainerComboBox);
 
@@ -463,6 +459,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.weighty = 1.0;
         onsidePanel.add(onsideSelectedScrollPane, gridBagConstraints);
 
+        moveInButton.setAction(actionMap.get("changeActionAttendies")); // NOI18N
         moveInButton.setIcon(resourceMap.getIcon("moveInButton.icon")); // NOI18N
         moveInButton.setText(resourceMap.getString("moveInButton.text")); // NOI18N
         moveInButton.setName("moveInButton"); // NOI18N
@@ -737,7 +734,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     }
 
     public void setDateTitle() {
-        this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation +  /*" - " +KlobsApp.actLocationId +*/ " - " + KlobsApp.actStartTimeString /*+ " - " + KlobsApp.actEndTimeString */ + " - " + KConstants.AppName);
+        this.getFrame().setTitle(KlobsApp.actDateString + " - " + KlobsApp.actLocation + /*" - " +KlobsApp.actLocationId +*/ " - " + KlobsApp.actStartTimeString /*+ " - " + KlobsApp.actEndTimeString */ + " - " + KConstants.AppName);
         KTimePlanNode rootNode = (KTimePlanNode) timeTreeView.getModel().getRoot();
         rootNode.setInitalData(KlobsApp.actLocation, KlobsApp.actStartTime, KlobsApp.actEndTime);
         if (rootNode.isLeaf()) {// initial Setup
@@ -848,6 +845,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 //            System.out.println("Selected time:" + tf.format(dateTime));
             timeComboBox.setSelectedItem(tf.format(dateTime));
         }
+        showTimeNodeMembers(node);
     }
 
     public void tableChanged(TableModelEvent e) {
@@ -916,6 +914,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 jTableMembers.invalidate();
                 jTableMembers.validate();
                 jTableMembers.repaint();
+                generateTimeTree();
             }
         }
     }
@@ -1012,6 +1011,108 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             timeTreeView.invalidate();
             timeTreeView.validate();
             timeTreeView.repaint();
+        }
+    }
+
+    public void generateTimeTree() {
+        // Step 1 : copy all attendies into the timeTreeView root node
+        HashMap<String, KStringHash> parentHashMap = new HashMap<String, KStringHash>();
+        HashMap<String, KStringHash> actualHashMap = KlobsApp.members;
+        KTimePlanNode node = (KTimePlanNode) timeTreeView.getModel().getRoot();
+        node.memberList.clear();
+        Iterator<String> all = actualHashMap.keySet().iterator();
+        while (all.hasNext()) {
+            String currentall = all.next();
+            KStringHash thisRecord = actualHashMap.get(currentall);
+
+            //              KStringHash thisRecord = actHashLink.getHashMap();
+            String onsideValue = thisRecord.get(KConstants.MemOnside);
+            if ((onsideValue != null && onsideValue.compareTo(KConstants.TrueValue) == 0) || true) {
+                node.memberList.put(currentall, thisRecord);
+            }
+        }
+        // run through all nodes:
+        for (int i = 1; i < timeTreeView.getRowCount(); i++) { //start after the root node
+            node = (KTimePlanNode) timeTreeView.getPathForRow(i).getLastPathComponent();
+            if (!node.isLeaf()) { // if this is a time entry
+                // copy the memberlist from the parent to the child
+                node.memberList = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList.clone();
+                System.out.println("Copy membererlist at node " + Integer.toString(i) + " with " + Integer.toString(node.memberList.size()) + " Entries");
+            } else { //this node is an action entry
+                //first, remove all own entries which are not shown in the parent any more
+                actualHashMap = node.memberList;
+                parentHashMap = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList;
+                HashMap<String, KStringHash> newHashMap = new HashMap<String, KStringHash>();
+                all = actualHashMap.keySet().iterator();
+                while (all.hasNext()) {
+                    String currentall = all.next();
+                    KStringHash thisRecord = actualHashMap.get(currentall);
+                    if (parentHashMap.containsKey(currentall)) {//is that member still in the parent list
+                        newHashMap.put(currentall, thisRecord); //then copy it into the new list
+                    }
+                }
+                // and finally store the cleaned up list in the actual node
+                node.memberList = newHashMap;
+                // next step: remove the actual list members out of the parent list..
+                // clean up the newHaskMap - Variable 
+                actualHashMap = node.memberList;
+                parentHashMap = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList;
+                newHashMap = new HashMap<String, KStringHash>();
+                // and now run through the parent list
+                all = parentHashMap.keySet().iterator();
+                while (all.hasNext()) {
+                    String currentall = all.next();
+                    KStringHash thisRecord = parentHashMap.get(currentall);
+                    if (!actualHashMap.containsKey(currentall)) {//is if that member still is NOT also in the child list
+                        newHashMap.put(currentall, thisRecord); //then copy it into the new list
+                    }
+                }
+                // and finally store the cleaned up list in the actual parent node
+                ((KTimePlanNode) node.getParent()).memberList = newHashMap;
+
+            }
+        }
+    }
+
+    public void showTimeNodeMembers(KTimePlanNode node) {
+        if (node != null && !node.isRoot()) {
+            fillMemberTree(onsideSelectedTree, node.memberList);
+            fillMemberTree(onsideAllTree, ((KTimePlanNode) node.getParent()).memberList);
+        }
+    }
+
+    private void fillMemberTree(JTree tree, HashMap<String, KStringHash> memberList) {
+        ((DefaultMutableTreeNode) tree.getModel().getRoot()).removeAllChildren();
+        Iterator<String> all = memberList.keySet().iterator();
+        while (all.hasNext()) {
+            String currentall = all.next();
+            KStringHash thisRecord = memberList.get(currentall);
+            ((DefaultMutableTreeNode) tree.getModel().getRoot()).add(new DefaultMutableTreeNode(thisRecord));
+        }
+        ((DefaultTreeModel) tree.getModel()).reload();
+
+    }
+
+    @Action
+    public void changeActionAttendies(ActionEvent evt) {
+        String command = evt.getActionCommand();
+        KTimePlanNode node = (KTimePlanNode) timeTreeView.getLastSelectedPathComponent();
+        if (node != null) {
+
+            // Compare the action command to the known actions.
+            if (command.equals(moveInButton.getActionCommand())) {
+                if (onsideAllTree.getSelectionCount() > 0) {
+                    int[] allSelected = onsideAllTree.getSelectionRows();
+                    for (int i = 0; i < allSelected.length; i++) {
+                        System.out.println("Selected row:"+Integer.toString(allSelected[i]));
+                        DefaultMutableTreeNode rowNode=(DefaultMutableTreeNode) onsideAllTree.getPathForRow(allSelected[i]).getLastPathComponent();
+                        KStringHash thisRecord = (KStringHash) rowNode.getUserObject();
+                        node.memberList.put(thisRecord.get(KConstants.UsrIdName), thisRecord); //then copy it into the new list
+
+                    }
+                }
+            }
+            generateTimeTree();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

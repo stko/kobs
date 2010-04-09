@@ -127,15 +127,5 @@ public class KlobsApp extends SingleFrameApplication {
         members = new KReadInfoXML(KConstants.DBDataFileName, KConstants.UsrIdName, "members");
         locations = new KReadInfoXML(KConstants.DBDataFileName, KConstants.LocIdName, "orte");
         activities = new KReadTrainingXML(KConstants.DBDataFileName, "id", "trainings");
-//        String[] types = activities.getTypValues();
-//        for (Integer i = 0; i < types.length; i++) {
-//            System.out.print("Type " + i.toString() + ":" + types[i]);
-//            System.out.println(" id:" + activities.getTypeValueID(types[i]));
-//            String[] subTypes = activities.getSubTypValues(types[i]);
-//            for (Integer i2 = 0; i2 < subTypes.length; i2++) {
-//                System.out.print("SubTypes:" + i2.toString() + ":" + subTypes[i2]);
-//                //System.out.println("id:" + activities.getSubTypeValueID(types[i],subTypes[i2]));
-//            }
-//        }
     }
 }

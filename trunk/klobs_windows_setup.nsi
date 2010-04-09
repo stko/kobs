@@ -19,7 +19,6 @@ SetOutPath $INSTDIR
 File /r  "client/java/application/Kobs/dist/*.*"
 File client/java/application/Kobs/kobs.lang
 File "klobs.url"
-File "klobs.bat"
 WriteUninstaller "$INSTDIR\uninstaller.exe"
 CreateDirectory "$SMPROGRAMS\KLOBS"
 CreateShortCut "$SMPROGRAMS\KLOBS\KLOBS.lnk" "javaw" "-jar klobs.jar"
@@ -35,7 +34,6 @@ RMDir /r $INSTDIR\lib
 Delete "$INSTDIR\Klobs.jar"
 Delete "$INSTDIR\klobs.url"
 Delete "$INSTDIR\README.TXT"
-Delete "$INSTDIR\klobs.bat"
 Delete "$INSTDIR\kobs.lang"
 Delete "$INSTDIR\klobs.props"
 Delete "$INSTDIR\kobs.props"
