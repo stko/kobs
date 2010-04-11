@@ -470,6 +470,9 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="moveOutButton">
                           <Properties>
+                            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                              <action class="klobs.KobsView" id="changeActionAttendies" methodName="changeActionAttendies"/>
+                            </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="moveOutButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="moveOutButton.text"/>
                             <Property name="name" type="java.lang.String" value="moveOutButton" noResource="true"/>

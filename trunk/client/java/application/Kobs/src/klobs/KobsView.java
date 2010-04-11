@@ -415,6 +415,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         onsidePanel.add(moveInButton, gridBagConstraints);
 
+        moveOutButton.setAction(actionMap.get("changeActionAttendies")); // NOI18N
         moveOutButton.setIcon(resourceMap.getIcon("moveOutButton.icon")); // NOI18N
         moveOutButton.setText(resourceMap.getString("moveOutButton.text")); // NOI18N
         moveOutButton.setName("moveOutButton"); // NOI18N
@@ -886,12 +887,12 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                     MutableTreeNode parent = (MutableTreeNode) (currentNode.getParent());
                     if (parent != null) {
                         ((DefaultTreeModel) timeTreeView.getModel()).removeNodeFromParent(currentNode);
-                        return;
                     }
                 }
             }
 
             // ((DefaultTreeModel) timeTreeView.getModel()).reload();
+            generateTimeTree();
         }
     }
 
@@ -1038,16 +1039,16 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             if (group == null || "".matches(group)) {
                 group = "-";
             }
-            SortNode groupNode=null;
+            SortNode groupNode = null;
             Enumeration<SortNode> allChilden = root.children();
             while (allChilden.hasMoreElements()) {
                 SortNode actChild = allChilden.nextElement();
-                if (group.matches(actChild.toString())){
-                    groupNode=actChild;
+                if (group.matches(actChild.toString())) {
+                    groupNode = actChild;
                 }
             }
-            if (groupNode==null){
-                groupNode=new SortNode(group);
+            if (groupNode == null) {
+                groupNode = new SortNode(group);
                 root.add(groupNode);
             }
 
@@ -1065,18 +1066,64 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
             // Compare the action command to the known actions.
             if (command.equals(moveInButton.getActionCommand())) {
+                int lastUsedRow = -1;
                 if (onsideAllTree.getSelectionCount() > 0) {
                     int[] allSelected = onsideAllTree.getSelectionRows();
                     for (int i = 0; i < allSelected.length; i++) {
                         System.out.println("Selected row:" + Integer.toString(allSelected[i]));
-                        DefaultMutableTreeNode rowNode = (DefaultMutableTreeNode) onsideAllTree.getPathForRow(allSelected[i]).getLastPathComponent();
-                        KStringHash thisRecord = (KStringHash) rowNode.getUserObject();
-                        node.memberList.put(thisRecord.get(KConstants.UsrIdName), thisRecord); //then copy it into the new list
-
+                        /** this to avoid that a node get added twice: Once as part of a selected group
+                         * and again as single selected node
+                         */
+                        if (allSelected[i] > lastUsedRow) {
+                            DefaultMutableTreeNode rowNode = (DefaultMutableTreeNode) onsideAllTree.getPathForRow(allSelected[i]).getLastPathComponent();
+                            if (!rowNode.isLeaf()) {
+                                SortNode actChild = null;
+                                Enumeration<SortNode> allChilden = rowNode.children();
+                                while (allChilden.hasMoreElements()) {
+                                    actChild = allChilden.nextElement();
+                                    KStringHash thisRecord = (KStringHash) actChild.getUserObject();
+                                    node.memberList.put(thisRecord.get(KConstants.UsrIdName), thisRecord); //then copy it into the new list
+                                }
+                                lastUsedRow = actChild.getRoot().getIndex(actChild); //jump over all the childnodes and go to the next sibling of the group node
+                            } else {
+                                KStringHash thisRecord = (KStringHash) rowNode.getUserObject();
+                                node.memberList.put(thisRecord.get(KConstants.UsrIdName), thisRecord); //then copy it into the new list
+                            }
+                        }
+                    }
+                }
+            }
+            if (command.equals(moveOutButton.getActionCommand())) {
+                int lastUsedRow = -1;
+                if (onsideSelectedTree.getSelectionCount() > 0) {
+                    int[] allSelected = onsideSelectedTree.getSelectionRows();
+                    for (int i = 0; i < allSelected.length; i++) {
+                        System.out.println("Selected delete row:" + Integer.toString(allSelected[i]));
+                        /** this to avoid that a node get added twice: Once as part of a selected group
+                         * and again as single selected node
+                         */
+                        if (allSelected[i] > lastUsedRow) {
+                            DefaultMutableTreeNode rowNode = (DefaultMutableTreeNode) onsideSelectedTree.getPathForRow(allSelected[i]).getLastPathComponent();
+                            if (!rowNode.isLeaf()) {
+                                SortNode actChild = null;
+                                Enumeration<SortNode> allChilden = rowNode.children();
+                                while (allChilden.hasMoreElements()) {
+                                    actChild = allChilden.nextElement();
+                                    KStringHash thisRecord = (KStringHash) actChild.getUserObject();
+                                    node.memberList.remove(thisRecord.get(KConstants.UsrIdName)); //then copy it into the new list
+                                }
+                                lastUsedRow = actChild.getRoot().getIndex(actChild); //jump over all the childnodes and go to the next sibling of the group node
+                            } else {
+                                KStringHash thisRecord = (KStringHash) rowNode.getUserObject();
+                                node.memberList.remove(thisRecord.get(KConstants.UsrIdName)); //then copy it into the new list
+                            }
+                        }
                     }
                 }
             }
             generateTimeTree();
+            showTimeNodeMembers(node);
+            ((DefaultTreeModel) timeTreeView.getModel()).reload();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
