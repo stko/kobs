@@ -410,8 +410,8 @@
                           <SubComponents>
                             <Component class="javax.swing.JTree" name="onsideAllTree">
                               <Properties>
-                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                                  <TreeModel code="JTree&#xa; -&#xa;  M&#xfc;ller, Hans&#xa;  Klaus Mustermann&#xa; Kiu 9&#xa;  Klickerklacker, Susanne&#xa; Kiu 8&#xa;  Ernie &amp; Bert&#xa; Kiu 7&#xa;  Kr&#xfc;melmonster&#xa; Dan 1&#xa;  Chuck Norris&#xa;  Bruce Lee&#xa;  Kung Fu Panda"/>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new javax.swing.tree.DefaultTreeModel(new SortNode(&quot;root&quot;))" type="code"/>
                                 </Property>
                                 <Property name="name" type="java.lang.String" value="onsideAllTree" noResource="true"/>
                                 <Property name="rootVisible" type="boolean" value="false"/>
@@ -440,8 +440,8 @@
                           <SubComponents>
                             <Component class="javax.swing.JTree" name="onsideSelectedTree">
                               <Properties>
-                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                                  <TreeModel code="JTree&#xa; -&#xa;  M&#xfc;ller, Hans&#xa;  Klaus Mustermann&#xa; Kiu 9&#xa;  Klickerklacker, Susanne&#xa; Kiu 8&#xa;  Ernie &amp; Bert&#xa; Kiu 7&#xa;  Kr&#xfc;melmonster&#xa; Dan 1&#xa;  Chuck Norris&#xa;  Bruce Lee&#xa;  Kung Fu Panda"/>
+                                <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new javax.swing.tree.DefaultTreeModel(new SortNode(&quot;root&quot;))" type="code"/>
                                 </Property>
                                 <Property name="name" type="java.lang.String" value="onsideSelectedTree" noResource="true"/>
                                 <Property name="rootVisible" type="boolean" value="false"/>

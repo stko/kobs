@@ -370,34 +370,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         onsideAllScrollPane.setName("onsideAllScrollPane"); // NOI18N
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("-");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Müller, Hans");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klaus Mustermann");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 9");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klickerklacker, Susanne");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 8");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Ernie & Bert");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 7");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Krümelmonster");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Dan 1");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Chuck Norris");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Bruce Lee");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Kung Fu Panda");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        onsideAllTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        onsideAllTree.setModel(new javax.swing.tree.DefaultTreeModel(new SortNode("root")));
         onsideAllTree.setName("onsideAllTree"); // NOI18N
         onsideAllTree.setRootVisible(false);
         onsideAllTree.setShowsRootHandles(true);
@@ -415,34 +388,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         onsideSelectedScrollPane.setName("onsideSelectedScrollPane"); // NOI18N
 
-        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("JTree");
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("-");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Müller, Hans");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klaus Mustermann");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 9");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Klickerklacker, Susanne");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 8");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Ernie & Bert");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Kiu 7");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Krümelmonster");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Dan 1");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Chuck Norris");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Bruce Lee");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Kung Fu Panda");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        onsideSelectedTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        onsideSelectedTree.setModel(new javax.swing.tree.DefaultTreeModel(new SortNode("root")));
         onsideSelectedTree.setName("onsideSelectedTree"); // NOI18N
         onsideSelectedTree.setRootVisible(false);
         onsideSelectedTree.setShowsRootHandles(true);
@@ -1082,12 +1028,30 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     }
 
     private void fillMemberTree(JTree tree, HashMap<String, KStringHash> memberList) {
-        ((DefaultMutableTreeNode) tree.getModel().getRoot()).removeAllChildren();
+        SortNode root = (SortNode) tree.getModel().getRoot();
+        root.removeAllChildren();
         Iterator<String> all = memberList.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
             KStringHash thisRecord = memberList.get(currentall);
-            ((DefaultMutableTreeNode) tree.getModel().getRoot()).add(new DefaultMutableTreeNode(thisRecord));
+            String group = thisRecord.get(KConstants.MemGroup);
+            if (group == null || "".matches(group)) {
+                group = "-";
+            }
+            SortNode groupNode=null;
+            Enumeration<SortNode> allChilden = root.children();
+            while (allChilden.hasMoreElements()) {
+                SortNode actChild = allChilden.nextElement();
+                if (group.matches(actChild.toString())){
+                    groupNode=actChild;
+                }
+            }
+            if (groupNode==null){
+                groupNode=new SortNode(group);
+                root.add(groupNode);
+            }
+
+            groupNode.add(new SortNode(thisRecord));
         }
         ((DefaultTreeModel) tree.getModel()).reload();
 
@@ -1104,8 +1068,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 if (onsideAllTree.getSelectionCount() > 0) {
                     int[] allSelected = onsideAllTree.getSelectionRows();
                     for (int i = 0; i < allSelected.length; i++) {
-                        System.out.println("Selected row:"+Integer.toString(allSelected[i]));
-                        DefaultMutableTreeNode rowNode=(DefaultMutableTreeNode) onsideAllTree.getPathForRow(allSelected[i]).getLastPathComponent();
+                        System.out.println("Selected row:" + Integer.toString(allSelected[i]));
+                        DefaultMutableTreeNode rowNode = (DefaultMutableTreeNode) onsideAllTree.getPathForRow(allSelected[i]).getLastPathComponent();
                         KStringHash thisRecord = (KStringHash) rowNode.getUserObject();
                         node.memberList.put(thisRecord.get(KConstants.UsrIdName), thisRecord); //then copy it into the new list
 
