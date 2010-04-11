@@ -22,8 +22,11 @@ public class TimeTreeRenderer extends DefaultTreeCellRenderer {
     public TimeTreeRenderer() {
         myIcons = loadIconList(new String[]{
                     "resources/home_16.png",
+                    "resources/home_red_16.png",
                     "resources/clock_16.png",
-                    "resources/flag_16.png"
+                    "resources/clock_red_16.png",
+                    "resources/flag_16.png",
+                    "resources/flag_red_16.png"
                 });
     }
 
@@ -41,14 +44,29 @@ public class TimeTreeRenderer extends DefaultTreeCellRenderer {
                 tree, value, sel,
                 expanded, leaf, row,
                 hasFocus);
+        KTimePlanNode node=(KTimePlanNode)value;
         if (row == 0) { //root node
-            setIcon((Icon) myIcons.get(0));
+               if (!node.memberList.isEmpty()){
+                setIcon((Icon) myIcons.get(1)); // red flag
+                //setToolTipText("This book is in the Tutorial series.");
+                }else{
+                setIcon((Icon) myIcons.get(0)); //normal flag
+                }
         } else {
             if (leaf) {
-                setIcon((Icon) myIcons.get(2));
+                if (node.memberList.isEmpty()){
+                setIcon((Icon) myIcons.get(5)); // red flag
                 //setToolTipText("This book is in the Tutorial series.");
+                }else{
+                setIcon((Icon) myIcons.get(4)); //normal flag
+                }
             } else {
-                setIcon((Icon) myIcons.get(1));
+               if (!node.memberList.isEmpty()){
+                setIcon((Icon) myIcons.get(3)); // red flag
+                //setToolTipText("This book is in the Tutorial series.");
+                }else{
+                setIcon((Icon) myIcons.get(2)); //normal clock
+                }
             }
         }
 
