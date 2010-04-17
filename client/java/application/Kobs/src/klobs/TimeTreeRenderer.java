@@ -46,11 +46,11 @@ public class TimeTreeRenderer extends DefaultTreeCellRenderer {
                 hasFocus);
         KTimePlanNode node=(KTimePlanNode)value;
         if (row == 0) { //root node
-               if (!node.memberList.isEmpty()){
-                setIcon((Icon) myIcons.get(1)); // red flag
+               if (node.totalMemberList.size()!=node.memberList.size()){
+                setIcon((Icon) myIcons.get(1)); // red home
                 //setToolTipText("This book is in the Tutorial series.");
                 }else{
-                setIcon((Icon) myIcons.get(0)); //normal flag
+                setIcon((Icon) myIcons.get(0)); //normal home
                 }
         } else {
             if (leaf) {
@@ -61,7 +61,7 @@ public class TimeTreeRenderer extends DefaultTreeCellRenderer {
                 setIcon((Icon) myIcons.get(4)); //normal flag
                 }
             } else {
-               if (!node.memberList.isEmpty()){
+               if (node.totalMemberList.size()!=node.memberList.size()){
                 setIcon((Icon) myIcons.get(3)); // red flag
                 //setToolTipText("This book is in the Tutorial series.");
                 }else{

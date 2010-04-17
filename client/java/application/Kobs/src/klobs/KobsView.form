@@ -245,21 +245,6 @@
                         <Property name="name" type="java.lang.String" value="subTaskComboBox" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel3">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel3.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="trainerComboBox">
-                      <Properties>
-                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                          <action class="klobs.KobsView" id="TimePropertyChangedAction" methodName="TimePropertyChangedAction"/>
-                        </Property>
-                        <Property name="actionCommand" type="java.lang.String" resourceKey="trainerComboBox.actionCommand"/>
-                        <Property name="name" type="java.lang.String" value="trainerComboBox" noResource="true"/>
-                      </Properties>
-                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JSplitPane" name="timeSplitPane">

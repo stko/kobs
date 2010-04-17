@@ -160,8 +160,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         jLabel2 = new javax.swing.JLabel();
         taskComboBox = new javax.swing.JComboBox();
         subTaskComboBox = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        trainerComboBox = new javax.swing.JComboBox();
         timeSplitPane = new javax.swing.JSplitPane();
         timeCanvasPanel = new javax.swing.JPanel();
         timeTopToolBar = new javax.swing.JToolBar();
@@ -301,15 +299,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         subTaskComboBox.setActionCommand(resourceMap.getString("subTaskComboBox.actionCommand")); // NOI18N
         subTaskComboBox.setName("subTaskComboBox"); // NOI18N
         timeBottomToolBar.add(subTaskComboBox);
-
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
-        timeBottomToolBar.add(jLabel3);
-
-        trainerComboBox.setAction(actionMap.get("TimePropertyChangedAction")); // NOI18N
-        trainerComboBox.setActionCommand(resourceMap.getString("trainerComboBox.actionCommand")); // NOI18N
-        trainerComboBox.setName("trainerComboBox"); // NOI18N
-        timeBottomToolBar.add(trainerComboBox);
 
         timePanel.add(timeBottomToolBar, java.awt.BorderLayout.SOUTH);
 
@@ -717,7 +706,9 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeComboBox.setEnabled(node != null && !node.isLeaf() && node.durationIsEditable());
         taskComboBox.setEnabled(node != null && node.isLeaf());
         subTaskComboBox.setEnabled(node != null && node.isLeaf());
-        trainerComboBox.setEnabled(node != null && node.isLeaf());
+       //trainerComboBox.setEnabled(node != null && node.isLeaf());
+        moveInButton.setEnabled(node != null && node.isLeaf());
+        moveOutButton.setEnabled(node != null && node.isLeaf());
         if (node == null) //Nothing is selected.
         {
             return;
@@ -929,8 +920,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             if (command.equals(subTaskComboBox.getActionCommand())) {
                 node.subTyp = (String) subTaskComboBox.getSelectedItem();
             }
-            if (command.equals(trainerComboBox.getActionCommand())) {
-            }
+//            if (command.equals(trainerComboBox.getActionCommand())) {
+//            }
             //((DefaultTreeModel) timeTreeView.getModel()).reload(node);
             //timeTreeView.revalidate();
             timeTreeView.invalidate();
@@ -965,8 +956,10 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         // Step 1 : copy all attendies into the timeTreeView root node
         HashMap<String, KStringHash> parentHashMap = new HashMap<String, KStringHash>();
         HashMap<String, KStringHash> actualHashMap = KlobsApp.members;
+        // initialize the root node
         KTimePlanNode node = (KTimePlanNode) timeTreeView.getModel().getRoot();
-        node.memberList.clear();
+        node.totalMemberList.clear();
+
         Iterator<String> all = actualHashMap.keySet().iterator();
         while (all.hasNext()) {
             String currentall = all.next();
@@ -974,57 +967,24 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
             //              KStringHash thisRecord = actHashLink.getHashMap();
             String onsideValue = thisRecord.get(KConstants.MemOnside);
-            if ((onsideValue != null && onsideValue.compareTo(KConstants.TrueValue) == 0) || true) {
-                node.memberList.put(currentall, thisRecord);
+            if ((onsideValue != null && onsideValue.compareTo(KConstants.TrueValue) == 0) || false) {
+                node.totalMemberList.put(currentall, thisRecord);
             }
         }
-        // run through all nodes:
-        for (int i = 1; i < timeTreeView.getRowCount(); i++) { //start after the root node
-            node = (KTimePlanNode) timeTreeView.getPathForRow(i).getLastPathComponent();
-            if (!node.isLeaf()) { // if this is a time entry
-                // copy the memberlist from the parent to the child
-                node.memberList = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList.clone();
-                System.out.println("Copy membererlist at node " + Integer.toString(i) + " with " + Integer.toString(node.memberList.size()) + " Entries");
-            } else { //this node is an action entry
-                //first, remove all own entries which are not shown in the parent any more
-                actualHashMap = node.memberList;
-                parentHashMap = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList;
-                HashMap<String, KStringHash> newHashMap = new HashMap<String, KStringHash>();
-                all = actualHashMap.keySet().iterator();
-                while (all.hasNext()) {
-                    String currentall = all.next();
-                    KStringHash thisRecord = actualHashMap.get(currentall);
-                    if (parentHashMap.containsKey(currentall)) {//is that member still in the parent list
-                        newHashMap.put(currentall, thisRecord); //then copy it into the new list
-                    }
-                }
-                // and finally store the cleaned up list in the actual node
-                node.memberList = newHashMap;
-                // next step: remove the actual list members out of the parent list..
-                // clean up the newHaskMap - Variable 
-                actualHashMap = node.memberList;
-                parentHashMap = (HashMap<String, KStringHash>) ((KTimePlanNode) node.getParent()).memberList;
-                newHashMap = new HashMap<String, KStringHash>();
-                // and now run through the parent list
-                all = parentHashMap.keySet().iterator();
-                while (all.hasNext()) {
-                    String currentall = all.next();
-                    KStringHash thisRecord = parentHashMap.get(currentall);
-                    if (!actualHashMap.containsKey(currentall)) {//is if that member still is NOT also in the child list
-                        newHashMap.put(currentall, thisRecord); //then copy it into the new list
-                    }
-                }
-                // and finally store the cleaned up list in the actual parent node
-                ((KTimePlanNode) node.getParent()).memberList = newHashMap;
-
-            }
-        }
+        /** run recursivly through all nodes..
+         *
+         */
+        node.createMemberTree();
     }
 
     public void showTimeNodeMembers(KTimePlanNode node) {
         if (node != null && !node.isRoot()) {
             fillMemberTree(onsideSelectedTree, node.memberList);
-            fillMemberTree(onsideAllTree, ((KTimePlanNode) node.getParent()).memberList);
+            if (node.isLeaf()) {
+                fillMemberTree(onsideAllTree, ((KTimePlanNode) node.getParent()).leafMemberList);
+            } else {
+                fillMemberTree(onsideAllTree, ((KTimePlanNode) node.getParent()).branchMemberList);
+            }
         }
     }
 
@@ -1070,7 +1030,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 if (onsideAllTree.getSelectionCount() > 0) {
                     int[] allSelected = onsideAllTree.getSelectionRows();
                     for (int i = 0; i < allSelected.length; i++) {
-                        System.out.println("Selected row:" + Integer.toString(allSelected[i]));
                         /** this to avoid that a node get added twice: Once as part of a selected group
                          * and again as single selected node
                          */
@@ -1098,7 +1057,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 if (onsideSelectedTree.getSelectionCount() > 0) {
                     int[] allSelected = onsideSelectedTree.getSelectionRows();
                     for (int i = 0; i < allSelected.length; i++) {
-                        System.out.println("Selected delete row:" + Integer.toString(allSelected[i]));
                         /** this to avoid that a node get added twice: Once as part of a selected group
                          * and again as single selected node
                          */
@@ -1133,7 +1091,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JSeparator jSeparator1;
@@ -1167,7 +1124,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private javax.swing.JSplitPane timeSplitPane;
     private javax.swing.JToolBar timeTopToolBar;
     private javax.swing.JTree timeTreeView;
-    private javax.swing.JComboBox trainerComboBox;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;
