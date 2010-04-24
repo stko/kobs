@@ -10,9 +10,10 @@ package klobs;
  */
 public class KConstants {
 
-    public final static String AppName = "KlobS";
+    public final static String AppName = "Klobs 0.9";
     public final static String DBDataFileName = "userdata.xml";
     public final static String DBTrainingSubTypName = "subtyp";
+    public final static String DBTrainingDeleted = "deleted";
     public final static String DBSessionFileName = "sessiondata.xml";
     public final static String PrefsFileName = "kobs.props";
     public final static String LangFileName = "kobs.lang";

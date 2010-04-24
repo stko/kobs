@@ -360,6 +360,7 @@
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="timeTreeView.addTreeSelectionListener(this);&#xa;timeTreeView.setCellRenderer(new klobs.TimeTreeRenderer());&#xa;timeTreeView.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
                                 <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="timeTreeView.getSelectionModel().setSelectionMode&#xa;            (TreeSelectionModel.SINGLE_TREE_SELECTION);"/>
+                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                               </AuxValues>
                             </Component>
                           </SubComponents>

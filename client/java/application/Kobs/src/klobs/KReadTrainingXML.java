@@ -79,13 +79,13 @@ public class KReadTrainingXML {
                                     HashMap<String, KStringHash> thisSubTypHashmap = (HashMap<String, KStringHash>) thisRecord.get(KConstants.DBTrainingSubTypName);
                                     if (thisSubTypHashmap == null) {
                                         thisSubTypHashmap = new HashMap<String, KStringHash>();
-                                        thisRecord.put(KConstants.DBTrainingSubTypName, thisSubTypHashmap);
                                     }
                                     // getting the childnodes of the subtyp node
                                     NodeList listOfSubTypeNodes = thisNode.getChildNodes();
                                     //dumpLoop(thisNode, "");
                                     // run through all childs
                                     KStringHash thisSubTypRecord = new KStringHash();
+                                    String thisPrimarySubKeyValue = "";
                                     for (Integer s3 = 0; s3 < listOfSubTypeNodes.getLength(); s3++) {
                                         //get a single child node of a tag npde
                                         Node actualSubTypeNode = listOfSubTypeNodes.item(s3);
@@ -94,26 +94,31 @@ public class KReadTrainingXML {
                                             try {
                                                 String thisSubTypKey = actualSubTypeNode.getNodeName().trim();
                                                 String thisSubTypValue = actualSubTypeNode.getFirstChild().getNodeValue().trim();
-                                                String thisPrimarySubKeyValue = "";
                                                 thisSubTypRecord.put(thisSubTypKey, thisSubTypValue);
                                                 if (thisSubTypKey.matches(primaryKey)) {
                                                     thisPrimarySubKeyValue = thisSubTypValue;
-                                                }
-                                                if (!thisPrimarySubKeyValue.matches("")) {
-                                                    thisSubTypHashmap.put(thisPrimarySubKeyValue, thisSubTypRecord);
-
                                                 }
                                             } catch (java.lang.NullPointerException e) {
                                             }
                                         }
                                     }
+                                    if (!thisPrimarySubKeyValue.matches("")) {
+                                        if (!thisSubTypRecord.containsKey(KConstants.DBTrainingDeleted)) {
+                                            thisSubTypHashmap.put(thisPrimarySubKeyValue, thisSubTypRecord);
+                                        }
+                                    }
+                                    thisRecord.put(KConstants.DBTrainingSubTypName, thisSubTypHashmap);
+
+
                                 }
                             } catch (java.lang.NullPointerException e) {
                             }
                         }
                     }
                     if (!thisPrimaryKeyValue.matches("")) {
-                        mainTrainings.put(thisPrimaryKeyValue, thisRecord);
+                        if (!thisRecord.containsKey(KConstants.DBTrainingDeleted)) {
+                            mainTrainings.put(thisPrimaryKeyValue, thisRecord);
+                        }
                     }
                 }//end of if clause
             }//end of for loop with s var

@@ -1,7 +1,7 @@
 <trainings>
   <typ>
     <name>Anwesend</name>
-    <id>0</id>
+    <id>1</id>
     <subtyp>
       <name>Allgemein</name>
       <id>0</id>
@@ -13,7 +13,7 @@
   </typ>
   <typ>
     <name>Prüfung</name>
-    <id>1</id>
+    <id>2</id>
     <subtyp>
       <name>9. Kiu</name>
       <id>0</id>
@@ -53,7 +53,7 @@
   </typ>
   <typ>
     <name>Vorprüfung</name>
-    <id>2</id>
+    <id>3</id>
     <subtyp>
       <name>9. Kiu</name>
       <id>0</id>

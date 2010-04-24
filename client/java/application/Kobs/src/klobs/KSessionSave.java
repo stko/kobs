@@ -27,6 +27,7 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.swing.JTree;
 
 public class KSessionSave {
 
@@ -34,12 +35,12 @@ public class KSessionSave {
     Element lines = null;
     Element title = null;
 
-    public KSessionSave(String filename) {
-        KSessionSaveSession(filename);
+    public KSessionSave(String filename, JTree trainingsdata, KReadTrainingXML activities) {
+        KSessionSaveSession(filename, trainingsdata, activities);
         KSessionUpdateLocalUserDataFile(KConstants.DBDataFileName);
     }
 
-    public void KSessionSaveSession(String filename) {
+    public void KSessionSaveSession(String filename, JTree trainingsdata, KReadTrainingXML activities) {
         Document doc;
         Element root;
         try {
@@ -117,15 +118,59 @@ public class KSessionSave {
                         entry.appendChild(doc.createTextNode(KlobsApp.actStartTimeString));
                         training.appendChild(entry);
                         entry = doc.createElement("duration");
-                        entry.appendChild(doc.createTextNode(Long.toString((KlobsApp.actEndTime.getTime() - KlobsApp.actStartTime.getTime()) / 60000))); //in minutes
+                        //entry.appendChild(doc.createTextNode(Long.toString((KlobsApp.actEndTime.getTime() - KlobsApp.actStartTime.getTime()) / 60000))); //in minutes
+                        entry.appendChild(doc.createTextNode(Long.toString(((KTimePlanNode) trainingsdata.getModel().getRoot()).duration))); //in minutes
                         training.appendChild(entry);
 
                         update.appendChild(training);
                     }
                 }
 
-                root.appendChild(update);
                 //}
+                for (int i = 0; i < trainingsdata.getRowCount(); i++) {
+                    KTimePlanNode thisNode = (KTimePlanNode) trainingsdata.getPathForRow(i).getLastPathComponent();
+                    if (thisNode.isLeaf()) {
+
+
+                        HashMap<String, KStringHash> NodeTrainingData = thisNode.memberList;
+                        all = NodeTrainingData.keySet().iterator();
+                        while (all.hasNext()) {
+                            String currentall = all.next();
+                            HashMap<String, String> thisRecord = NodeTrainingData.get(currentall);
+
+
+
+                            //              KStringHash thisRecord = actHashLink.getHashMap();
+                            String onsideValue = thisRecord.get(KConstants.MemOnside);
+                            if (onsideValue != null && onsideValue.compareTo(KConstants.TrueValue) == 0) {
+                                Element training = doc.createElement("training");
+                                entry = doc.createElement(KConstants.UsrIdName);
+                                entry.appendChild(doc.createTextNode(thisRecord.get(KConstants.UsrIdName)));
+                                training.appendChild(entry);
+                                entry = doc.createElement("typ");
+                                entry.appendChild(doc.createTextNode(thisNode.getActionTypeId(activities)));
+                                training.appendChild(entry);
+                                entry = doc.createElement("subtyp");
+                                entry.appendChild(doc.createTextNode(thisNode.getActionSubTypeId(activities)));
+                                training.appendChild(entry);
+                                entry = doc.createElement("trainerid");
+                                entry.appendChild(doc.createTextNode("1"));
+                                training.appendChild(entry);
+                                entry = doc.createElement("starttime");
+                                entry.appendChild(doc.createTextNode(thisNode.getStartTime()));
+                                training.appendChild(entry);
+                                entry = doc.createElement("duration");
+                                //entry.appendChild(doc.createTextNode(Long.toString((KlobsApp.actEndTime.getTime() - KlobsApp.actStartTime.getTime()) / 60000))); //in minutes
+                                entry.appendChild(doc.createTextNode(Long.toString(thisNode.getActionDuration()))); //in minutes
+                                training.appendChild(entry);
+
+                                update.appendChild(training);
+                            }
+                        }
+                    }
+                }
+
+                root.appendChild(update);
                 // ----Ende Abspeichern Trainingszeiten ---
 
             }
