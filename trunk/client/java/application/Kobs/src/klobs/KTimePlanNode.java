@@ -190,4 +190,30 @@ public class KTimePlanNode extends DefaultMutableTreeNode {
             }
         }
     }
+
+    public String getActionTypeId(KReadTrainingXML list) {
+        return list.getTypeValueID(typ);
+    }
+
+    public String getActionSubTypeId(KReadTrainingXML list) {
+        return list.getSubTypeValueID(typ, subTyp);
+    }
+
+
+    public String getStartTime(){
+        if (this.isLeaf()){
+            return timeFormat.format( ((KTimePlanNode)this.parent).startTime);
+        }else{
+            return timeFormat.format(startTime);
+        }
+    }
+
+    
+    public long getActionDuration(){
+        if (!this.isRoot()){
+            return ((KTimePlanNode)this.parent).duration;
+        }else{
+            return this.duration;
+        }
+    }
 }

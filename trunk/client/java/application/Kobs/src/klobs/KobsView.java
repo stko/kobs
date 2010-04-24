@@ -533,13 +533,14 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
 
         KURLDialog urlDialog = new KURLDialog(null, true, KlobsApp.props.getProperty("username", ""), "", KlobsApp.props.getProperty("URL", "http://mitglieder.shojikido.de/adm_program/modules/kobs/syncklobs.php"), false);
 
+        //       KSessionSave saveSession = new KSessionSave(KConstants.DBSessionFileName, timeTreeView, KlobsApp.activities);
 
         urlDialog.setVisible(true);
         if (urlDialog.res) {
             if ((error = KReadHTTPFile.syncronize2URL(urlDialog.URL, KConstants.DBSessionFileName, KConstants.DBDataFileName, urlDialog.userName, urlDialog.userPw)).compareTo("") != 0) {
                 JOptionPane.showMessageDialog(null, error, KlobsApp.lang.getProperty("URLErrorTitle", "Syncronisation Error"), JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, KlobsApp.lang.getProperty("URLDownloadOkText", "Syncronisation succesfull -actual Data received"), KlobsApp.lang.getProperty("URLDownloadOkTitle", "Syncronisation"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, KlobsApp.lang.getProperty("URLDownloadOkText", "Syncronisation sucessfull -actual Data received"), KlobsApp.lang.getProperty("URLDownloadOkTitle", "Syncronisation"), JOptionPane.INFORMATION_MESSAGE);
                 KlobsApp.props.setProperty("username", urlDialog.userName);
                 KlobsApp.props.setProperty("URL", urlDialog.URL);
                 try {
@@ -552,7 +553,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
                 if (f.exists() && !f.delete()) {
                     JOptionPane.showMessageDialog(null, KlobsApp.lang.getProperty("DeleteOldSession", "Can't delete old Session file"), KlobsApp.lang.getProperty("DeleteOldSessionTitle", "File problem"), JOptionPane.ERROR_MESSAGE);
                 }
-                ;
                 KlobsApp.importUserDB();
                 createMemberTable(KlobsApp.members, jTableMembers);
             }
@@ -706,7 +706,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         timeComboBox.setEnabled(node != null && !node.isLeaf() && node.durationIsEditable());
         taskComboBox.setEnabled(node != null && node.isLeaf());
         subTaskComboBox.setEnabled(node != null && node.isLeaf());
-       //trainerComboBox.setEnabled(node != null && node.isLeaf());
+        //trainerComboBox.setEnabled(node != null && node.isLeaf());
         moveInButton.setEnabled(node != null && node.isLeaf());
         moveOutButton.setEnabled(node != null && node.isLeaf());
         if (node == null) //Nothing is selected.
@@ -1123,7 +1123,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private javax.swing.JScrollPane timeScrollPane;
     private javax.swing.JSplitPane timeSplitPane;
     private javax.swing.JToolBar timeTopToolBar;
-    private javax.swing.JTree timeTreeView;
+    public javax.swing.JTree timeTreeView;
     // End of variables declaration//GEN-END:variables
     private final Timer messageTimer;
     private final Timer busyIconTimer;

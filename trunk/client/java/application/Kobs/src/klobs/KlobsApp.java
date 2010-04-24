@@ -36,6 +36,7 @@ public class KlobsApp extends SingleFrameApplication {
      */
     @Override
     protected void startup() {
+        final KobsView kobsView = new KobsView(this);
         this.getApplication().addExitListener(new ExitListener() {
 
             public boolean canExit(EventObject eo) {
@@ -53,7 +54,7 @@ public class KlobsApp extends SingleFrameApplication {
                         options[1]//default button title
                         //default button title
                         ) == 0) { // Bedingung des Herunterfahrens testen
-                    KSessionSave saveSession = new KSessionSave(KConstants.DBSessionFileName);
+                    KSessionSave saveSession = new KSessionSave(KConstants.DBSessionFileName,kobsView.timeTreeView,activities);
                     return true;
                 }
                 return false;
@@ -64,7 +65,6 @@ public class KlobsApp extends SingleFrameApplication {
             }
         });
 
-        KobsView kobsView = new KobsView(this);
         show(kobsView);
         while (KlobsApp.actLocationId.contentEquals("")) {
             kobsView.setDate();
