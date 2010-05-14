@@ -2,9 +2,10 @@
 /******************************************************************************
  * Mitgliederdaten für Klobs als XML- Stream abrufen
  *
- * Copyright    : (c) 2009 - 2009 The Admidio Team
- * Homepage     : http://www.admidio.org
- * Module-Owner : Steffen Köhler
+ * Copyright    : (c) 2010 Shojikido Brake
+ * Homepage     : http://www.shojikido.de
+ * projectpage  : kobs.googlecode.com
+* Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
  * Uebergaben:
@@ -37,6 +38,7 @@ require("./klobslogin.php");
             JOIN " . $klobs_training_table . " as training
               ON training.usr_Id = ". TBL_USERS. ".usr_id
             WHERE usr_valid = 1
+		AND training.deleted = 0
             ORDER BY last_name, first_name ";
 
 

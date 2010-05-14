@@ -2,8 +2,9 @@
 /******************************************************************************
  * Downloads anhand von Datumsfeldern erlauben
  *
- * Copyright    : (c) 2009 - 2010  Shojikido-Karate Brake
+ * Copyright    : (c) 2010 Shojikido Brake
  * Homepage     : http://www.shojikido.de
+ * projectpage  : kobs.googlecode.com
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
