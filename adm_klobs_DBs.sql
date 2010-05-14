@@ -1,28 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 3.1.1
+-- version 2.11.6
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2009 at 12:54 PM
--- Server version: 5.0.26
--- PHP Version: 5.2.6
+-- Erstellungszeit: 13. Mai 2010 um 18:01
+-- Server Version: 5.0.51
+-- PHP-Version: 4.4.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Database: `admidio`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `adm_klobs_training`
+-- Tabellenstruktur für Tabelle `adm_klobs_training`
 --
 
 CREATE TABLE IF NOT EXISTS `adm_klobs_training` (
@@ -42,6 +35,9 @@ CREATE TABLE IF NOT EXISTS `adm_klobs_training` (
   `starttime` tinytext NOT NULL,
   `duration` int(11) NOT NULL,
   `starttimeint` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL default '0' COMMENT 'marks a deleted entry',
+  `changedate` timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT 'timestamp of last change',
+  `changeby` int(11) NOT NULL COMMENT 'id of user of last change',
   PRIMARY KEY  (`tra_id`),
   UNIQUE KEY `locationId` (`locationId`,`timestamp`,`usr_id`,`starttimeint`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=384 ;
