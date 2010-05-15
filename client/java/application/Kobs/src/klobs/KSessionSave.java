@@ -109,7 +109,7 @@ public class KSessionSave {
                         entry.appendChild(doc.createTextNode("1"));
                         training.appendChild(entry);
                         entry = doc.createElement("subtyp");
-                        entry.appendChild(doc.createTextNode("1"));
+                        entry.appendChild(doc.createTextNode("0"));
                         training.appendChild(entry);
                         entry = doc.createElement("trainerid");
                         entry.appendChild(doc.createTextNode("1"));
