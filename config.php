@@ -25,4 +25,10 @@ $klobs_belt = "Gurt";
 
 // Gibt den Tabellennamen an, in dem sich die Trainingseinheiten befinden
 $klobs_training_table = "adm_klobs_training";
+
+// Gibt den Dateinamen an, in dem sich die Trainingseinheiten befinden
+$klobs_training_file = "trainings.xml";
+
+// Gibt den Dateinamen an, in dem sich die Locations befinden
+$klobs_location_file = "locations.xml";
 ?>

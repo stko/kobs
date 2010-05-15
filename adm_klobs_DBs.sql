@@ -11,7 +11,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
 --
-
 -- --------------------------------------------------------
 
 --
@@ -38,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `adm_klobs_training` (
   `deleted` tinyint(1) NOT NULL default '0' COMMENT 'marks a deleted entry',
   `changedate` timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT 'timestamp of last change',
   `changeby` int(11) NOT NULL COMMENT 'id of user of last change',
-  PRIMARY KEY  (`tra_id`),
-  UNIQUE KEY `locationId` (`locationId`,`timestamp`,`usr_id`,`starttimeint`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=384 ;
+  `public` tinyint(1) NOT NULL COMMENT 'makes an success entry public',
+  `comment` text NOT NULL COMMENT 'description of a success entry',
+  PRIMARY KEY  (`tra_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;

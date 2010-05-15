@@ -141,10 +141,10 @@ echo "  </members>\n";
 
 
 // Ausgabe der Trainingsorte
-readfile("locations.xml");
+readfile($klobs_location_file);
 
 // Ausgabe der Trainingsarten
-readfile("trainings.xml");
+readfile($klobs_training_file);
 
 //Ende der XML -Datei
 echo "</klobsdata>\n";
