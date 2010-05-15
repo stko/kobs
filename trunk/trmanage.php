@@ -36,7 +36,25 @@
             ORDER BY last_name, first_name ";
 
 
-$result_user = $g_db->query($sql);
+	$result_user = $g_db->query($sql);
+
+	//Öffnen der XML- Location & Trainingsinhalte- files
+
+	$trainingXML = simplexml_load_file($klobs_training_file);
+	$trainingHash=array();
+	foreach ($trainingXML->typ as $typ){
+		foreach ($typ->subtyp as $subtyp){
+			$trainingHash[ $typ->id.":".$subtyp->id ] = $typ->name." : ".$subtyp->name;
+		}
+	}
+
+	$locationXML = simplexml_load_file($klobs_location_file);
+	$locationHash=array();
+	foreach ($locationXML->ort as $ort){
+		$locationHash[ (string) $ort->ort_id ] = $ort->name;
+	}
+
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -71,6 +89,10 @@ $result_user = $g_db->query($sql);
         }
         -->
     </style>
+	<SCRIPT LANGUAGE="JavaScript" SRC="./CalendarPopup.js"></SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript">
+	var cal = new CalendarPopup();
+	</SCRIPT>
 
     <script type="text/javascript" src="./suggest.js"></script>
     <script type="text/javascript" language="javascript">
@@ -88,12 +110,47 @@ $result_user = $g_db->query($sql);
 	}
 
 ?>];
+
+	var userHash = new Object();
+<?php
+	mysql_data_seek($result_user, 0);
+	while($row = $g_db->fetch_array($result_user))
+	{
+		echo "userHash['".$row["last_name"].", ".$row["first_name"]."'] = '".$row["usr_id"]."';\n";
+	}
+
+?>	
       var start = function(){new Suggest.Local("text", "suggest", list);};
       window.addEventListener ?
         window.addEventListener('load', start, false) :
         window.attachEvent('onload', start);
     //-->
     </script>
+	<script type="text/javascript" language="javascript">
+	<!--
+		function chkFormular () {
+			if (document.example.pattern.value == "") {
+				alert("Bitte gebe auch einen Teilnehmer ein");
+				document.example.pattern.focus();
+				return false;
+			}
+			var user_id = userHash[document.example.pattern.value];
+			if (user_id == undefined){
+				alert(""  + document.example.pattern.value + " ist kein bekannter Teilnehmer" );
+				document.example.pattern.focus();
+				return false;
+			}
+			if (document.example.date1.value == "") {
+				alert("Bitte gebe auch ein Datum ein");
+				document.example.date1.focus();
+				return false;
+			}
+			document.example.usrID.value = user_id;
+			return true;
+		}
+	//-->
+	</script>
+
   </head>
   <body>
     <div id="all">
@@ -120,47 +177,86 @@ $result_user = $g_db->query($sql);
 	}
 
 	$year=$_REQUEST["year"];
-	$month=$_REQUEST["month"];
-
 	if (!isset($year) || !is_numeric($year)) {
-		$year=""; //default
+		$year=0; //default
 	}
 
+	$month=$_REQUEST["month"];
 	if (!isset($month) || !is_numeric($month)) {
-		$month=""; //default
+		$month=0; //default
+	}
+
+	$action=$_REQUEST["action"];
+	if (!isset($action)) {
+		$action=""; //default
+	}
+	
+	$tra_id=$_REQUEST["tra_id"];
+	if (!isset($tra_id) || !is_numeric($tra_id)) {
+		$tra_id=0; //default
+	}
+
+	// Zusammensuchen und ausfüllen der Eingabemaske
+
+	$memberText="";
+	$locID=0;
+	$date="";
+	$traTyp="";
+	$duration=0;
+	if ($tra_id!=0 && ($action=="copy" || $action=="edit")){
+		$sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.locationID as locID, training.date as date, training.typ as typ, training.subtyp as subtyp, training.duration as duration
+
+
+		FROM ". TBL_USERS. "
+		LEFT JOIN ". TBL_USER_DATA. " as last_name
+		ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
+		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		LEFT JOIN ". TBL_USER_DATA. " as first_name
+		ON first_name.usd_usr_id = ". TBL_USERS. ".usr_id
+		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		JOIN " . $klobs_training_table . " as training
+		ON training.usr_Id = ". TBL_USERS. ".usr_id
+		WHERE tra_id = ". $tra_id;
+
+
+		$db_result = $g_db->query($sql);
+		while($row = $g_db->fetch_array($db_result)) //kind of senseless, as this result should only have one row, but...
+		{
+			$memberText=$row[last_name].", ".$row[first_name];
+			$locID=$row[locID];
+			$date=$row[date];
+			$traTyp=$row[typ].":".$row[subtyp];
+			$duration=$row[duration];
+		}
 	}
 ?>
 
-          <div style="margin-left:30px; margin-top:4px;">
-            <input id="text" type="text" name="pattern" value="" autocomplete="off" size="40" style="display: block"/>
 
-            <div id="suggest"></div>
-          </div>
- 
-<?php
 
+	<h1>Der Klobs-Trainings-Editor</h1>
 	
-	echo "<table>\n";
-	echo "<tr><td valign=\"top\">\n";
-	echo "<h3>Zeitraum:</h3><br>\n";
+	<table cellspacing="10" cellpadding="20" width="95%">
+	<tr><td valign="top">
+	<h3>Zeitraum:</h3><br>
+	Hier w&auml;hlt man das gew&uuml;nschte Jahr und den gew&uuml;nschten Monat aus:
 
-	$sql = "SELECT DISTINCT training.year as year
+<?php
+$sql = "SELECT DISTINCT training.year as year
 	FROM ".$klobs_training_table . " as training ORDER BY year";
 
 
 	$db_result = $g_db->query($sql);
-	echo "<em>Jahr</em><br>\n";
 	echo "<ul>\n";
 	while($row = $g_db->fetch_array($db_result))
 	{
 		if ($row[year]==$year){
-			echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."\">".$row[year]."</a><br><em>Monat</em><br><ul>\n";
+			echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."\">".$row[year]."</a><br><ul>\n";
 			$sql = "SELECT DISTINCT training.mon as mon
 			FROM ".$klobs_training_table . " as training WHERE training.year = ".$year." ORDER BY mon";
 			$db_result2 = $g_db->query($sql);
 			while($row2 = $g_db->fetch_array($db_result2))
 			{
-				echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."&month=".$row2[mon]."\">".$row2[mon]."</a></li>\n";
+				echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."&month=".$row2[mon]."\">Monat ".$row2[mon]."</a></li>\n";
 			}
 			
 			echo "</ul></li>\n";
@@ -170,12 +266,12 @@ $result_user = $g_db->query($sql);
 	}
 	echo "<ul>\n";
 
-	echo "</td><td>\n";
+	echo "</td><td align=\"center\">\n";
 
 
-	if ($year!="" & $month!=""){
+	if ($year!=0 & $month!=0){
 	//Falls gefordert, aufrufen alle Leute aus der Datenbank
-		$sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.deleted as deleted, training.location as location, training.date as date, training.year as year, training.mon as mon, training.mday as mday, training.wday as wday, training.typ as typ, training.subtyp as subtyp, training.trainerid as trainerid, training.duration as duration
+		$sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.deleted as deleted, training.location as location,training.locationID as locID, training.date as date, training.year as year, training.mon as mon, training.mday as mday, training.wday as wday, training.typ as typ, training.subtyp as subtyp, training.trainerid as trainerid, training.duration as duration
 
 
 		FROM ". TBL_USERS. "
@@ -196,23 +292,100 @@ $result_user = $g_db->query($sql);
 		$db_result = $g_db->query($sql);
 
 		//Beginn der Ausgabe
-		echo "<table>";
+?>
+<FORM NAME="example" action="edit.php" method="get" onsubmit="return chkFormular()">
+	<input type="hidden" name="usrID" value="0">
+	<input type="hidden" name="action" value="<?php
+	if ($action==""){
+		echo "copy";
+	}else{
+		echo $action;
+	}
+	?>">
+	<input type="hidden" name="tra_id" value="<?php echo $tra_id; ?>">
+	<input type="hidden" name="year" value="<?php echo $year; ?>">
+	<input type="hidden" name="month" value="<?php echo $month; ?>">
+	<table border="1" rules="all" cellspacing="10" cellpadding="5" width="95%">
+	<tr><td colspan="8"><h4>Hier kann man neue Eintr&auml;ge machen oder Bestehende ver&auml;ndern oder kopieren:</h4></td></tr>
+	<tr>
+	<th bgcolor="#E0E0E0">Name</th>
+	<th>Ort</th>
+	<th bgcolor="#E0E0E0">Wann</th>
+	<th>Training</th>
+	<th bgcolor="#E0E0E0">Dauer</th>
+	<th colspan=3>Speichern</th>
+	</tr>
+	<tr>
+	<td>
+	<input id="text" type="text" name="pattern" value="<?php echo $memberText; ?>" autocomplete="off" size="40" style="display: block"/>
+	<div id="suggest"></div>
+	</td>
+	<td>
+	<select name="locID">
+<?php
+		foreach ($locationHash as $key => $value){
+			if ($key==$locID){
+				echo "<option selected value=\"$key\">$value</option>\n";
+			}else{
+				echo "<option value=\"$key\">$value</option>\n";
+			}
+		}
+?>
+	</select>
+	</td>
+	<td>
+	<nobr><INPUT TYPE="text" NAME="date1" VALUE="<?php echo $date; ?>" SIZE=10 readonly="readonly">
+	<A HREF="#" onClick="cal.select(document.forms['example'].date1,'anchor1','yyyy-MM-dd'); return false;" NAME="anchor1" ID="anchor1"><img src="date.gif" border="0" alt="Date"></A></nobr>
+	</td>
+	<td>
+	<select name="traTyp">
+<?php
+		foreach ($trainingHash as $key => $value){
+			if ($key==$traTyp){
+				echo "<option selected value=\"$key\">$value</option>\n";
+			}else{
+				echo "<option value=\"$key\">$value</option>\n";
+			}
+		}
+?>
+	</select>
+	</td>
+	<td>
+	<select name="duration">
+<?php
+		for ($i=10;$i<250;$i+=10){
+			if ($i==$duration){
+				echo "<option selected value=\"$i\">$i min</option>\n";
+			}else{
+				echo "<option value=\"$i\">$i min</option>\n";
+			}
+		}
+?>
+	</select>
+	</td>
+	<td colspan="3">
+	<input type="submit" value="<?php
+	if ($action=="edit"){
+		Echo "Aktualisieren";
+	}else{
+		Echo "Als Neu speichern";
+	}
 
+	?>">
+	</td>
+	</tr>
+<?php
+		echo "<tr><td colspan=\"8\"><h4>Dies sind die aktuellen Eintr&auml;ge des Monats ".$month." / ".$year."</h4></td></tr>\n";
 		// Ausgabe der Daten
 		echo "<tr>";
-		echo "<th>last_name</th>";
-		echo "<th>first_name</th>";
-		echo "<th>location</th>";
-		echo "<th>date</th>";
-		echo "<th>year</th>";
-		echo "<th>mon</th>";
-		echo "<th>mday</th>";
-		echo "<th>wday</th>";
-		echo "<th>typ</th>";
-		echo "<th>subtyp</th>";
-		echo "<th>trainerid</th>";
-		echo "<th>duration</th>";
-		echo "<th></th>";
+		echo "<th bgcolor=\"#E0E0E0\">Name</th>";
+		echo "<th>Ort</th>";
+		echo "<th bgcolor=\"#E0E0E0\">Wann</th>";
+		echo "<th>Training</th>";
+		echo "<th bgcolor=\"#E0E0E0\">Dauer</th>";
+		echo "<th>Edit</th>";
+		echo "<th>Copy</th>";
+		echo "<th>Delete</th>";
 		echo "</tr>";
 		while($row = $g_db->fetch_array($db_result))
 		{
@@ -224,21 +397,14 @@ $result_user = $g_db->query($sql);
 		echo "---\n";
 		*/
 		echo "<tr>";
-		placeTD($row[last_name]);
-		echo "<td>".$row[first_name]."</td>\n";
-		echo "<td>".$row[location]."</td>\n";
-		echo "<td>".$row[date]."</td>\n";
-		echo "<td>".$row[year]."</td>\n";
-		echo "<td>".$row[mon]."</td>\n";
-		echo "<td>".$row[mday]."</td>\n";
-		echo "<td>".$row[wday]."</td>\n";
-		echo "<td>".$row[typ]."</td>\n";
-		echo "<td>".$row[subtyp]."</td>\n";
-		echo "<td>".$row[trainerid]."</td>\n";
-		echo "<td>".$row[duration]."</td>\n";
-		echo "<td>\n";
-		echo "<a href=\"edit.php?action=edit&tra_id=".$row[tra_id]."\"><img src=\"edit.gif\" border=\"0\" alt=\"Edit\"></a>\n";
-		echo "<a href=\"edit.php?action=copy&tra_id=".$row[tra_id]."\"><img src=\"copy.gif\" border=\"0\" alt=\"Copy\"></a>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row[last_name].", ".$row[first_name]."</td>\n";
+		echo "<td>".$locationHash[$row[locID]]."</td>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row[date]."</td>\n";
+		echo "<td>".$trainingHash[$row[typ].":".$row[subtyp]]."</td>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row[duration]." min</td>\n";
+		echo "<td  align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=edit&tra_id=".$row[tra_id]."\"><img src=\"edit.gif\" border=\"0\" alt=\"Edit\"></a></td>\n";
+		echo "<td align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=copy&tra_id=".$row[tra_id]."\"><img src=\"copy.gif\" border=\"0\" alt=\"Copy\"></a></td>\n";
+		echo "<td align=\"center\" valign=\"middle\">\n";
 		if ($row[deleted]==1){
 			echo "<a href=\"edit.php?action=undel&tra_id=".$row[tra_id]."\"><img src=\"undelete.gif\" border=\"0\" alt=\"Undelete\"></a>\n";
 		}else{
@@ -248,21 +414,19 @@ $result_user = $g_db->query($sql);
 		echo "</tr>";
 		}
 
-		echo "</table>";
+		echo "</table></FORM>";
+		echo "Um Schaden zu vermeiden, kann man Eintr&auml;ge nur auf \"Deleted\" setzen, aber nicht komplett l&ouml;schen. Die als gel&ouml;scht markierten Eintr&auml;ge werden bei Auswertungen nicht mehr mitgez&auml;hlt.";
 	}
 	echo "</td></tr></table>\n";
 
-function placeTD($text){
-	//echo "<td>".utf8_decode($text)."</td>\n";
-	echo "<td>".$text."</td>\n";
-}
 
 
 ?>
-<hr><center>Strotzt die Site voll H&auml;sslichkeit,<br>ist der Autor knapp mit Zeit..</center>
+<hr><center><small>powered by <a href="http://kobs.googlecode.com">KLOBS</a></small></center>
 </div>
 </div>
 </div>
+
 </body>
 </html>
 
