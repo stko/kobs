@@ -15,80 +15,96 @@
     <name>Prüfung</name>
     <id>2</id>
     <subtyp>
-      <name>9. Kiu</name>
+      <name>10. Kiu</name>
       <id>0</id>
     </subtyp>
     <subtyp>
-      <name>8. Kiu</name>
+      <name>9. Kiu</name>
       <id>1</id>
     </subtyp>
     <subtyp>
-      <name>7. Kiu</name>
+      <name>8. Kiu</name>
       <id>2</id>
     </subtyp>
     <subtyp>
-      <name>6. Kiu</name>
+      <name>7. Kiu</name>
       <id>3</id>
     </subtyp>
     <subtyp>
-      <name>5. Kiu</name>
+      <name>6. Kiu</name>
       <id>4</id>
     </subtyp>
     <subtyp>
-      <name>4. Kiu</name>
+      <name>5. Kiu</name>
       <id>5</id>
     </subtyp>
     <subtyp>
-      <name>3. Kiu</name>
+      <name>4. Kiu</name>
       <id>6</id>
     </subtyp>
     <subtyp>
-      <name>2. Kiu</name>
+      <name>3. Kiu</name>
       <id>7</id>
     </subtyp>
     <subtyp>
-      <name>1. Kiu</name>
+      <name>2. Kiu</name>
       <id>8</id>
     </subtyp>
+    <subtyp>
+      <name>1. Kiu</name>
+      <id>9</id>
+    </subtyp>
   </typ>
-  <typ>
+ <typ>
     <name>Vorprüfung</name>
     <id>3</id>
     <subtyp>
-      <name>9. Kiu</name>
+      <name>10. Kiu</name>
       <id>0</id>
     </subtyp>
     <subtyp>
-      <name>8. Kiu</name>
+      <name>9. Kiu</name>
       <id>1</id>
     </subtyp>
     <subtyp>
-      <name>7. Kiu</name>
+      <name>8. Kiu</name>
       <id>2</id>
     </subtyp>
     <subtyp>
-      <name>6. Kiu</name>
+      <name>7. Kiu</name>
       <id>3</id>
     </subtyp>
     <subtyp>
-      <name>5. Kiu</name>
+      <name>6. Kiu</name>
       <id>4</id>
     </subtyp>
     <subtyp>
-      <name>4. Kiu</name>
+      <name>5. Kiu</name>
       <id>5</id>
     </subtyp>
     <subtyp>
-      <name>3. Kiu</name>
+      <name>4. Kiu</name>
       <id>6</id>
     </subtyp>
     <subtyp>
-      <name>2. Kiu</name>
+      <name>3. Kiu</name>
       <id>7</id>
     </subtyp>
     <subtyp>
-      <name>1. Kiu</name>
+      <name>2. Kiu</name>
       <id>8</id>
+    </subtyp>
+    <subtyp>
+      <name>1. Kiu</name>
+      <id>9</id>
+    </subtyp>
+  </typ>
+ <typ>
+    <name>Lehrgang</name>
+    <id>4</id>
+    <subtyp>
+      <name>Prüfungsvorbereitung</name>
+      <id>0</id>
     </subtyp>
   </typ>
 </trainings>
