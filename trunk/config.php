@@ -31,4 +31,13 @@ $klobs_training_file = "trainings.xml";
 
 // Gibt den Dateinamen an, in dem sich die Locations befinden
 $klobs_location_file = "locations.xml";
+
+// Definiert die Überschrift auf der MyInfo-Seite
+$klobs_myinfo_header = "Shojikido.de: Deine pers&ouml;nlichen Trainingsdaten im &Uuml;berblick";
+
+// Gibt die indexnummer an, die in "trainings.xml" fuer Prüfungen vergeben ist
+$trainings_type_audit = 2;
+
+// Gibt die indexnummer an, die in "trainings.xml" fuer Prüfungen vergeben ist
+$trainings_type_seminar = 3;
 ?>
