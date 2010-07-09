@@ -264,8 +264,8 @@ $sql = "SELECT DISTINCT training.year as year
 			echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."\">".$row[year]."</a></li>\n";
 		}
 	}
-	echo "<ul>\n";
-
+	echo "</ul>\n";
+	echo "<hr><a href=\"myinfo.php\">Leistungsprofil</a>\n";
 	echo "</td><td align=\"center\">\n";
 
 
