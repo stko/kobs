@@ -1,0 +1,32 @@
+#Die Einstiegsseite des Wikis
+
+= KLOBS- Was ist das? =
+
+Sorry, as Admidio & KLOBS are mainly used in germany, the docu is also in german ;-)
+
+
+Und die Seiten sind immer noch im Aufbau...
+
+= Featureliste =
+Was müssen die einzelnen Komponenten können?
+
+
+== Kartenleser ==
+
+
+== Mobile Erfassung ==
+  * Leute ohne Ausweis nachtragen
+  * neue Ausweise anlernen
+  * Einträge (Adresse usw.) korrigieren
+  * Trainingsplan aufstellen
+      * Was (Art des Trainings)
+      * Wann (Uhrzeit)
+      * wie lange
+      * Wo (Ort) 
+      * trainiert vom wem (Trainer)
+      * Wer
+
+== Webanwendung ==
+  * Teilnehmerlisten abrufen
+  * persönliche Leistungsprofile abrufen
+  * gruppenbezogene Leistungsprofile abrufen 
