@@ -1,4 +1,4 @@
-#Basis Installation
+#summary Basis Installation
 
 = Installation eines Klobs-Systems =
 
