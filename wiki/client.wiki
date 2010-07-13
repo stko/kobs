@@ -1,0 +1,3 @@
+= KLOBS vor Ort =
+
+Der Vor-Ort-Teil von KLOBS ist in Java geschrieben und läuft damit auf Windows, Mac und Linux. Lediglich die Treiberanbindung des USB- Kartenlesers läuft zur Zeit nur unter Linux, aber das Programm funktioniert auch durchaus ohne, wenn man die Anwesenden von Hand eingibt.
