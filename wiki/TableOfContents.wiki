@@ -1,7 +1,6 @@
   * [Intro Was ist KLOBS?]
-    * [client Die Anwendung vor Ort]
-    * [server Die Verwaltung auf dem Server]
-    * [ArticlesStyle CSS and style]
-    * [ArticlesTips Tips and tricks]
-  * [installation Installation]
-  * [update Update des Clients]
+  * [client Das Programm vor Ort]
+  * [server Die Verwaltung auf dem Server]
+  * Setup
+    * [installation Installation]
+    * [update Update des Clients]
