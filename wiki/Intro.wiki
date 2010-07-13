@@ -1,0 +1,12 @@
+= KLOBS- Was ist das? =
+
+Sorry, as Admidio & KLOBS are mainly used in germany, the docu is also in german ;-)
+
+== Was ist KLOBS? ==
+
+KLOBS steht für den "Kartenleser ohne besonderen Schwierigkeitsgrad". Damit ist die Möglichkeit gemeint, schnell und komfortabel beim Sporttraining aufnehmen zu können, wer mit dabei ist und welche Trainingseinheiten gemacht wurden.
+
+Daraus kann dann für jeden sein persönliches Trainingsprofil erstellt werden.
+
+
+KLOBS teilt sich in eine [client Client- Anwendung] direkt beim Training und eine [server Server-Anbindung] zum Speichern und Auswerten der Daten.
