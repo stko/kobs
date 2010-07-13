@@ -1,10 +1,10 @@
-#summary Basis Installation
+= Installation von KLOBS auf einem Server =
 
-= Installation eines Klobs-Systems =
+== Requirements ==
+
+Zum Funktionieren benötigt KLOBS PHP und eine MySQL Datenbank -oder genauer gesagt benötigt KLOBS eine bereits funktionierende Admidio- Installation (s.u.), weil sich KLOBS dort als Modul mit einklingt und die Admidio- Daten als Basis benutzt.
 
 ==  Admidio auf dem Webserver installieren ==
-
-FIXME diese Anleitung ist noch im Entstehen
 
   # Die Software auf dem Webserver ist [http://admidio.org Admidio], aktuell angepasst auf die Version 2.09. Diese wird wie auf den Admidio- Webseiten beschrieben installiert
 
@@ -17,7 +17,16 @@ FIXME diese Anleitung ist noch im Entstehen
 ||  Passnummer  ||  Text50    ||    Nein             ||          Ja                      ||   Nein       || Die ITBF- Passnummer ||
 
 
-Dann können die Mitglieder als entsprechend präparierte CSV- Datei über "Benutzerverwaltung/Benutzer importieren" importiert werden. Verwendet man aber dabei bei der Wahl, was mit bestehenden Eintraägen passieren soll, die Auswahl "Benutzer behalten", klappt der Import iregendwie nicht, jedoch bei den anderen Auswahlmöglichkeiten.
+Dann können die Mitglieder als entsprechend präparierte CSV- Datei über "Benutzerverwaltung/Benutzer importieren" importiert werden. Verwendet man aber dabei bei der Wahl, was mit bestehenden Eintraägen passieren soll, die Auswahl "Benutzer behalten", klappt der Import irgendwie nicht, jedoch bei den anderen Auswahlmöglichkeiten.
 
 == Installation der Klobs PHP- Scripte ==
-== Installation von Klobs auf dem Laptop- Client ==
+
+Da (noch) kein fertiges Archiv zum Download bereitsteht, extrahiert man am besten das Entwickungs-Repository mit folgendem Befehl erst in ein leeres Verzeichnis
+
+
+  svn export http://kobs.googlecode.com/svn/trunk/ kobs
+
+und kopiert dann das dabei entstandene Verzeichnis  `kobs` in das vorher installierte Admidio- Verzeichnis auf dem Webserver, und zwar nach `adm_program/modules/`
+
+
+In dem kobs- Verzeichnis findet sich auch die Datei `adm_klobs_DBs.sql`. Diese SQL- Datei führt man dann auf dem Webserver z.B. mit myPHPAdmin aus, um die zusätzlich notwendigen Datenbanktabellen anzulegen.
