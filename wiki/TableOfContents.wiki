@@ -2,5 +2,5 @@
   * [client Das Programm vor Ort]
   * [server Die Verwaltung auf dem Server]
   * Setup
-    * [installation Installation]
-    * [update Update des Clients]
+    * [installation Installation des Servers]
+    * [client_installation  Installation & Update des Clients]
