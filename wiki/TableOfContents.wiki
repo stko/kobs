@@ -6,4 +6,4 @@
     * [rfid_cardreader Der RFID- Kartenleser]
     * [client_installation  Installation & Update des Clients]
     * [config Einstellungen]
-    * [develop Zum Programm selber]
+    * [develop Developer-Infos]
