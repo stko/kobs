@@ -18,3 +18,6 @@ KLOBS selber lauscht nur einfach auf dem UDP- Port 3305, und alles was dort anko
 
 Man kann also statt eines Kartenlesers so ziemlich alles benutzen, was einem in den Sinn kommt: QRCode- Reader, Fingerabdruck-Scanner oder Bluetooth- Handy- Discovery -  solange die gefundene ID per UDP an Port 3305 geschickt wird, benutzt KLOBS dies zur Identifizierung.
 
+== und zum Schluß ... ==
+
+wer Probleme damit hat, die Aufkleber gerade auf die Chipkarten zu bekommen, empfehle ich den [http://www.koehlers.de/wiki/doku.php?id=kobsdocu:heinzelmann Heinzelmann]
