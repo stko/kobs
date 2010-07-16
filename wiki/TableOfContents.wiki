@@ -3,4 +3,6 @@
   * [server Die Verwaltung auf dem Server]
   * Setup
     * [installation Installation des Servers]
+    * [rfid_cardreader Der RFID- Kartenleser]
     * [client_installation  Installation & Update des Clients]
+    * [config Einstellungen]
