@@ -1,0 +1,29 @@
+= KLOBS auf dem Server =
+
+Während die  [client Client-Anwendung] dazu dient, die Daten aktuell vor Ort zu erfassen, wird die Verwaltung und Auswertung direkt auf dem Webserver gemacht.
+
+Dies unterteilt sich grob in zwei Bereiche: 
+
+== Verwaltung der Mitglieder ==
+
+Die Verwaltung der Mitgliederdaten ist einfach, weil unabhängig von KLOBS: KLOBS hängt sich ja an eine bestehende [http://www.admidio.de Admidio- Installation], und da drin spielt sich die komplette Mitgliederverwaltung ab. Dabei ist lediglich zu beachten, daß man die Standard- Datenfelder, wie unter [setup Setup] beschrieben, um ein paar Felder ergänzen muß, damit KLOBS bestimmte Informationen auch findet.
+
+Die einzige Ausnahme wäre die
+
+
+== Darstellung und Verwaltung der Trainingsinhalte ==
+
+Einer der Hauptaufgaben liegt ja darin, auszuwerten, welche Trainingsinhalte denn nun gemacht wurden. Dazu gibt es dann unter `<myserver>/admidio/adm_program/modules/kobs/myinfo.php` eine quasi fest verdrahtete Abfrage, die für jedes Mitglied aufzeigt, was alles insgesamt und seit der letzten Prüfung so trainiert wurde.
+
+http://kobs.googlecode.com/svn/trunk/docs/images/web_myinfo.png
+
+
+Wenn derjenige, der diese Seite aufruft, Mitglied der Rolle "Trainer" ist, hat er auch die Möglichkeit, die Übersicht anderer abzurufen, er kann auch im Trainingseditor Einträge löschen, Neue erzeugen oder editieren:
+
+http://kobs.googlecode.com/svn/trunk/docs/images/web_tredit.png
+
+
+
+== Datenexport der Anwesenheiten ==
+
+Mitglieder der Rolle "Trainer" haben auch die Möglichkeit, alle Trainingsdaten über `<myserver>/admidio/adm_program/modules/kobs/dl_trainings.php` als CSV-Datei zu exportieren. Der Aufbau dieser Datei ist dabei so gewählt, dass man sich speziell über eine Pivot- Tabelle die gewünschten Auswertungen schnell zusammen klicken kann.
