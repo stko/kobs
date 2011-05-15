@@ -333,11 +333,11 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 		echo "</tr>";
 
 		echo "<tr>";
-		echo "<th>ITBF- Mitgliedschaft:</th>\n";
+		echo "<th>Verbands- Mitgliedschaft:</th>\n";
 		if (!isset($memberData[passnummer]) || $memberData[passnummer]==""){
-			echo "<td bgcolor=\"#FFE0E0\">Du bist noch nicht im ITBF angemeldet. Dies solltest Du baldm&ouml;glichst tun, da Du nur dann auch Pr&uuml;fungen ablegen kannst</td>\n";
+			echo "<td bgcolor=\"#FFE0E0\">Du bist noch nicht einem Verband angemeldet. Dies solltest Du baldm&ouml;glichst tun, da Du nur dann auch Pr&uuml;fungen ablegen kannst</td>\n";
 		}else{
-			echo "<td bgcolor=\"#E0FFE0\"> Du bist beim ITBF eingetragen. Das ist gut so, denn damit kannst Du auch an Pr&uuml;fungen teilnehmen. Deine ITBF-Nummer lautet ".$memberData[passnummer]."</td>\n";
+			echo "<td bgcolor=\"#E0FFE0\"> Du bist im Verband eingetragen. Das ist gut so, denn damit kannst Du auch an Pr&uuml;fungen teilnehmen. Deine Verbands-Nummer lautet ".$memberData[passnummer]."</td>\n";
 		}
 		echo "</tr>";
 
