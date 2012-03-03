@@ -54,6 +54,46 @@
       <name>1. Kiu</name>
       <id>9</id>
     </subtyp>
+    <subtyp>
+      <name>1. Dan</name>
+      <id>10</id>
+    </subtyp>
+    <subtyp>
+      <name>2. Dan</name>
+      <id>11</id>
+    </subtyp>
+    <subtyp>
+      <name>3. Dan</name>
+      <id>12</id>
+    </subtyp>
+    <subtyp>
+      <name>4. Dan</name>
+      <id>13</id>
+    </subtyp>
+    <subtyp>
+      <name>5. Dan</name>
+      <id>14</id>
+    </subtyp>
+    <subtyp>
+      <name>6. Dan</name>
+      <id>15</id>
+    </subtyp>
+    <subtyp>
+      <name>7. Dan</name>
+      <id>16</id>
+    </subtyp>
+    <subtyp>
+      <name>8. Dan</name>
+      <id>17</id>
+    </subtyp>
+    <subtyp>
+      <name>9. Dan</name>
+      <id>18</id>
+    </subtyp>
+    <subtyp>
+      <name>10. Dan</name>
+      <id>19</id>
+    </subtyp>
   </typ>
  <typ>
     <name>Vorprüfung</name>
