@@ -89,7 +89,7 @@ public class KReadInfoXML extends HashMap<String, KStringHash> {
             String currentall = all.next();
             KStringHash thisRecord = this.get(currentall);
             String thisline = thisRecord.get(primaryKey);
-            if (thisline !=null && thisline.equals(value)) {
+            if (thisline !=null && thisline.contains(value.toUpperCase())) {
                 return thisRecord;
             }
         }

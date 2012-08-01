@@ -153,6 +153,8 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         jTableMembers = new javax.swing.JTable();
         memberToolBar = new javax.swing.JToolBar();
         jButtonAdd = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        newCardToogleButton = new javax.swing.JToggleButton();
         timePanel = new javax.swing.JPanel();
         timeBottomToolBar = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
@@ -264,6 +266,18 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         jButtonAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         memberToolBar.add(jButtonAdd);
 
+        jSeparator2.setName("jSeparator2"); // NOI18N
+        memberToolBar.add(jSeparator2);
+
+        newCardToogleButton.setAction(actionMap.get("verifyCardLearning")); // NOI18N
+        newCardToogleButton.setIcon(resourceMap.getIcon("newCardToogleButton.icon")); // NOI18N
+        newCardToogleButton.setText(resourceMap.getString("newCardToogleButton.text")); // NOI18N
+        newCardToogleButton.setFocusable(false);
+        newCardToogleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newCardToogleButton.setName("newCardToogleButton"); // NOI18N
+        newCardToogleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        memberToolBar.add(newCardToogleButton);
+
         memberPanel.add(memberToolBar, java.awt.BorderLayout.NORTH);
 
         mainTabbedPane.addTab(resourceMap.getString("memberPanel.TabConstraints.tabTitle"), memberPanel); // NOI18N
@@ -362,7 +376,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         onsideAllTree.setModel(new javax.swing.tree.DefaultTreeModel(new SortNode("root")));
         onsideAllTree.setName("onsideAllTree"); // NOI18N
         onsideAllTree.setRootVisible(false);
-        onsideAllTree.setShowsRootHandles(true);
         onsideAllScrollPane.setViewportView(onsideAllTree);
         onsideAllTree.setCellRenderer(new klobs.GroupTreeRenderer());
         onsideAllTree.putClientProperty("JTree.lineStyle", "None");
@@ -380,7 +393,6 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
         onsideSelectedTree.setModel(new javax.swing.tree.DefaultTreeModel(new SortNode("root")));
         onsideSelectedTree.setName("onsideSelectedTree"); // NOI18N
         onsideSelectedTree.setRootVisible(false);
-        onsideSelectedTree.setShowsRootHandles(true);
         onsideSelectedScrollPane.setViewportView(onsideSelectedTree);
         onsideSelectedTree.setCellRenderer(new klobs.GroupTreeRenderer());
         onsideSelectedTree.putClientProperty("JTree.lineStyle", "None");
@@ -562,22 +574,25 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     public void getNr(String nr) {
         Toolkit.getDefaultToolkit().beep();
         KStringHash thisRecord = KlobsApp.members.find("kartennummer", nr);
-        if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
+        //old version, where the cursor needed to be in the card number column to learn a new card
+        //if (jTableMembers.hasFocus() && jTableMembers.getSelectedColumn() == 7 && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
+        if (newCardToogleButton.isSelected() && jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
             KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(jTableMembers.getSelectedRow()), jTableMembers.getSelectedColumn());
             //HashMap<String, String> newRecord = (KStringHash) actHashLink.getHashMap();
             KStringHash newRecord = (KStringHash) actHashLink.getHashMap();
             if (thisRecord != newRecord) {
                 if (thisRecord != null) {
-                    thisRecord.put("kartennummer", "");
+                    thisRecord.removeElement("kartennummer", nr);
                     thisRecord.put("modified", "true");
                 }
-                newRecord.put("kartennummer", nr);
+                newRecord.addElement("kartennummer", nr);
                 newRecord.put("modified", "true");
                 thisRecord = newRecord;
                 jTableMembers.invalidate();
                 jTableMembers.validate();
                 jTableMembers.repaint();
             }
+            newCardToogleButton.setSelected(false);
         }
         //thisRecord = KlobsApp.members.find("kartennummer", nr);
         if (thisRecord != null) {
@@ -760,7 +775,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             if (oldSubTyp.matches("")) {
 
                 node.subTyp = (String) subTaskComboBox.getItemAt(0); // intialize node subtyp
-                } else {
+            } else {
                 subTaskComboBox.setSelectedItem(oldSubTyp);
                 node.subTyp = oldSubTyp;
             }
@@ -1084,6 +1099,42 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
             ((DefaultTreeModel) timeTreeView.getModel()).reload();
         }
     }
+
+    @Action
+    public void verifyCardLearning() {
+
+
+        if (newCardToogleButton.isSelected()) {
+            if (jTableMembers.getSelectedRowCount() == 1 && jTableMembers.getSelectedColumnCount() == 1) {
+                KHashLink actHashLink = (KHashLink) jTableMembers.getModel().getValueAt(jTableMembers.getRowSorter().convertRowIndexToModel(jTableMembers.getSelectedRow()), jTableMembers.getSelectedColumn());
+                //HashMap<String, String> newRecord = (KStringHash) actHashLink.getHashMap();
+                KStringHash thisRecord = (KStringHash) actHashLink.getHashMap();
+                if (thisRecord != null) {
+
+                    Object[] options = { KlobsApp.lang.getProperty("Cancel", "Cancel"),KlobsApp.lang.getProperty("YesPlease", "Yes, please")};
+                    if( JOptionPane.showOptionDialog(null,
+                            KlobsApp.lang.getProperty("ConfirmNewCardText", "Learn new card for") + " "+thisRecord.get("first_name") + " " + thisRecord.get("last_name") + "?",
+                            KlobsApp.lang.getProperty("ConfirmNewCard", "Please confirm:"),
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null, //do not use a custom Icon
+                            options, //the titles of buttons
+                            options[0]) //default button title
+                    != 1){
+                        newCardToogleButton.setSelected(false);
+                    }
+                } else {
+                    newCardToogleButton.setSelected(false);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        KlobsApp.lang.getProperty("MoreAsOnePersonSelectedText", "Please select only one name"),
+                        KlobsApp.lang.getProperty("MoreAsOnePersonSelected", "More as one person selected"),
+                        JOptionPane.ERROR_MESSAGE);
+                newCardToogleButton.setSelected(false);
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTimeButton;
     private javax.swing.JLabel attendieLabel;
@@ -1094,6 +1145,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemDate;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JTable jTableMembers;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTabbedPane mainTabbedPane;
@@ -1104,6 +1156,7 @@ public class KobsView extends FrameView implements TableModelListener, TreeSelec
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton moveInButton;
     private javax.swing.JButton moveOutButton;
+    private javax.swing.JToggleButton newCardToogleButton;
     private javax.swing.JScrollPane onsideAllScrollPane;
     private javax.swing.JTree onsideAllTree;
     private javax.swing.JLabel onsideLabel;

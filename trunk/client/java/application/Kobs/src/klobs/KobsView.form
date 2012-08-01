@@ -172,6 +172,24 @@
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
+                      <Properties>
+                        <Property name="name" type="java.lang.String" value="jSeparator2" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JToggleButton" name="newCardToogleButton">
+                      <Properties>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="klobs.KobsView" id="verifyCardLearning" methodName="verifyCardLearning"/>
+                        </Property>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="newCardToogleButton.icon"/>
+                        <Property name="text" type="java.lang.String" resourceKey="newCardToogleButton.text"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="newCardToogleButton" noResource="true"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -401,7 +419,6 @@
                                 </Property>
                                 <Property name="name" type="java.lang.String" value="onsideAllTree" noResource="true"/>
                                 <Property name="rootVisible" type="boolean" value="false"/>
-                                <Property name="showsRootHandles" type="boolean" value="true"/>
                               </Properties>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="onsideAllTree.setCellRenderer(new klobs.GroupTreeRenderer());&#xa;onsideAllTree.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
@@ -431,7 +448,6 @@
                                 </Property>
                                 <Property name="name" type="java.lang.String" value="onsideSelectedTree" noResource="true"/>
                                 <Property name="rootVisible" type="boolean" value="false"/>
-                                <Property name="showsRootHandles" type="boolean" value="true"/>
                               </Properties>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="onsideSelectedTree.setCellRenderer(new klobs.GroupTreeRenderer());&#xa;onsideSelectedTree.putClientProperty(&quot;JTree.lineStyle&quot;, &quot;None&quot;);&#xa;"/>
