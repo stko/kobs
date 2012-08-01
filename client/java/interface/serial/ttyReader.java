@@ -6,7 +6,8 @@ import java.io.*;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.Timer;
-import javax.comm.*;// for SUN's serial/parallel port libraries
+//import javax.comm.*;// for SUN's serial/parallel port libraries
+import purejavacomm.*;
 //import gnu.io.*; // for rxtxSerial library
 
 public class ttyReader implements  SerialPortEventListener {
@@ -47,7 +48,7 @@ public class ttyReader implements  SerialPortEventListener {
 			serPortName = "COM1";
 		} else if (osname.startsWith("linux")) {
 			// linux
-		serPortName = "/dev/ttyUSB0";
+		serPortName = "ttyUSB0";
 		} else if ( osname.startsWith("mac") ) {
 			// mac
 			serPortName = "????";
@@ -70,7 +71,7 @@ public class ttyReader implements  SerialPortEventListener {
 		while (portList.hasMoreElements()&& !portFound) {
 			portId = (CommPortIdentifier) portList.nextElement();
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-				System.out.println("port found"+portId.getName()+"\n");
+				System.out.println("port found:"+portId.getName()+" search for "+serPortName+"\n");
 				if (portId.getName().equals(serPortName)) {
 					portFound = true;
 				} 
@@ -196,7 +197,7 @@ public class ttyReader implements  SerialPortEventListener {
 						if (rawMode){
 							outputString+=String.format("%1$02X",inChar);
 							if (outputString.length()>9){ //assuming a card-iD is 40bits = 10 Hex chars long
-								new SendRequest(outputString);
+								new SendRequest("RF:"+outputString);
 								outputString="";
 							}
 						} else {
@@ -206,7 +207,7 @@ public class ttyReader implements  SerialPortEventListener {
 								}
 								if (inChar==10){
 									if(outputString.length()>9) {
-									new SendRequest(outputString);
+									new SendRequest("RF:"+outputString);
 									}
 									outputString="";
 								}

@@ -19,3 +19,11 @@ QuestionCloseSessionYes Aufnahme beenden
 QuestionCloseSessionNo zurück ins Programm
 ProgramQuitTitle Sync abgebrochen
 ProgramQuitText Ohne ersten Sync ist das Programm wertlos und wird beendet
+MoreAsOnePersonSelectedText Bitte wähle nur EINEN Namen aus
+MoreAsOnePersonSelected Mehr als eine Person ausgewählt
+ConfirmNewCardText Neue Karte lernen für
+ConfirmNewCard Bitte bestätigen:
+LastCardText Letzte erkannte Karte:
+UnkownCard Unbekannte Karte!
+YesPlease Ja, bitte
+Cancel Abbrechen

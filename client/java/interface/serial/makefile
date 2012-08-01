@@ -1,13 +1,14 @@
-all: ttyReader.class
+all: ttyReader.jar
+
+ttyReader.jar: ttyReader.class
+	jar -cvmf MANIFEST.MF ttyReader.jar *.class lib
 
 ttyReader.class: ttyReader.java
 	javac -extdirs lib/ ttyReader.java
 
 
+
+
 run:
-	java -cp lib/comm.jar:. -Djava.library.path=lib/ ttyReader
+	java -jar ttyReader.jar
 
-jar: ttyReader.jar
-
-ttyReader.jar: ttyReader.class lib/comm.jar lib/javax.comm.properties lib/libLinuxSerialParallel.so
-	jar cmf Manifest.txt  ttyReader.jar lib gnu librxtxSerial.so rxtxSerial.dll *.class *.props *.lang
