@@ -63,7 +63,7 @@
 	$printText=array();
 	$printText[0]= $firstName . " " . $lastName; // Name
 	$printText[1]= $birthday . " " . $mitgliedsNr; // Description Text
-	$printText[3]=substr(md5($a_user_id),-10); // QRCode Description Text
+	$printText[3]= strtoupper(substr(md5($a_user_id),-10)); // QRCode Description Text
 	$printText[2]= "KLOBS".$printText[3]; // QRCode content
 	$printText[4]= $firstName . " " . $lastName . "(".$thisDate.")"; // QRCode add. Text
 

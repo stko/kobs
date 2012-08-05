@@ -1,0 +1,13 @@
+#QRCodeReader.props
+# Configfile for the KLOBS QR-Code  Reader
+# the following setting are also the defaults
+# to change, uncomment and change the values
+
+
+# the IP address or Hostname the read string is send to via UDP
+#HostName 127.0.0.1
+
+# the port 
+#HostPort 3305
+
+
