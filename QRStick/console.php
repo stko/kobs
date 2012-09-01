@@ -13,9 +13,9 @@ class Stitch
 	}
 	public function dump() {
 		if ($this->jump==true){
-			echo "jump to {$this->x},{$this->x}\n";
+			echo "jump to {$this->x},{$this->y}\n";
 		}else{
-			echo "stitch to {$this->x},{$this->x}\n";
+			echo "stitch to {$this->x},{$this->y}\n";
 
 		}
 	}
@@ -68,8 +68,10 @@ class Cell
 	}
 
     	public function createPatch(&$patchField) {
-		echo "Create patch\n";
-		$patchField[]=new Patch($this->x,$this->y,1,1);
+		if ($this->value){
+			echo "Create patch\n";
+			$patchField[]=new Patch($this->x,$this->y,1,1);
+		}
 	}
 	
 
