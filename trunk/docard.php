@@ -63,7 +63,24 @@
 	$printText=array();
 	$printText[0]= $firstName . " " . $lastName; // Name
 	$printText[1]= $birthday . " " . $mitgliedsNr; // Description Text
-	$printText[3]= strtoupper(substr(md5($a_user_id),-10)); // QRCode Description Text
+	// Construct the QRCode out "normalized" first name, last name and birthday
+	$normFirstName = mb_convert_encoding($firstName, "ISO-8859-1", "UTF-8"); //convert name from internal format to UTF8
+	$normLastName = mb_convert_encoding($lastName, "ISO-8859-1", "UTF-8"); //convert name from internal format to UTF8
+	$normBirthday = $row["birthday"]; // use international YY-MM-DD format for birthday
+	//---------------------------------------------------------
+	// The choosen key to generate a (hopefully) unique QRCode for a person is as follows
+	//
+	//  code1 = first name (in UTF8) + last name (in UTF8) + birthday (in YY-MM-DD format)
+	//
+	//  code2 = md5sum(code1)
+	//
+	//  code3 = last 10 characters of code2 (to not make the QRCode too big)
+	//
+	//  final QRCode = UPPERString ( code3) (for better reability on print)
+	//
+	//---------------------------------------------------------
+
+	$printText[3]= strtoupper(substr(md5($normFirstName.$normLastName.$normBirthday),-10)); // QRCode Description Text
 	$printText[2]= "KLOBS".$printText[3]; // QRCode content
 	$printText[4]= $firstName . " " . $lastName . "(".$thisDate.")"; // QRCode add. Text
 
