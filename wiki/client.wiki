@@ -1,6 +1,6 @@
 = KLOBS vor Ort =
 
-Der Vor-Ort-Teil von KLOBS (der sog. CLient) ist in Java geschrieben und läuft damit auf Windows, Mac und Linux. Lediglich die Treiberanbindung des USB- Kartenlesers läuft zur Zeit nur unter Linux, aber das Programm funktioniert auch durchaus ohne, wenn man die Anwesenden von Hand eingibt.
+Der Vor-Ort-Teil von KLOBS (der sog. CLient) ist in Java geschrieben und läuft damit auf Windows, Mac und Linux. Optional kann man Mitgliederkarten per RFID- Kartenleser oder per Laptop-Webcam direkt einlesen, aber das Programm funktioniert auch durchaus manuell, wenn man die Anwesenden von Hand eingibt.
 
 http://kobs.googlecode.com/svn/trunk/docs/images/client_list.png
 
@@ -34,7 +34,7 @@ Falls notwendig, kann man die Einträge auch direkt vor Ort ändern, einfach die
 
 
 == Anmelden von neuen Karten ==
-Hat ein Mitglied eine neue Chipkarte, klickt man einfach in die Zelle für seine Kartennummer und hält die Karte vor's Lesegerät. Die dann vom Leser kommende Kartennummer wird dann dem Mitglied zugeordnet. Danach sollte man aber aus der Spalte wieder "rausklicken", damit nicht die nächste kommende Karte auch wieder diesem Mitglied zugeordnet wird.
+Hat ein Mitglied eine neue Chipkarte, geht man mit dem Cursor in seine Zeile, klickt auf "neue Karte" und hält die Karte vor's Lesegerät. Die dann vom Leser kommende Kartennummer wird dann dem Mitglied zugeordnet. 
 
 Hatte ein anderes Mitglied diese Kartennummer vorher, wird sie dort gelöscht.
 
