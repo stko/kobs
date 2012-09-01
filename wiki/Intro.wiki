@@ -7,6 +7,10 @@ Sorry, as Admidio & KLOBS are mainly used in germany, the docu is also in german
 KLOBS steht für den "Kartenleser ohne besonderen Schwierigkeitsgrad". Damit ist die Möglichkeit gemeint, schnell und komfortabel beim Sporttraining aufnehmen zu können, wer mit dabei ist und welche Trainingseinheiten gemacht wurden.
 
 
+KLOBS ist dabei eine Ergänzung (neudeutsch Add-On) zu dem Vereinsverwaltungsprogramm [http://admidio.de Admidio]. Admidio läuft zentral auf einem [server Webserver], KLOBS dagegen kommt als [client Client] per Laptop "mit zum Training" und schreibt vor Ort mit.
+
+
+
 http://kobs.googlecode.com/svn/trunk/docs/images/client_list.png
 
 Daraus kann dann für jeden sein persönliches Trainingsprofil erstellt werden.
@@ -14,4 +18,6 @@ Daraus kann dann für jeden sein persönliches Trainingsprofil erstellt werden.
 
 http://kobs.googlecode.com/svn/trunk/docs/images/web_myinfo.png
 
-KLOBS teilt sich in eine [client Client- Anwendung] direkt beim Training und eine [server Server-Anbindung] zum Speichern und Auswerten der Daten.
+
+
+Entweder notiert man händisch am Laptop, wer da ist, aber wenn man's etwas komfortabler möchte, dann kann man entweder über einen RFID- Kartenleser oder neuerdings sogar, wenn der Laptop eine Webcam eingebaut hat, per QRCode Mitgliederkarten einlesen, die sich per Webabruf jedes Mitglied selber drucken kann.
