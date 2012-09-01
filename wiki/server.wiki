@@ -6,7 +6,7 @@ Dies unterteilt sich grob in zwei Bereiche:
 
 == Verwaltung der Mitglieder ==
 
-Die Verwaltung der Mitgliederdaten ist einfach, weil unabhängig von KLOBS: KLOBS hängt sich ja an eine bestehende [http://www.admidio.de Admidio- Installation], und da drin spielt sich die komplette Mitgliederverwaltung ab. Dabei ist lediglich zu beachten, daß man die Standard- Datenfelder, wie unter [setup Setup] beschrieben, um ein paar Felder ergänzen muß, damit KLOBS bestimmte Informationen auch findet.
+Die Verwaltung der Mitgliederdaten ist einfach, weil unabhängig von KLOBS: KLOBS hängt sich ja an eine bestehende [http://www.admidio.de Admidio- Installation], und da drin spielt sich die komplette Mitgliederverwaltung ab. Dabei ist lediglich zu beachten, daß man die Standard- Datenfelder, wie unter [installation Server Installation] beschrieben, um ein paar Felder ergänzen muß, damit KLOBS bestimmte Informationen auch findet.
 
 Die einzige Ausnahme wäre die
 
