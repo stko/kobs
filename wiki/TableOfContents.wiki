@@ -2,9 +2,9 @@
   * [client Das Programm vor Ort]
   * [server Die Verwaltung auf dem Server]
   * Setup
-    * [installation Installation des Servers]
-    * [rfid_cardreader Der RFID- Kartenleser]
-    * [qrcode_cardreader Der QRCode- Kartenleser]
     * [client_installation  Installation & Update des Clients]
+    * [qrcode_cardreader Der QRCode- Kartenleser]
+    * [rfid_cardreader Der RFID- Kartenleser]
+    * [installation Installation des Servers]
     * [config Einstellungen]
     * [develop Developer-Infos]
