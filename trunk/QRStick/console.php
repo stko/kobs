@@ -1,6 +1,19 @@
 <?php
 require_once('../QRgen/qrcode.php');
 
+define("STITCHSIZE_X",5.0)
+define("STITCHSIZE_Y",5.0)
+define("MAXJUMP_X",12.5)
+define("MAXJUMP_Y",12.5)
+
+$lastPosX=0.0;
+$lastPosY=0.0;
+
+
+function verbose($text){
+  fwrite(STDERR,$text);
+}
+
 class Stitch
 {
 	private $x=0;
@@ -13,9 +26,26 @@ class Stitch
 	}
 	public function dump() {
 		if ($this->jump==true){
-			echo "jump to {$this->x},{$this->y}\n";
+			verbose ("jump to {$this->x},{$this->x}\n");
+
 		}else{
-			echo "stitch to {$this->x},{$this->y}\n";
+			verbose( "stitch to {$this->x},{$this->x}\n");
+
+		}
+	}
+
+	public function stitch() {
+		$newPosX=$this->x*STITCHSIZE_X;
+		$newPosY=$this->y+STITCHSIZE_Y;
+		while (abs($newPosX -$lastPosX ) > MAXJUMP_X or abs($newPosY -$lastPosY ) > MAXJUMP_X ){
+		}
+		// jump in steps to new position..
+		if ($this->jump==true){
+			verbose ("jump to {$this->x},{$this->x}\n");
+			fprintf("%02X 
+
+		}else{
+			verbose( "stitch to {$this->x},{$this->x}\n");
 
 		}
 	}
@@ -35,7 +65,7 @@ class Patch
 		$this->height=$height;
 	}
 	public function stitch(&$stitchList) {
-		echo "create stitches\n";
+		verbose( "create stitches\n");
 		$stitchList[]=new Stitch(true, $this->x,$this->y);
 		$stitchList[]=new Stitch(false, $this->x+$this->width,$this->y+$this->height);
 	}
@@ -61,29 +91,27 @@ class Cell
 
 	public function displayVar() {
 		if ($this->value){
-			echo $this->text_1_Value;
+			verbose( $this->text_1_Value);
 		}else{
-			echo $this->text_0_Value;
+			verbose( $this->text_0_Value);
 		}
 	}
 
     	public function createPatch(&$patchField) {
-		if ($this->value){
-			echo "Create patch\n";
-			$patchField[]=new Patch($this->x,$this->y,1,1);
-		}
+		verbose( "Create patch\n");
+		$patchField[]=new Patch($this->x,$this->y,1,1);
 	}
 	
 
 }
 
 
-echo '--------'."\n".'QR Code Generator'."\n".'--------'."\n";
+verbose( '--------'."\n".'QR Code Generator'."\n".'--------'."\n");
 $a = new QR(trim($argv[1]));
 print_r ($a);
 $text=$a->text(false);
-echo $text;
-echo "\n";
+verbose( $text);
+verbose( "\n");
 $size=$a->dim;
 $bitField=array();
 $patchField=array();
@@ -103,21 +131,21 @@ for ($i=0;$i<$size+1;$i++){
 for ( $y = 0 ; $y < $size ; $y ++ ){
 	for ( $x = 0 ; $x < $size ; $x ++ ){
 		if (substr($a->img[$y],$x,1)=="1"){
-			echo "**";
+			verbose( "**");
 			$bitField[$x][$y]=new cell($bitField,$x,$y,true);		
 		}else{
-			echo "  ";		
+			verbose( "  ");		
 			$bitField[$x][$y]=new cell($bitField,$x,$y,false);		
 		}
 	}
-	echo "\n";
+	verbose( "\n");
 }
 //---- Just dump the bitField 
 for ( $y = 0 ; $y < $size ; $y ++ ){
 	for ( $x = 0 ; $x < $size ; $x ++ ){
 		$bitField[$x][$y]->displayVar();
 	}
-	echo "\n";
+	verbose( "\n");
 }
 
 //---- Let the bitfield create the patchfield
