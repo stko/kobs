@@ -1,10 +1,10 @@
 <?php
 require_once('../QRgen/qrcode.php');
 
-define("STITCHSIZE_X",5.0)
-define("STITCHSIZE_Y",5.0)
-define("MAXJUMP_X",12.5)
-define("MAXJUMP_Y",12.5)
+define("STITCHSIZE_X",5.0);
+define("STITCHSIZE_Y",5.0);
+define("MAXJUMP_X",12.5);
+define("MAXJUMP_Y",12.5);
 
 $lastPosX=0.0;
 $lastPosY=0.0;
@@ -34,20 +34,67 @@ class Stitch
 		}
 	}
 
+      function formatStitchValue($value){
+	    if ($value<0 ){
+		return chr(intval($value)+256);
+	    }else{
+		return chr(intval($value));
+	    }
+	}
+
 	public function stitch() {
+		global $lastPosX;
+		global $lastPosY;
 		$newPosX=$this->x*STITCHSIZE_X;
-		$newPosY=$this->y+STITCHSIZE_Y;
+		$newPosY=$this->y*STITCHSIZE_Y;
+		verbose ("try to reach  $newPosX , $newPosY from $lastPosX , $lastPosY\n");
 		while (abs($newPosX -$lastPosX ) > MAXJUMP_X or abs($newPosY -$lastPosY ) > MAXJUMP_X ){
+			$jumpX=0.0;
+			$jumpY=0.0;
+			if (abs($newPosX -$lastPosX ) > MAXJUMP_X ){
+				$jumpX= MAXJUMP_X * abs($newPosX -$lastPosX )/($newPosX -$lastPosX );
+			}else{
+				$jumpX= $newPosX -$lastPosX ;
+			}
+			if (abs($newPosY -$lastPosY ) > MAXJUMP_Y ){
+				$jumpY= MAXJUMP_Y * abs($newPosY -$lastPosY )/($newPosY -$lastPosY );
+			}else{
+				$jumpY= $newPosY -$lastPosY ;
+			}
+			verbose ("Big jump by $jumpX,$jumpY\n");
+			if ($this->jump==true){
+				fwrite(STDOUT,chr(0x80));
+				fwrite(STDOUT,chr(0x02));
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10/2));
+			}else{
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10));
+			}
+			$lastPosX += $jumpX;
+			$lastPosY += $jumpY;
 		}
-		// jump in steps to new position..
-		if ($this->jump==true){
-			verbose ("jump to {$this->x},{$this->x}\n");
-			fprintf("%02X 
-
-		}else{
-			verbose( "stitch to {$this->x},{$this->x}\n");
-
+		
+		if (abs($newPosX -$lastPosX ) > 0 or abs($newPosY -$lastPosY ) > 0 ){
+			$jumpX= $newPosX -$lastPosX ;
+			$jumpY= $newPosY -$lastPosY ;
+			verbose ("Last goal jump by $jumpX,$jumpY\n");
+			if ($this->jump==true){
+				fwrite(STDOUT,chr(0x80));
+				fwrite(STDOUT,chr(0x02));
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10/2));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10/2));
+			}else{
+				fwrite(STDOUT,$this->formatStitchValue($jumpX*10));
+				fwrite(STDOUT,$this->formatStitchValue($jumpY*10));
+			}
 		}
+		$lastPosX=$newPosX;
+		$lastPosY=$newPosY;
 	}
 
 }
@@ -98,8 +145,10 @@ class Cell
 	}
 
     	public function createPatch(&$patchField) {
-		verbose( "Create patch\n");
-		$patchField[]=new Patch($this->x,$this->y,1,1);
+		if ($this->value){
+			verbose( "Create patch\n");
+			$patchField[]=new Patch($this->x,$this->y,1,1);
+		}
 	}
 	
 
@@ -108,7 +157,7 @@ class Cell
 
 verbose( '--------'."\n".'QR Code Generator'."\n".'--------'."\n");
 $a = new QR(trim($argv[1]));
-print_r ($a);
+//print_r ($a);
 $text=$a->text(false);
 verbose( $text);
 verbose( "\n");
@@ -160,7 +209,7 @@ foreach ($patchField as $patch){
 }
 // dump the $stitchlist
 foreach ($stitchList as $stitch){
-	$stitch->dump();
+	$stitch->stitch();
 }
 
 ?>
