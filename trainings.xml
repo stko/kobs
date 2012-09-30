@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <trainings>
   <typ>
     <name>Anwesend</name>
@@ -12,7 +13,7 @@
     </subtyp>
   </typ>
   <typ>
-    <name>Prüfung</name>
+    <name>Pr&#xFC;fung</name>
     <id>2</id>
     <subtyp>
       <name>10. Kiu</name>
@@ -96,7 +97,7 @@
     </subtyp>
   </typ>
  <typ>
-    <name>Vorprüfung</name>
+    <name>Vorpr&#xFC;fung</name>
     <id>3</id>
     <subtyp>
       <name>10. Kiu</name>
@@ -143,8 +144,34 @@
     <name>Lehrgang</name>
     <id>4</id>
     <subtyp>
-      <name>Prüfungsvorbereitung</name>
+      <name>Pr&#xFC;fungsvorbereitung</name>
       <id>0</id>
+    </subtyp>
+  </typ><typ>
+    <name>Turnier</name>
+    <id>5</id>
+    <subtyp>
+      <name>Nationales Turnier</name>
+      <id>0</id>
+    </subtyp>
+    <subtyp>
+      <id>1</id>
+      <name>Internationales Turnier</name>
+    </subtyp><subtyp>
+      <id>2</id>
+      <name>Internationale Meisterschaft</name>
+    </subtyp><subtyp>
+      <id>3</id>
+      <name>Landes- Meisterschaft</name>
+    </subtyp><subtyp>
+      <id>4</id>
+      <name>Deutsche Meisterschaft</name>
+    </subtyp><subtyp>
+      <id>5</id>
+      <name>Europa- Meisterschaft</name>
+    </subtyp><subtyp>
+      <id>6</id>
+      <name>Welt- Meisterschaft</name>
     </subtyp>
   </typ>
 </trainings>
