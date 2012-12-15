@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <trainings>
   <typ>
     <name>Anwesend</name>
@@ -13,7 +12,7 @@
     </subtyp>
   </typ>
   <typ>
-    <name>Pr&#xFC;fung</name>
+    <name>Prüfung</name>
     <id>2</id>
     <subtyp>
       <name>10. Kiu</name>
@@ -97,7 +96,7 @@
     </subtyp>
   </typ>
  <typ>
-    <name>Vorpr&#xFC;fung</name>
+    <name>Vorprüfung</name>
     <id>3</id>
     <subtyp>
       <name>10. Kiu</name>
@@ -144,7 +143,7 @@
     <name>Lehrgang</name>
     <id>4</id>
     <subtyp>
-      <name>Pr&#xFC;fungsvorbereitung</name>
+      <name>Prüfungsvorbereitung</name>
       <id>0</id>
     </subtyp>
   </typ><typ>

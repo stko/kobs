@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <orte>
   <ort>
     <ort_id>1</ort_id>
@@ -14,15 +13,15 @@
   </ort>
   <ort>
     <ort_id>4</ort_id>
-    <name>Grundschule Haasenstra&#xDF;e, Brake</name>
+    <name>Grundschule Haasenstraße, Brake</name>
   </ort>
   <ort>
     <ort_id>5</ort_id>
-    <name>Grundschule Kantstra&#xDF;e, Brake</name>
+    <name>Grundschule Kantstraße, Brake</name>
   </ort>
   <ort>
     <ort_id>6</ort_id>
-    <name>Grundschule, Ovelg&#xF6;nne</name>
+    <name>Grundschule, Ovelgönne</name>
   </ort>
   <!-- Platzhalter ID 7 - 20 -->
   <ort>
@@ -39,7 +38,7 @@
     <name>Schleswig-Holstein</name>
   </ort><ort>
     <ort_id>25</ort_id>
-    <name>Baden-W&#xFC;rttemberg</name>
+    <name>Baden-Württemberg</name>
   </ort><ort>
     <ort_id>26</ort_id>
     <name>Bayern</name>
@@ -72,10 +71,10 @@
     <name>Sachsen-Anhalt</name>
   </ort><ort>
     <ort_id>36</ort_id>
-    <name>Th&#xFC;ringen</name>
+    <name>Thüringen</name>
   </ort><ort>
     <ort_id>37</ort_id>
-    <name>D&#xE4;nemark</name>
+    <name>Dänemark</name>
   </ort><ort>
     <ort_id>38</ort_id>
     <name>Holland</name>
@@ -85,5 +84,8 @@
   </ort><ort>
     <ort_id>40</ort_id>
     <name>USA</name>
+  </ort><ort>
+    <ort_id>41</ort_id>
+    <name>Belgien</name>
   </ort>
 </orte>
