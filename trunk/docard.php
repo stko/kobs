@@ -19,6 +19,32 @@
 
 	$a_user_id = $g_current_user->getValue("usr_id");
 
+	// Ist der User Mitglied der $klobs_trainer- Rolle?
+	$sql    = "SELECT ". TBL_USERS.".usr_login_name
+	FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
+	WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
+	AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
+	AND ". TBL_ROLES . ".rol_name = \"".$klobs_trainer."\"
+	AND ". TBL_USERS.".usr_id = ".$a_user_id."";
+
+
+
+	$dates_result = $g_db->query($sql);
+	$row = $g_db->fetch_array($dates_result);
+
+
+	$isTrainer=count($row)>1;
+
+
+	$showID=$_REQUEST["showID"];
+	if (!isset($showID) || !is_numeric($showID) || !$isTrainer) {
+		$showID=$a_user_id; //default
+	}
+
+
+	// create dedicated user data
+	$showUser=new User($g_db);
+	$showUser->getUser($showID);
 
 
 	$sql = "SELECT
@@ -30,18 +56,18 @@
 		FROM ". TBL_USERS . "
 		LEFT JOIN ". TBL_USER_DATA. " as last_name
 		ON last_name.usd_usr_id = usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		AND last_name.usd_usf_id = ". $showUser->getProperty("Nachname", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as first_name
 		ON first_name.usd_usr_id = usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		AND first_name.usd_usf_id = ". $showUser->getProperty("Vorname", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as birthday
 		ON birthday.usd_usr_id = usr_id
-		AND birthday.usd_usf_id = ". $g_current_user->getProperty("Geburtstag", "usf_id"). "
+		AND birthday.usd_usf_id = ". $showUser->getProperty("Geburtstag", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as mitgliedsnummer
 		ON mitgliedsnummer.usd_usr_id = usr_id
-		AND mitgliedsnummer.usd_usf_id = ". $g_current_user->getProperty("Mitgliedsnummer", "usf_id"). "
+		AND mitgliedsnummer.usd_usf_id = ". $showUser->getProperty("Mitgliedsnummer", "usf_id"). "
 		WHERE usr_valid = 1
-		AND usr_id = ".$a_user_id;
+		AND usr_id = ".$showID;
 
 
 	$result_user = $g_db->query($sql);
@@ -85,9 +111,9 @@
 	$printText[4]= $firstName . " " . $lastName . "(".$thisDate.")"; // QRCode add. Text
 
 	// get the picture
-	if(strlen($g_current_user->getValue("usr_photo")) > 0)
+	if(strlen($showUser->getValue("usr_photo")) > 0)
 	{
-		$printText[5]= $g_current_user->getValue("usr_photo");
+		$printText[5]= $showUser->getValue("usr_photo");
 	}
 	else
 	{
