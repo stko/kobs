@@ -35,6 +35,9 @@ $klobs_location_file = "locations.xml";
 // Definiert die Überschrift auf der MyInfo-Seite
 $klobs_myinfo_header = "Shojikido.de: Deine pers&ouml;nlichen Trainingsdaten im &Uuml;berblick";
 
+// Definiert die Überschrift auf der printCard-Seite
+$klobs_printCards_header = "Shojikido.de: Druck der Mitglieder-Karten";
+
 // Gibt die indexnummer an, die in "trainings.xml" fuer Prüfungen vergeben ist
 $trainings_type_audit = 2;
 
