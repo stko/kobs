@@ -15,7 +15,7 @@ $klobs_trainer = "Trainer";
 
 // Gibt den Namen der Rolle an, die ein User braucht, damit er im Klobs-Client aufgelistet wird und so
 // z.B. Ehemalige unterdrückt werden 
-$klobs_member = "Mitglied";
+$klobs_member = "Mitglieder";
 
 // Gibt den Namen des Feldes an, in der sich die Kartennummer befindet
 $klobs_card = "Kartennummer";
