@@ -146,6 +146,10 @@
       <name>Prüfungsvorbereitung</name>
       <id>0</id>
     </subtyp>
+    <subtyp>
+      <name>Lehrgang</name>
+      <id>1</id>
+    </subtyp>
   </typ><typ>
     <name>Turnier</name>
     <id>5</id>
