@@ -1,0 +1,74 @@
+# KLOBS vor Ort #
+
+Der Vor-Ort-Teil von KLOBS (der sog. CLient) ist in Java geschrieben und läuft damit auf Windows, Mac und Linux. Optional kann man Mitgliederkarten per RFID- Kartenleser oder per Laptop-Webcam direkt einlesen, aber das Programm funktioniert auch durchaus manuell, wenn man die Anwesenden von Hand eingibt.
+
+![http://kobs.googlecode.com/svn/trunk/docs/images/client_list.png](http://kobs.googlecode.com/svn/trunk/docs/images/client_list.png)
+
+
+## Syncronisation ##
+
+Vor der ersten Benutzung des Clients und immer dann, wenn man erfasste Daten auf den Server transferieren möchte, muß man eine Syncronisation machen. Dabei werden dann alle Daten zwischen dem Client und dem Server hin- und her aktualisiert.
+
+Beim ersten Synconisieren wird man auch nach dem URL der Sync- Schnittstelle gefragt; hier nimmt man dann
+
+> `<mein_eigener_server>/admidio/adm_program/module/kobs/syncklobs.php`
+
+und der User, der den Sync versucht, muß in der Admidio- Mitglieder-DB die Rolle "Trainer" besitzen.
+
+
+
+## Erfassen der Anwesenheiten ##
+
+Wie auf obigen Bild zu sehen, werden die Mitglieder als Tabelle dargestellt. Die gelben Zeilen zeigen an, welche Mitglieder als anwesend gelten.
+
+
+Diese Anwesenheitsmarkierung kann man an- und ausschalten, indem man die Zeile anklickt und die Leertaste drückt, oder den grossen Button oben links.
+
+
+Ebenso wird ein Mitglied als anwesend markiert, wenn er seine Chipkarte vor den Leser hält.
+
+
+## Ändern von Einträgen ##
+
+Falls notwendig, kann man die Einträge auch direkt vor Ort ändern, einfach die jeweilige Zelle anklicken und ändern, Die Änderung wird dann beim nächsten Sync auf den Server übertragen.
+
+
+## Anmelden von neuen Karten ##
+Hat ein Mitglied eine neue Chipkarte, geht man mit dem Cursor in seine Zeile, klickt auf "neue Karte" und hält die Karte vor's Lesegerät. Die dann vom Leser kommende Kartennummer wird dann dem Mitglied zugeordnet.
+
+Hatte ein anderes Mitglied diese Kartennummer vorher, wird sie dort gelöscht.
+
+
+## Erfassung von Trainingsinhalten ##
+
+Auf dem zweiten Tab des Bildschirms, "Training", gibt man die Trainingseinheiten ein
+
+![http://kobs.googlecode.com/svn/trunk/docs/images/client_training.png](http://kobs.googlecode.com/svn/trunk/docs/images/client_training.png)
+
+
+Den Ort und die Startzeit des Trainings gibt man direkt beim Programmstart an (dies kann man später im Menü unter "Set Date..." jederzeit nochmal ändern).
+
+
+Im Trainingseditor links sieht mal in einer Baumstrukur zwei verschiedene Arten von Elementen:
+
+  * ![http://kobs.googlecode.com/svn/trunk/client/java/application/Kobs/src/klobs/resources/clock_32.png](http://kobs.googlecode.com/svn/trunk/client/java/application/Kobs/src/klobs/resources/clock_32.png) Zeiträume
+  * ![http://kobs.googlecode.com/svn/trunk/client/java/application/Kobs/src/klobs/resources/flag_32.png](http://kobs.googlecode.com/svn/trunk/client/java/application/Kobs/src/klobs/resources/flag_32.png) Aktivitäten
+
+
+Dieses Baum muß man sich jetzt ungefähr so vorstellen: Während eines Trainings können sich ja mehrere Gruppen bilden, die jede für sich trainieren, aber unterm Strich ist jeder immer beschäftigt.
+
+Das wird im Baum so dargestellt, daß sich die gesamte Trainingszeit, wenn notwendig, in mehrere Zeiträume unterteilen läßt. In jedem Zeitraum können beliebig viele Aktivitäten parallel laufen, es können darin auch weitere Zeiträume enthalten sein, wenn sich z.B. eine einzelne Gruppe noch weiter unterteilt.
+
+
+Für den gesamten Ablauf gelten zwei Regeln:
+  * bei jeder Aktivität muß mindenstens einer mitmachen
+  * pro Zeitraum müssen alle Anwesenden beschäftigt sein, es darf keiner nur rumstehen.
+
+
+Werden diese Regeln verletzt, werden die jeweiligen Zeiträume bzw. Aktivitäten rot dargestellt als Hinweis, das hier etwas nicht stimmt.
+
+
+Um nun die einzelnen Aktivitäten mit Teilnehmern zu füllen, dient der rechte Bereich des Fensters. Klickt man eine Aktiviät an, wird rechts dargestellt, wer von den Anwesenden schon an der Aktivität teilnimmt und wer zu dem Zeitpunkt noch nicht anderweitig beschäftigt ist und dieser Aktivität zugeordnet werden könnte.
+
+
+Das Ganze klingt so beschrieben natürlich erstmal ziemlich nebulös, das sollte man am besten im Programm mal in Ruhe durchspielen

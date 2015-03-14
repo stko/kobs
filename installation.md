@@ -1,0 +1,75 @@
+# Installation von KLOBS auf einem Server #
+
+## Requirements ##
+
+Zum Funktionieren benötigt KLOBS PHP und eine MySQL Datenbank -oder genauer gesagt benötigt KLOBS eine bereits funktionierende Admidio- Installation (s.u.), weil sich KLOBS dort als Modul mit einklingt und die Admidio- Daten als Basis benutzt.
+
+## Admidio auf dem Webserver installieren ##
+
+  1. Die Software auf dem Webserver ist [Admidio](http://admidio.org), aktuell angepasst auf die Version 2.09. Diese wird wie auf den Admidio- Webseiten beschrieben installiert
+
+  1. Dann wird in der Rollenverwaltung die neue Rolle "Trainer" angelegt. Alle Personen, die dieser Rolle angehören, können sich auf den Klobs- Client anmelden und dort Mitglieder editieren und Trainingsteilnehmer eintragen.
+  1. Dann bekommen die Benutzer unter "Benutzerverwaltung/Profilfelder pflegen" folgende neue Felder verpasst:
+
+|  Name          |  Datentyp  |  Für alle Sichtbar  | nur für Berechtigte editierbar   | Pflichtfeld  |  Kommentar  |
+|:---------------|:-----------|:---------------------|:----------------------------------|:-------------|:------------|
+|  Gurt          |  Text50    |    Ja               |          Ja                      |   Nein       | Dies ist das Sortierkriterium für das Klobs- Clientprogramm |
+|  Kartennummer  |  Text50    |    Nein             |          Ja                      |   Nein       | Dies ist die Chipkartennummer des Mitglieds |
+|  Passnummer  |  Text50    |    Nein             |          Ja                      |   Nein       | Die Verbands- Passnummer |
+|  Mitgliedsnummer  |  Text50    |    Nein             |          Ja                      |   Nein       | Mitgliedsnummer im Verein |
+|  Abodatum  |  Datum    |    Nein             |          Ja                      |   Nein       | Ablaufdatum des Dokumentendownloads |
+
+
+Dann können die Mitglieder als entsprechend präparierte CSV- Datei über "Benutzerverwaltung/Benutzer importieren" importiert werden. Verwendet man aber dabei bei der Wahl, was mit bestehenden Eintraägen passieren soll, die Auswahl "Benutzer behalten", klappt der Import irgendwie nicht, jedoch bei den anderen Auswahlmöglichkeiten.
+
+## Installation der Klobs PHP- Scripte ##
+
+Da (noch) kein fertiges Archiv zum Download bereitsteht, extrahiert man am besten das Entwickungs-Repository mit folgendem Befehl erst in ein leeres Verzeichnis
+
+
+> svn export http://kobs.googlecode.com/svn/trunk/ kobs
+
+und kopiert dann das dabei entstandene Verzeichnis  `kobs` in das vorher installierte Admidio- Verzeichnis auf dem Webserver, und zwar nach `adm_program/modules/`
+
+
+In dem kobs- Verzeichnis findet sich auch die Datei `adm_klobs_DBs.sql`. Diese SQL- Datei führt man dann auf dem Webserver z.B. mit myPHPAdmin aus, um die zusätzlich notwendigen Datenbanktabellen anzulegen.
+
+
+# Einstellungen in den Dateien #
+
+KLOBS benötigt im Prinzip zwei Arten von Einstellungen. Zum Einen wären das die oben beschriebenen Datenfelder im Admidio- Frontend.
+
+
+Zum anderen sind noch einige Einstellungn vonnöten, die sich nur selten ändern und nur vom Adminstrator geändert würden. Sie sind darum der Einfachheit halber als Konfigurationsdateien im kobs- Verzeichnis direkt auf dem Server zu finden bzw. zu ändern.
+
+
+Dies wären
+
+## config.php ##
+
+Die [config.php](http://code.google.com/p/kobs/source/browse/trunk/config.php) ist bereits im Quellcode so gut kommentiert, das sich hier keine weitere Erklärung lohnt.. ;-)
+
+
+## locations.xml ##
+
+Diese XML Datei [locations.xml](http://code.google.com/p/kobs/source/browse/trunk/locations.xml) enthält die Auswahl der möglichen Orte, wo normalerweise das Training stattfindet.
+
+Hier ist vor allem zu beachten, das die Orte im Programmablauf selber über ihre ID identifiziert werden, d.h. man kann zwar einerseits ihren Namen immer noch später mal verbessern, nur wenn man die ID ändert, sind alt und neu dann für das Programm auch zwei verschiedene Orte.
+
+
+## trainings.xml ##
+
+Diese XML Datei [trainings.xml](http://code.google.com/p/kobs/source/browse/trunk/trainings.xml) beschreibt, welche möglichen Trainings- bzw. Trainingsunterarten es gibt.
+
+
+Da der Typ des Trainings sich aber für unseren Sportverein auch auf die Auswertung auswirkt, gibt es bestimmte Typen, die besondere Bedeutungen haben. Dies wären
+
+### Der Anwesenheits- Typ 1 ###
+Der Typ 1 ist fest vergeben und wird grundsätzlich einmal pro Trainingstag mit abgespeichert, um anzuzeigen, das der jenige an dem Trainingstag mit dabei war. Dies braucht man für die Auswertung der Hallennutzung.
+
+### Der Prüfungs-Typ ###
+Der Prüfungs-Typ wird in der [config.php](http://code.google.com/p/kobs/source/browse/trunk/config.php) unter `$trainings_type_audit` definiert. In unserem Sportverein stellt eine Prüfung einen besonderen Meilenstein dar, an dem auch die aktuellen Lehrgangs- Zähler und Trainingseinheiten in der Auswertung wieder auf Null gesetzt werden und von dort neu begonnen werden, um zu sehen, was der Teilnehmer seit seiner letzten Prüfung schon wieder an Lehrgängen und Trainingseinheiten gemacht hat, d.h. ob er schon wieder bereit für die nächste Prüfung ist.
+
+
+### Der Lehrgangs-Typ ###
+Der Lehrgangs-Typ wird in der [config.php](http://code.google.com/p/kobs/source/browse/trunk/config.php) unter `$trainings_type_seminar` definiert. Er gibt an, welche Trainingseinheiten als Lehrgänge gezählt werden, weil bei uns eine bestimmte Anzahl von Lehrgängen Vorbedingung für die nächste Prüfung ist.

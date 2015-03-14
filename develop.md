@@ -1,0 +1,23 @@
+# KLOBS Entwickler Infos #
+Hier ist mal das aufgelistet, was wohl nur einen Programmierer interessiert...
+
+
+KLOBS ist in Java (der Client) bzw. PHP (der Server) programmiert. Klobs ist OpenSource und steht auf http://code.google.com/p/kobs zum Download bereit.
+
+
+Da KLOBS für uns das macht, für was es erdacht wurde, gibt es von Seite des Authors keine Ambitionen mehr, KLOBS noch weiter zu entwickeln. Aber der Sinn von OpenSource liegt ja insbesonders darin, bestehende Projekte übernehmen und weiterführen zu können.
+
+Falls Du also gerne KLOBS als Basis für eigene Ideen oder Vorhaben nutzen möchtest, ein Google-Account und eine kurze Email an mich genügt, und nehme Dich als Entwickler mit ins Projekt. Jede große und kleine Erweiterung ist hochwillkommen :-)
+
+
+## Zum Kartenleser ##
+
+Auch wenn es den Anschein hat, das KLOBS und der Kartenleser direkt zusammengehören, so ist dies nicht der Fall, in Wirklichkeit sind beide ziemlich voneinander getrennt.
+
+KLOBS selber lauscht nur einfach auf dem UDP- Port 3305, und alles was dort ankommt, wird als Text gewertet und als Kartennummer hergenommen.
+
+Man kann also statt eines Kartenlesers so ziemlich alles benutzen, was einem in den Sinn kommt: QRCode- Reader, Fingerabdruck-Scanner oder Bluetooth- Handy- Discovery -  solange die gefundene ID per UDP an Port 3305 geschickt wird, benutzt KLOBS dies zur Identifizierung.
+
+## und zum Schluß ... ##
+
+wer Probleme damit hat, die Aufkleber gerade auf die Chipkarten zu bekommen, empfehle ich den [Heinzelmann](http://www.koehlers.de/wiki/doku.php?id=kobsdocu:heinzelmann)
