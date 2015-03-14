@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RFID-Reader
+Comment=RFID-Reader für Klobs
+TryExec=/home/knoppix/bin/klobs/runRFID.sh
+Exec=/home/knoppix/bin/klobs/runRFID.sh
+Icon=/home/knoppix/bin/klobs/Klobslogo_RFID.xpm

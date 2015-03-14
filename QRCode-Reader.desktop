@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=QRCode-Reader
+Comment=QRCode Reader für Klobs
+TryExec=/home/knoppix/bin/klobs/runQRCode.sh
+Exec=/home/knoppix/bin/klobs/runQRCode.sh
+Icon=/home/knoppix/bin/klobs/Klobslogo_QRCode.xpm
