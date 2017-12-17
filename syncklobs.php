@@ -191,7 +191,9 @@ function updateTables($sessiondata)
 					$SQLString.=  "INSERT IGNORE INTO ".$klobs_training_table." SET ";
 					$SQLString.=  "locationId = ".mysql_real_escape_string($data->locationid)." , ";
 					$SQLString.=  "location = \"".mysql_real_escape_string($data->location)."\" , ";
-					$timestamp=strtotime ($data->date);
+					if (($timestamp = strtotime($data->date)) === false) { //in the string date a valid date?
+						$timestamp = strtotime("1.1.1970") ;
+					}
 					$my_t=getdate($timestamp);
 					$SQLString.= "timestamp = ".$timestamp." , ";
 					$SQLString.=  "year = ".$my_t["year"]." , ";
