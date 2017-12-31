@@ -11,12 +11,9 @@
  * Uebergaben:
  *
  *****************************************************************************/
-	require("../../system/common.php");
+	require_once("../../system/common.php");
 	include("./config.php");
-	require("../../system/login_valid.php");
-
-	$a_user_id = $g_current_user->getValue("usr_id");
-
+	require_once("../../system/login_valid.php");
 
 
 // Initialisierung: Usernamen mit userID abspeichern
@@ -28,15 +25,16 @@
 	    FROM ". TBL_USERS . "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = usr_id
-             AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+             AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME",  "usf_id"). "
             LEFT JOIN ". TBL_USER_DATA. " as first_name
               ON first_name.usd_usr_id = usr_id
-             AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+             AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME", "usf_id"). "
             WHERE usr_valid = 1
             ORDER BY last_name, first_name ";
 
 
-	$result_user = $g_db->query($sql);
+	$result_user = $gDb->query($sql);
+
 
 	//Öffnen der XML- Location & Trainingsinhalte- files
 
@@ -99,7 +97,9 @@
     <!--
       var list = [<?php
 	$firstname=True;
-	while($row = $g_db->fetch_array($result_user))
+	$trData=$result_user->fetchAll();
+	foreach($trData as $row)
+	//while($row = $result_user->fetch())
 	{
 		if (!$firstname){
 			echo ",";
@@ -108,18 +108,19 @@
 		}
 		echo "'".$row["last_name"].", ".$row["first_name"]."'\n";
 	}
+	//$result_user->closeCursor();
 
 ?>];
 
 	var userHash = new Object();
 <?php
-	mysql_data_seek($result_user, 0);
-	while($row = $g_db->fetch_array($result_user))
+	foreach($trData as $row)
+	//while($row = $result_user->fetch())
 	{
 		echo "userHash['".$row["last_name"].", ".$row["first_name"]."'] = '".$row["usr_id"]."';\n";
 	}
 
-?>	
+?>
       var start = function(){new Suggest.Local("text", "suggest", list);};
       window.addEventListener ?
         window.addEventListener('load', start, false) :
@@ -158,40 +159,36 @@
         <div id="contents">
 <?php
 
-	// Ist der User Mitglied der $klobs_trainer- Rolle?
-	$sql    = "SELECT ". TBL_USERS.".usr_login_name
-	FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
-	WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
-	AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
-	AND ". TBL_ROLES . ".rol_name = \"".$klobs_trainer."\"
-	AND ". TBL_USERS.".usr_id = ".$a_user_id."";
+// Darf der angemeldete User Mitglieder editieren?
+if(!$gCurrentUser->editUsers()){
+$gMessage->show("Du hast leider nicht die notwendigen Rechte, um Trainingsdaten editieren zu d&uuml;rfen..");
+}
 
 
-
-	$dates_result = $g_db->query($sql);
-	$row = $g_db->fetch_array($dates_result);
-
-	if (count($row)<2){
-		echo "Keine Zugriffsberechtigung auf diesen Bereich...<br>\n";
-		exit;
+	if (isset($_REQUEST["year"])){
+	  $year=$_REQUEST["year"];
 	}
-
-	$year=$_REQUEST["year"];
 	if (!isset($year) || !is_numeric($year)) {
 		$year=0; //default
 	}
 
-	$month=$_REQUEST["month"];
+	if (isset($_REQUEST["month"])){
+	  $month=$_REQUEST["month"];
+	}
 	if (!isset($month) || !is_numeric($month)) {
 		$month=0; //default
 	}
 
-	$action=$_REQUEST["action"];
+	if (isset($_REQUEST["action"])){
+	  $action=$_REQUEST["action"];
+	}
 	if (!isset($action)) {
 		$action=""; //default
 	}
 	
-	$tra_id=$_REQUEST["tra_id"];
+	if (isset($_REQUEST["tra_id"])){
+	  $tra_id=$_REQUEST["tra_id"];
+	}
 	if (!isset($tra_id) || !is_numeric($tra_id)) {
 		$tra_id=0; //default
 	}
@@ -204,29 +201,36 @@
 	$traTyp="";
 	$duration=0;
 	if ($tra_id!=0 && ($action=="copy" || $action=="edit")){
-		$sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.locationID as locID, training.date as date, training.typ as typ, training.subtyp as subtyp, training.duration as duration
+		$sql = "SELECT last_name.usd_value as last_name,
+		first_name.usd_value as first_name ,
+		training.tra_id as tra_id,
+		training.locationID as locID,
+		training.date as date,
+		training.typ as typ,
+		training.subtyp as subtyp,
+		training.duration as duration
 
 
 		FROM ". TBL_USERS. "
 		LEFT JOIN ". TBL_USER_DATA. " as last_name
 		ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as first_name
 		ON first_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME", "usf_id"). "
 		JOIN " . $klobs_training_table . " as training
 		ON training.usr_Id = ". TBL_USERS. ".usr_id
 		WHERE tra_id = ". $tra_id;
 
 
-		$db_result = $g_db->query($sql);
-		while($row = $g_db->fetch_array($db_result)) //kind of senseless, as this result should only have one row, but...
+		$db_result = $gDb->query($sql);
+		while($row = $db_result->fetch()) //kind of senseless, as this result should only have one row, but...
 		{
-			$memberText=$row[last_name].", ".$row[first_name];
-			$locID=$row[locID];
-			$date=$row[date];
-			$traTyp=$row[typ].":".$row[subtyp];
-			$duration=$row[duration];
+			$memberText=$row['last_name'].", ".$row['first_name'];
+			$locID=$row['locID'];
+			$date=$row['date'];
+			$traTyp=$row['typ'].":".$row['subtyp'];
+			$duration=$row['duration'];
 		}
 	}
 ?>
@@ -245,23 +249,23 @@ $sql = "SELECT DISTINCT training.year as year
 	FROM ".$klobs_training_table . " as training ORDER BY year";
 
 
-	$db_result = $g_db->query($sql);
+	$db_result = $gDb->query($sql);
 	echo "<ul>\n";
-	while($row = $g_db->fetch_array($db_result))
+	while($row = $db_result->fetch())
 	{
-		if ($row[year]==$year){
-			echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."\">".$row[year]."</a><br><ul>\n";
+		if ($row['year']==$year){
+			echo "<li><a href=\"".$_SERVER['PHP_SELF']."?year=".$row['year']."\">".$row['year']."</a><br><ul>\n";
 			$sql = "SELECT DISTINCT training.mon as mon
 			FROM ".$klobs_training_table . " as training WHERE training.year = ".$year." ORDER BY mon";
-			$db_result2 = $g_db->query($sql);
-			while($row2 = $g_db->fetch_array($db_result2))
+			$db_result2 = $gDb->query($sql);
+			while($row2 = $db_result2->fetch())
 			{
-				echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."&month=".$row2[mon]."\">Monat ".$row2[mon]."</a></li>\n";
+				echo "<li><a href=\"".$_SERVER['PHP_SELF']."?year=".$row['year']."&month=".$row2['mon']."\">Monat ".$row2['mon']."</a></li>\n";
 			}
 			
 			echo "</ul></li>\n";
 		}else{
-			echo "<li><a href=\"".$_SERVER[´PHP_SELF´]."?year=".$row[year]."\">".$row[year]."</a></li>\n";
+			echo "<li><a href=\"".$_SERVER['PHP_SELF']."?year=".$row['year']."\">".$row['year']."</a></li>\n";
 		}
 	}
 	echo "</ul>\n";
@@ -271,16 +275,30 @@ $sql = "SELECT DISTINCT training.year as year
 
 	if ($year!=0 & $month!=0){
 	//Falls gefordert, aufrufen alle Leute aus der Datenbank
-		$sql = "SELECT last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.deleted as deleted, training.location as location,training.locationID as locID, training.date as date, training.year as year, training.mon as mon, training.mday as mday, training.wday as wday, training.typ as typ, training.subtyp as subtyp, training.trainerid as trainerid, training.duration as duration
+		$sql = "SELECT last_name.usd_value as last_name,
+		first_name.usd_value as first_name ,
+		training.tra_id as tra_id,
+		training.deleted as deleted,
+		training.location as location,
+		training.locationID as locID,
+		training.date as date,
+		training.year as year,
+		training.mon as mon,
+		training.mday as mday,
+		training.wday as wday,
+		training.typ as typ,
+		training.subtyp as subtyp,
+		training.trainerid as trainerid,
+		training.duration as duration
 
 
 		FROM ". TBL_USERS. "
 		LEFT JOIN ". TBL_USER_DATA. " as last_name
 		ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as first_name
 		ON first_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME", "usf_id"). "
 		JOIN " . $klobs_training_table . " as training
 		ON training.usr_Id = ". TBL_USERS. ".usr_id
 		WHERE usr_valid = 1 
@@ -289,7 +307,7 @@ $sql = "SELECT DISTINCT training.year as year
 		ORDER BY last_name, first_name ";
 
 
-		$db_result = $g_db->query($sql);
+		$db_result = $gDb->query($sql);
 
 		//Beginn der Ausgabe
 ?>
@@ -387,7 +405,7 @@ $sql = "SELECT DISTINCT training.year as year
 		echo "<th>Copy</th>";
 		echo "<th>Delete</th>";
 		echo "</tr>";
-		while($row = $g_db->fetch_array($db_result))
+		while($row = $db_result->fetch())
 		{
 		/*	foreach ($row as $key => $value){
 			if (!is_numeric($key)) {
@@ -397,18 +415,18 @@ $sql = "SELECT DISTINCT training.year as year
 		echo "---\n";
 		*/
 		echo "<tr>";
-		echo "<td bgcolor=\"#E0E0E0\">".$row[last_name].", ".$row[first_name]."</td>\n";
-		echo "<td>".$locationHash[$row[locID]]."</td>\n";
-		echo "<td bgcolor=\"#E0E0E0\">".$row[date]."</td>\n";
-		echo "<td>".$trainingHash[$row[typ].":".$row[subtyp]]."</td>\n";
-		echo "<td bgcolor=\"#E0E0E0\">".$row[duration]." min</td>\n";
-		echo "<td  align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=edit&tra_id=".$row[tra_id]."\"><img src=\"edit.gif\" border=\"0\" alt=\"Edit\"></a></td>\n";
-		echo "<td align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=copy&tra_id=".$row[tra_id]."\"><img src=\"copy.gif\" border=\"0\" alt=\"Copy\"></a></td>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row['last_name'].", ".$row['first_name']."</td>\n";
+		echo "<td>".$locationHash[$row['locID']]."</td>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row['date']."</td>\n";
+		echo "<td>".$trainingHash[$row['typ'].":".$row['subtyp']]."</td>\n";
+		echo "<td bgcolor=\"#E0E0E0\">".$row['duration']." min</td>\n";
+		echo "<td  align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=edit&tra_id=".$row['tra_id']."\"><img src=\"edit.gif\" border=\"0\" alt=\"Edit\"></a></td>\n";
+		echo "<td align=\"center\" valign=\"middle\"><a href=\"".$_SERVER['PHP_SELF']."?year=".$year."&month=".$month."&action=copy&tra_id=".$row['tra_id']."\"><img src=\"copy.gif\" border=\"0\" alt=\"Copy\"></a></td>\n";
 		echo "<td align=\"center\" valign=\"middle\">\n";
-		if ($row[deleted]==1){
-			echo "<a href=\"edit.php?action=undel&tra_id=".$row[tra_id]."\"><img src=\"undelete.gif\" border=\"0\" alt=\"Undelete\"></a>\n";
+		if ($row['deleted']==1){
+			echo "<a href=\"edit.php?action=undel&tra_id=".$row['tra_id']."\"><img src=\"undelete.gif\" border=\"0\" alt=\"Undelete\"></a>\n";
 		}else{
-			echo "<a href=\"edit.php?action=del&tra_id=".$row[tra_id]."\"><img src=\"delete.gif\" border=\"0\" alt=\"Delete\"></a>\n";
+			echo "<a href=\"edit.php?action=del&tra_id=".$row['tra_id']."\"><img src=\"delete.gif\" border=\"0\" alt=\"Delete\"></a>\n";
 		}
 		echo "</td>\n";
 		echo "</tr>";
@@ -422,7 +440,7 @@ $sql = "SELECT DISTINCT training.year as year
 
 
 ?>
-<hr><center><small>powered by <a href="http://kobs.googlecode.com">KLOBS</a></small></center>
+<hr><center><small>powered by <a href="https://github.com/stko/kobs">KLOBS</a></small></center>
 </div>
 </div>
 </div>

@@ -18,7 +18,7 @@ class MYPDF extends TCPDF {
     public function Header() {
         // Logo
         $image_file = dirname(__FILE__).'/images/Klobslogo.jpg';
-        $this->Image($image_file, 10, 7, 30, '', 'JPG', 'http://kobs.googlecode.com', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image($image_file, 10, 7, 30, '', 'JPG', 'https://github.com/stko/kobs', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
         $this->SetFont('helvetica', 'B', 20);
         // Title
@@ -45,7 +45,7 @@ function printCard($cardContent){
 
 	// set document information
 	$pdf->SetCreator(PDF_CREATOR);
-	$pdf->SetAuthor('Klobs (kobs.googlecode.com');
+	$pdf->SetAuthor('Klobs (https://github.com/stko/kobs)');
 	$pdf->SetTitle('Klobs Mitgliederkarte');
 	$pdf->SetSubject('Klobs Mitgliedskarte');
 	$pdf->SetKeywords('Klobs Mitgliedskarte');
@@ -72,7 +72,7 @@ function printCard($cardContent){
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 	//set some language-dependent strings
-	$pdf->setLanguageArray($l);
+	//$pdf->setLanguageArray($l);
 
 	// ---------------------------------------------------------
 

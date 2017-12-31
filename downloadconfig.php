@@ -4,13 +4,12 @@
  *
  * Copyright    : (c) 2010 Shojikido Brake
  * Homepage     : http://www.shojikido.de
- * projectpage  : kobs.googlecode.com
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
  *****************************************************************************/
 
 // Gibt den Namen des Feldes an, in der sich ddas Gültigkeitsdatum des Abos befindet
-$klobs_download_date = "Abodatum";
+$klobs_download_date = "ABODATUM";
 
 // Gibt das Verzeichnis an, wo sich die downloads befinden
 $klobs_download_path = "downloadfiles/";

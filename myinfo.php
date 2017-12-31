@@ -16,28 +16,6 @@
 	require("../../system/login_valid.php");
 
 
-	function mysql_fetch_full_result_array($result)
-	{
-	$table_result=array();
-	$r=0;
-	while($row = mysql_fetch_assoc($result)){
-		$arr_row=array();
-		$c=0;
-		while ($c < mysql_num_fields($result)) {
-		$col = mysql_fetch_field($result, $c);
-		$arr_row[$col -> name] = $row[$col -> name];
-		$c++;
-		}
-		$table_result[$r] = $arr_row;
-		$r++;
-	}
-	return $table_result;
-	}
-
-	$a_user_id = $g_current_user->getValue("usr_id");
-
-
-
 // Initialisierung: Usernamen mit userID abspeichern
 
    $sql = "SELECT
@@ -47,15 +25,16 @@
 	    FROM ". TBL_USERS . "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = usr_id
-             AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+             AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME",  "usf_id"). "
             LEFT JOIN ". TBL_USER_DATA. " as first_name
               ON first_name.usd_usr_id = usr_id
-             AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+             AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME", "usf_id"). "
             WHERE usr_valid = 1
             ORDER BY last_name, first_name ";
 
 
-	$result_user = $g_db->query($sql);
+	$result_user = $gDb->query($sql);
+
 
 	//Öffnen der XML- Location & Trainingsinhalte- files
 
@@ -118,7 +97,9 @@
     <!--
       var list = [<?php
 	$firstname=True;
-	while($row = $g_db->fetch_array($result_user))
+	$trData=$result_user->fetchAll();
+	foreach($trData as $row)
+	//while($row = $result_user->fetch())
 	{
 		if (!$firstname){
 			echo ",";
@@ -127,13 +108,14 @@
 		}
 		echo "'".$row["last_name"].", ".$row["first_name"]."'\n";
 	}
+	//$result_user->closeCursor();
 
 ?>];
 
 	var userHash = new Object();
 <?php
-	mysql_data_seek($result_user, 0);
-	while($row = $g_db->fetch_array($result_user))
+	foreach($trData as $row)
+	//while($row = $result_user->fetch())
 	{
 		echo "userHash['".$row["last_name"].", ".$row["first_name"]."'] = '".$row["usr_id"]."';\n";
 	}
@@ -172,90 +154,25 @@
         <div id="contents">
 <?php
 
-	// Ist der User Mitglied der $klobs_trainer- Rolle?
-	$sql    = "SELECT ". TBL_USERS.".usr_login_name
-	FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
-	WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
-	AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
-	AND ". TBL_ROLES . ".rol_name = \"".$klobs_trainer."\"
-	AND ". TBL_USERS.".usr_id = ".$a_user_id."";
+	$a_user_id = $gCurrentUser->getValue("usr_id");
+
+	$isTrainer=$gCurrentUser->editUsers();
 
 
-
-	$dates_result = $g_db->query($sql);
-	$row = $g_db->fetch_array($dates_result);
-
-
-	$isTrainer=count($row)>1;
-
-
-	$showID=$_REQUEST["showID"];
+	if (isset($_REQUEST["showID"]) ) {
+		$showID=$_REQUEST["showID"]; //default
+	}
 	if (!isset($showID) || !is_numeric($showID) || !$isTrainer) {
 		$showID=$a_user_id; //default
 	}
 
 
-	// Erst mal die Stammdaten des Users abfragen
 
+	// create dedicated user data
+	$showUser=new User($gDb,$gProfileFields,$showID);
 
-    $sql = "SELECT
-		". TBL_USERS. ".usr_id as usr_id,
-		last_name.usd_value as last_name,
-		first_name.usd_value as first_name,
-		birthday.usd_value as birthday,
-		city.usd_value as city,
-		phone.usd_value as phone,
-		address.usd_value as address,
-		zip_code.usd_value as zip_code,
-		kartennummer.usd_value as kartennummer,
-		mitgliedsnummer.usd_value as mitgliedsnummer,
-		passnummer.usd_value as passnummer,
-		abodatum.usd_value as abodatum,
-		gurt.usd_value as gurt
-		FROM ". TBL_USERS . "
-		LEFT JOIN ". TBL_USER_DATA. " as last_name
-		ON last_name.usd_usr_id = usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as first_name
-		ON first_name.usd_usr_id = usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as birthday
-		ON birthday.usd_usr_id = usr_id
-		AND birthday.usd_usf_id = ". $g_current_user->getProperty("Geburtstag", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as city
-		ON city.usd_usr_id = usr_id
-		AND city.usd_usf_id = ". $g_current_user->getProperty("Ort", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as phone
-		ON phone.usd_usr_id = usr_id
-		AND phone.usd_usf_id = ". $g_current_user->getProperty("Telefon", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as address
-		ON address.usd_usr_id = usr_id
-		AND address.usd_usf_id = ". $g_current_user->getProperty("Adresse", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as zip_code
-		ON zip_code.usd_usr_id = usr_id
-		AND zip_code.usd_usf_id = ". $g_current_user->getProperty("PLZ", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as kartennummer
-		ON kartennummer.usd_usr_id = usr_id
-		AND kartennummer.usd_usf_id = ". $g_current_user->getProperty($klobs_card, "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as gurt
-		ON gurt.usd_usr_id = usr_id
-		AND gurt.usd_usf_id = ". $g_current_user->getProperty($klobs_belt, "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as passnummer
-		ON passnummer.usd_usr_id = usr_id
-		AND passnummer.usd_usf_id = ". $g_current_user->getProperty("Passnummer", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as mitgliedsnummer
-		ON mitgliedsnummer.usd_usr_id = usr_id
-		AND mitgliedsnummer.usd_usf_id = ". $g_current_user->getProperty("Mitgliedsnummer", "usf_id"). "
-		LEFT JOIN ". TBL_USER_DATA. " as abodatum
-		ON abodatum.usd_usr_id = usr_id
-		AND abodatum.usd_usf_id = ". $g_current_user->getProperty("Abodatum", "usf_id"). "
-		WHERE usr_valid = 1 AND usr_id = ".$showID."
-		ORDER BY last_name, first_name ";
-
-	$db_result = $g_db->query($sql);
-	$memberData = $g_db->fetch_array($db_result);//kind of senseless, as this result should only have one row, but...
 	echo "<h1>$klobs_myinfo_header</h1>\n";
-	echo "<h3>&Uuml;bersicht f&uuml;r ".$memberData[first_name]. " ".$memberData[last_name].":</h3>\n";
+	echo "<h3>&Uuml;bersicht f&uuml;r ".$showUser->getValue("FIRST_NAME"). " ".$showUser->getValue("LAST_NAME").":</h3>\n";
 	
 ?>
 	<table cellspacing="10" cellpadding="20" width="95%">
@@ -274,26 +191,41 @@
 
 
 	//alle Trainingsdaten ziehen
-		$sql = "SELECT ". TBL_USERS. ".usr_id as usr_id, last_name.usd_value as last_name, first_name.usd_value as first_name , training.tra_id as tra_id, training.deleted as deleted, training.location as location,training.locationID as locID, training.date as date, training.year as year, training.mon as mon, training.mday as mday, training.wday as wday, training.typ as typ, training.subtyp as subtyp, training.trainerid as trainerid, training.duration as duration
+		$sql = "SELECT ". TBL_USERS. ".usr_id as usr_id,
+		last_name.usd_value as last_name,
+		first_name.usd_value as first_name ,
+		training.tra_id as tra_id,
+		training.deleted as deleted,
+		training.location as location,
+		training.locationID as locID,
+		training.date as date,
+		training.year as year,
+		training.mon as mon,
+		training.mday as mday,
+		training.wday as wday,
+		training.typ as typ,
+		training.subtyp as subtyp,
+		training.trainerid as trainerid,
+		training.duration as duration
 
 
 		FROM ". TBL_USERS. "
 		LEFT JOIN ". TBL_USER_DATA. " as last_name
 		ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME", "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as first_name
 		ON first_name.usd_usr_id = ". TBL_USERS. ".usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME", "usf_id"). "
 		JOIN " . $klobs_training_table . " as training
 		ON training.usr_Id = ". TBL_USERS. ".usr_id
 		WHERE usr_valid = 1
-		AND deleted = 0
 		AND ". TBL_USERS. ".usr_id = ".$showID."
 		ORDER BY date ";
 
 
-		$db_result = $g_db->query($sql);
-
+		$db_result = $gDb->query($sql);
+		//error_log("SQL:\n$sql");
+		//$gDb->showError();
 		//Beginn der Ausgabe
 		if ($isTrainer){
 ?>
@@ -305,7 +237,7 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 	<input type="hidden" name="showID" value="0">
 	<tr>
 		<td>
-			<input id="text" type="text" name="pattern" value="<?php echo $memberText; ?>" autocomplete="off" size="40" style="display: block"/><div id="suggest"></div></td><td><input type="submit" value="Mitglied ausw&auml;hlen">
+			<input id="text" type="text" name="pattern" value="<?php echo $showUser->getValue("LAST_NAME"). ", ".$showUser->getValue("FIRST_NAME"); ?>" autocomplete="off" size="40" style="display: block"/><div id="suggest"></div></td><td><input type="submit" value="Mitglied ausw&auml;hlen">
 		</td>
 	</tr>
 </table>
@@ -325,28 +257,31 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 		
 		echo "<tr>";
 		echo "<th>Vereinsmitgliedschaft:</th>\n";
-		if (!isset($memberData[mitgliedsnummer]) || $memberData[mitgliedsnummer]==""){
+		$valueToCheck=$showUser->getValue("MITGLIEDSNUMMER");
+		if (!isset($valueToCheck) || $valueToCheck==""){
 			echo "<td bgcolor=\"#FFE0E0\">Du bist noch nicht im Verein angemeldet. Dies solltest Du baldm&ouml;glichst tun, da Du z.B. auch nur dann beim Training versichert bist und dann auch Pr&uuml;fungen ablegen kannst</td>\n";
 		}else{
-			echo "<td bgcolor=\"#E0FFE0\"> Du bist in mindestens einem Verein eingetragen. Das ist gut so, denn damit bist Du z.B. versichert und kannst auch an Pr&uuml;fungen teilnehmen. Deine Mitgliedsnummer lautet ".$memberData[mitgliedsnummer]."</td>\n";
+			echo "<td bgcolor=\"#E0FFE0\"> Du bist in mindestens einem Verein eingetragen. Das ist gut so, denn damit bist Du z.B. versichert und kannst auch an Pr&uuml;fungen teilnehmen. Deine Mitgliedsnummer lautet ".$valueToCheck."</td>\n";
 		}
 		echo "</tr>";
 
 		echo "<tr>";
 		echo "<th>Verbands- Mitgliedschaft:</th>\n";
-		if (!isset($memberData[passnummer]) || $memberData[passnummer]==""){
+		$valueToCheck=$showUser->getValue("PASSNUMMER");
+		if (!isset($valueToCheck) || $valueToCheck==""){
 			echo "<td bgcolor=\"#FFE0E0\">Du bist noch nicht einem Verband angemeldet. Dies solltest Du baldm&ouml;glichst tun, da Du nur dann auch Pr&uuml;fungen ablegen kannst</td>\n";
 		}else{
-			echo "<td bgcolor=\"#E0FFE0\"> Du bist im Verband eingetragen. Das ist gut so, denn damit kannst Du auch an Pr&uuml;fungen teilnehmen. Deine Verbands-Nummer lautet ".$memberData[passnummer]."</td>\n";
+			echo "<td bgcolor=\"#E0FFE0\"> Du bist im Verband eingetragen. Das ist gut so, denn damit kannst Du auch an Pr&uuml;fungen teilnehmen. Deine Verbands-Nummer lautet ".$valueToCheck."</td>\n";
 		}
 		echo "</tr>";
 
 		echo "<tr>";
 		echo "<th>Pr&uuml;fungsprogramm- Download:</th>\n";
-		if (!isset($memberData[abodatum]) || $memberData[abodatum]==""  || strtotime($memberData[abodatum])<time()){
+		$valueToCheck=$showUser->getValue("ABODATUM");
+		if (!isset($valueToCheck) || $valueToCheck==""  || strtotime($valueToCheck)<time()){
 			echo "<td bgcolor=\"#FFE0E0\">Du hast zur Zeit kein Download- Abo und kannst Dir das aktuelle Pr&uuml;fungsprogramm nicht downloaden</td>\n";
 		}else{
-			echo "<td bgcolor=\"#E0FFE0\"> Du hast ein aktuelles Download-Abo und kannst noch bis zum ".$memberData[abodatum]." immer das aktuelle Pr&uuml;fungsprogramm herunterladen</td>\n";
+			echo "<td bgcolor=\"#E0FFE0\"> Du hast ein aktuelles Download-Abo und kannst noch bis zum ".$valueToCheck." immer das aktuelle Pr&uuml;fungsprogramm herunterladen</td>\n";
 		}
 		echo "</tr>";
 
@@ -360,23 +295,23 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 ///////////////////////////// Ende der anwenderspezifischen Auswertung ////////////////////////////////
 		$lastTest="-";
 		$lastTestDesc="Bislang keine Prüfung";
-		$trData=mysql_fetch_full_result_array($db_result);
+		$trData = $db_result->fetchAll();
 		// erstmal einen Scanlauf vorab, wann die letzte Prüfung war
 		$totalTimes=array();
 		foreach($trData as $row)
 		{
-			if ($row[typ]==$trainings_type_audit){ // wenn Prüfung
-			$lastTest=$row[date];
-			$lastTestDesc=$trainingHash[$row[typ].":".$row[subtyp]];
+			if ($row['typ']==$trainings_type_audit){ // wenn Prüfung
+			$lastTest=$row['date'];
+			$lastTestDesc=$trainingHash[$row['typ'].":".$row['subtyp']];
 			}else{
-				if($trainings_type_seminar != $row[typ] ){
-					if (!isset($totalTimes[$row[typ]])){
-						$totalTimes[$row[typ]]=array();
+				if($trainings_type_seminar != $row['typ'] ){
+					if (!isset($totalTimes[$row['typ']])){
+						$totalTimes[$row['typ']]=array();
 					}
-					if (!isset($totalTimes[$row[typ]][$row[subtyp]])){
-						$totalTimes[$row[typ]][$row[subtyp]]=0;
+					if (!isset($totalTimes[$row['typ']][$row['subtyp']])){
+						$totalTimes[$row['typ']][$row['subtyp']]=0;
 					}
-					$totalTimes[$row[typ]][$row[subtyp]]+=$row[duration];
+					$totalTimes[$row['typ']][$row['subtyp']]+=$row['duration'];
 				}
 			}
 		}
@@ -400,24 +335,24 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 		$lastTimes=array();
 		foreach($trData as $row)
 		{
-			if ($row[date]>=$lastTest){
-				if($trainings_type_seminar == $row[typ] ){
+			if ($row['date']>=$lastTest){
+				if($trainings_type_seminar == $row['typ'] ){
 					echo "<tr>";
-					echo "<td bgcolor=\"#E0E0E0\">".$row[last_name].", ".$row[first_name]."</td>\n";
-					echo "<td>".$locationHash[$row[locID]]."</td>\n";
-					echo "<td bgcolor=\"#E0E0E0\">".$row[date]."</td>\n";
-					echo "<td>".$trainingHash[$row[typ].":".$row[subtyp]]."</td>\n";
-					echo "<td bgcolor=\"#E0E0E0\">".$row[duration]." min</td>\n";
+					echo "<td bgcolor=\"#E0E0E0\">".$row['last_name'].", ".$row['first_name']."</td>\n";
+					echo "<td>".$locationHash[$row['locID']]."</td>\n";
+					echo "<td bgcolor=\"#E0E0E0\">".$row['date']."</td>\n";
+					echo "<td>".$trainingHash[$row['typ'].":".$row['subtyp']]."</td>\n";
+					echo "<td bgcolor=\"#E0E0E0\">".$row['duration']." min</td>\n";
 					echo "</tr>";
 				}else{
-					if($trainings_type_audit != $row[typ] ){
-						if (!isset($lastTimes[$row[typ]])){
-							$lastTimes[$row[typ]]=array();
+					if($trainings_type_audit != $row['typ'] ){
+						if (!isset($lastTimes[$row['typ']])){
+							$lastTimes[$row['typ']]=array();
 						}
-						if (!isset($lastTimes[$row[typ]][$row[subtyp]])){
-							$lastTimes[$row[typ]][$row[subtyp]]=0;
+						if (!isset($lastTimes[$row['typ']][$row['subtyp']])){
+							$lastTimes[$row['typ']][$row['subtyp']]=0;
 						}
-						$lastTimes[$row[typ]][$row[subtyp]]+=$row[duration];
+						$lastTimes[$row['typ']][$row['subtyp']]+=$row['duration'];
 					}
 				}
 			}
@@ -484,11 +419,11 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 		foreach($trData as $row)
 		{
 			echo "<tr>";
-			echo "<td bgcolor=\"#E0E0E0\">".$row[last_name].", ".$row[first_name]."</td>\n";
-			echo "<td>".$locationHash[$row[locID]]."</td>\n";
-			echo "<td bgcolor=\"#E0E0E0\">".$row[date]."</td>\n";
-			echo "<td>".$trainingHash[$row[typ].":".$row[subtyp]]."</td>\n";
-			echo "<td bgcolor=\"#E0E0E0\">".$row[duration]." min</td>\n";
+			echo "<td bgcolor=\"#E0E0E0\">".$row['last_name'].", ".$row['first_name']."</td>\n";
+			echo "<td>".$locationHash[$row['locID']]."</td>\n";
+			echo "<td bgcolor=\"#E0E0E0\">".$row['date']."</td>\n";
+			echo "<td>".$trainingHash[$row['typ'].":".$row['subtyp']]."</td>\n";
+			echo "<td bgcolor=\"#E0E0E0\">".$row['duration']." min</td>\n";
 			echo "</tr>";
 		}
 		unset ($row); // to reset references
@@ -497,7 +432,7 @@ Da Du Mitglied der "<?php echo $klobs_trainer;?>" - Gruppe bist, hast Du die M&o
 ?>
 
 </td></tr></table>
-<hr><center><small>powered by <a href="http://kobs.googlecode.com">KLOBS</a></small></center>
+<hr><center><small>powered by <a href="https://github.com/stko/kobs">KLOBS</a></small></center>
 </div>
 </div>
 </div>

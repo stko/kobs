@@ -11,17 +11,17 @@
  *****************************************************************************/
 
 // Gibt den Namen der Rolle an, die ein User braucht, um die Funktionen des klobs- Moduls nutzen zu dürfen
-$klobs_trainer = "Trainer";
+$klobs_trainer = "TRAINER";
 
 // Gibt den Namen der Rolle an, die ein User braucht, damit er im Klobs-Client aufgelistet wird und so
 // z.B. Ehemalige unterdrückt werden 
-$klobs_member = "Mitglieder";
+$klobs_member = "MITGLIEDER";
 
 // Gibt den Namen des Feldes an, in der sich die Kartennummer befindet
-$klobs_card = "Kartennummer";
+$klobs_card = "KARTENNUMMER";
 
 // Gibt den Namen des Feldes an, in der sich die zweite Klassifizierung befindet
-$klobs_belt = "Gurt";
+$klobs_belt = "GURT";
 
 // Gibt den Tabellennamen an, in dem sich die Trainingseinheiten befinden
 $klobs_training_table = "adm_klobs_training";

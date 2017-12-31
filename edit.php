@@ -12,35 +12,19 @@
  *
  *****************************************************************************/
 
-	require("../../system/common.php");
+	require_once("../../system/common.php");
 	include("./config.php");
-	require("../../system/login_valid.php");
+	require_once("../../system/login_valid.php");
 
-	$a_user_id = $g_current_user->getValue("usr_id");
-	/*
-
-	//-Anmelden per HTTP & gültiger Trainer- Rolle
-	require("./klobslogin.php");
-	*/
-	// OK, gültiger Benutzername & Passwort --------------------------------------------------------------------
-
-	// Ist der User Mitglied der $klobs_trainer- Rolle?
-	$sql    = "SELECT ". TBL_USERS.".usr_login_name
-	FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
-	WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
-	AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
-	AND ". TBL_ROLES . ".rol_name = \"".$klobs_trainer."\"
-	AND ". TBL_USERS.".usr_id = ".$a_user_id."";
+	$a_user_id = $gCurrentUser->getValue("usr_id");
 
 
-
-	$dates_result = $g_db->query($sql);
-	$row = $g_db->fetch_array($dates_result);
-
-	if (count($row)<2){
-		echo "Keine Zugriffsberechtigung auf diesen Bereich...<br>\n";
-		exit;
+	// Darf der angemeldete User Mitglieder editieren?
+	if(!$gCurrentUser->editUsers()){
+	    $gMessage->show("Du hast leider nicht die notwendigen Rechte, um Trainingsdaten editieren zu d&uuml;rfen..");
 	}
+
+
 	$action=$_REQUEST["action"];
 	$tra_id=$_REQUEST["tra_id"];
 	$usrID=$_REQUEST["usrID"];
@@ -84,7 +68,7 @@
 				changedate = Now(),
 				changeby = ".$a_user_id."
 				WHERE tra_id = ".$tra_id."";
-				$db_result = $g_db->query($sql);
+				$db_result = $gDb->query($sql);
 			}
 			if($action=="undel"){
 				$sql = "UPDATE  " . $klobs_training_table . "
@@ -92,7 +76,7 @@
 				changedate = Now(),
 				changeby = ".$a_user_id."
 				WHERE tra_id = ".$tra_id."";
-				$db_result = $g_db->query($sql);
+				$db_result = $gDb->query($sql);
 			}
 			if($action=="copy" || $action=="edit"){
 				if($locID!=0 && $usrID!=0 && $duration>0){
@@ -100,7 +84,7 @@
 					$locationXML = simplexml_load_file($klobs_location_file);
 					$locationHash=array();
 					foreach ($locationXML->ort as $ort){
-						$locationHash[ (string) $ort->ort_id ] = $ort->name;
+						$locationHash[  '\''.(string) $ort->ort_id .'\''] = $ort->name;
 					}
 
 
@@ -112,8 +96,8 @@
 					$SQLString.=  "deleted = 0 ,";
 					$SQLString.=  "changedate = Now(), ";
 					$SQLString.=  "changeby = ".$a_user_id.", ";
-					$SQLString.=  "locationId = ".mysql_real_escape_string($locID)." , ";
-					$SQLString.=  "location = \"".$locationHash[mysql_real_escape_string($locID)]."\" , ";
+					$SQLString.=  "locationId = ".$gDb->escapeString($locID)." , ";
+					$SQLString.=  "location = '".$locationHash[(string) $gDb->escapeString($locID)]."' , ";
 					$timestamp=strtotime ($date1);
 					$my_t=getdate($timestamp);
 					$SQLString.= "timestamp = ".$timestamp." , ";
@@ -121,19 +105,19 @@
 					$SQLString.=  "mon = ".$my_t["mon"]." , ";
 					$SQLString.=  "mday = ".$my_t["mday"]." , ";
 					$SQLString.=  "wday = ".$my_t["wday"]." , ";
-					$SQLString.=  "date = \"".date("Y-m-d",$timestamp)."\" , ";
-					$SQLString.=  "usr_id = \"".mysql_real_escape_string($usrID)."\" , ";
-					list($typ,$subTyp)=split(":",$traTyp);
-					$SQLString.=  "typ = ".mysql_real_escape_string($typ)." , ";
-					$SQLString.=  "subtyp = ".mysql_real_escape_string($subTyp)." , ";
+					$SQLString.=  "date = '".date("Y-m-d",$timestamp)."' , ";
+					$SQLString.=  "usr_id = ".$gDb->escapeString($usrID)." , ";
+					list($typ,$subTyp)=explode(":",$traTyp);
+					$SQLString.=  "typ = ".$gDb->escapeString($typ)." , ";
+					$SQLString.=  "subtyp = ".$gDb->escapeString($subTyp)." , ";
 					$SQLString.=  "trainerid = ".$a_user_id." , ";
-					$SQLString.=  "starttime = \"00:00\" , ";
-					$SQLString.=  "duration = \"".mysql_real_escape_string($duration)."\" , ";
+					$SQLString.=  "starttime = '00:00' , ";
+					$SQLString.=  "duration = ".$gDb->escapeString($duration)." , ";
 					$SQLString.=  "starttimeint = 0 ";
 					if ($action=="edit"){
 						$SQLString.=  "WHERE tra_id = ".$tra_id."";
 					}
-					$db_result = $g_db->query($SQLString);
+					$db_result = $gDb->query($SQLString);
 	//				WHERE tra_id = ".$tra_id."";
 				}
 			}
@@ -141,8 +125,8 @@
 	}
 //header("Location: ".$_referer); /* Redirect browser */
 header("Location: trmanage.php?year=".$_REQUEST["year"]."&month=".$_REQUEST["month"]); /* Redirect browser */
-
-
+//echo $SQLString;
+//echo "<br>".$gDb->showError();
 ?>
 
 

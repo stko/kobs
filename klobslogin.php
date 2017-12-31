@@ -2,9 +2,8 @@
 /******************************************************************************
  * Mitgliederdaten für Klobs als XML- Stream abrufen
  *
- * Copyright    : (c) 2010 Shojikido Brake
- * Homepage     : http://www.shojikido.de
- * projectpage  : kobs.googlecode.com
+ * Copyright    : (c) 2009 - 2009 The Admidio Team
+ * Homepage     : http://www.admidio.org
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -12,82 +11,62 @@
  *
  *****************************************************************************/
 
-require("../../system/common.php");
+require_once("../../system/common.php");
 include("./config.php");
+require_once("../../system/login_func.php");
 
-$user=$_REQUEST["user"];
-$pw=$_REQUEST["pw"];
 
 if (!isset($klobs_trainer)) {
 	$klobs_trainer="Trainer"; //default
 }
 
-if (!isset($klobs_member)) {
-	$klobs_member="Mitglied"; //default
+
+    $checkLoginReturn =createUserObjectFromPost();
+    if (is_string($checkLoginReturn))
+    {
+        //$gMessage->show($checkLoginReturn);
+        showLogin($checkLoginReturn);
+        // => EXIT
+    }
+
+
+
+
+// Darf der angemeldete User Mitglieder editieren?
+if(!$gCurrentUser->editUsers()){
+showLogin("Du hast leider nicht die notwendigen Rechte, um alle Trainingsdaten sehen zu d&uuml;rfen..");
 }
 
-if(!(isset($user) && isset($pw) && $user!="" && $pw!="")){
-	showlogin("Login");
-}
-
-// Ist der User Mitglied der $klobs_trainer- Rolle, und wie ist sein Passwort- hash?
-$sql    = "SELECT ". TBL_USERS.".usr_password
-FROM ". TBL_USERS . " , ". TBL_MEMBERS . ", ". TBL_ROLES . "
-WHERE ". TBL_USERS.".usr_id = ". TBL_MEMBERS . ".mem_usr_id
-AND ". TBL_MEMBERS . ".mem_rol_id = ". TBL_ROLES . ".rol_id
-AND ". TBL_ROLES . ".rol_name = \"".$klobs_trainer."\"
-AND ". TBL_USERS.".usr_login_name = \"".$user."\"";
-
-
-$dates_result = $g_db->query($sql);
- 
-$row = $g_db->fetch_array($dates_result);
-if (count($row)<1){
-	showLogin("user unknown");
-}
-
- //Abholen des Password- Hashes.
-$digestHash=$row[0];
-
-
-
-if ($digestHash != $pw){
-	showLogin("wrong password");
-}
-// gültiger User- ab hier dann weiter im aufrufenden Script...
 
 
 function showLogin($info){
+//$info= htmlentities($info);
 print '
 <html>
 <head>
 <title>Login</title>
-<script language="javascript" src="md5.js"></script>
-<script language="javascript">
-<!--
-  function doChallengeResponse() {
-    document.login.pw.value = MD5(document.login.password.value);
-    document.login.password.value = "";
-  }
-// -->
-</script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
 
 </head>
 
 <body>
 '.$info.'<br>
-<form name="login" action="'.$_SERVER['PHP_SELF'].'" method="post" onSubmit="doChallengeResponse(); return true;">
+<form name="login" action="'.$_SERVER['PHP_SELF'].'" method="post" >
 <table>
 <tr>
 <td>User</td>
-<td><input type="text" name="user"/></td>
+<td><input type="text" name="usr_login_name"/></td>
 </tr>
 <tr>
 <td>Passwort</td>
-<td><input type="password" name="password"/></td>
+<td><input type="password" name="usr_password"/></td>
 </tr>
 <tr>
-<td><input type="hidden" name="pw"/></td>
+
 <td><input type="submit" value="Login" /></td>
 </tr></table>
 </form>

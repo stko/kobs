@@ -12,12 +12,18 @@
  *
  *****************************************************************************/
 
-require("../../system/common.php");
-include("./config.php");
+	require_once("../../system/common.php");
+	include("./config.php");
+	require_once("../../system/login_valid.php");
+
+	$a_user_id = $gCurrentUser->getValue("usr_id");
 
 
-//-Anmelden per HTTP & gültiger Trainer- Rolle
-require("./klobslogin.php");
+	// Darf der angemeldete User Mitglieder editieren?
+	if(!$gCurrentUser->editUsers()){
+	    $gMessage->show("Du hast leider nicht die notwendigen Rechte, um Trainingsdaten runterladen zu d&uuml;rfen..");
+	}
+
 
 // OK, gültiger Benutzername & Passwort --------------------------------------------------------------------
 
@@ -31,10 +37,10 @@ require("./klobslogin.php");
             FROM ". TBL_USERS. "
             LEFT JOIN ". TBL_USER_DATA. " as last_name
               ON last_name.usd_usr_id = ". TBL_USERS. ".usr_id
-             AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+             AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME",  "usf_id"). "
             LEFT JOIN ". TBL_USER_DATA. " as first_name
               ON first_name.usd_usr_id = ". TBL_USERS. ".usr_id
-             AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+             AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME",  "usf_id"). "
             JOIN " . $klobs_training_table . " as training
               ON training.usr_Id = ". TBL_USERS. ".usr_id
             WHERE usr_valid = 1
@@ -42,7 +48,7 @@ require("./klobslogin.php");
             ORDER BY last_name, first_name ";
 
 
-$db_result = $g_db->query($sql);
+$db_result = $gDb->query($sql);
 
 //Beginn der Ausgabe
 
@@ -62,7 +68,7 @@ header('Content-Disposition: attachment; filename="Trainingsdata.txt"');
 	echo "subtyp\t";
 	echo "trainerid\t";
 	echo "duration\n";
-while($row = $g_db->fetch_array($db_result))
+while($row = $db_result->fetch())
 {
 /*	foreach ($row as $key => $value){
 		if (!is_numeric($key)) {
@@ -71,21 +77,26 @@ while($row = $g_db->fetch_array($db_result))
 	}
 	echo "---\n";
 */
-	echo $row[last_name]."\t";
-	echo $row[first_name]."\t";
-	echo $row[location]."\t";
-	echo $row[date]."\t";
-	echo $row[year]."\t";
-	echo $row[mon]."\t";
-	echo $row[mday]."\t";
-	echo $row[wday]."\t";
-	echo $row[typ]."\t";
-	echo $row[subtyp]."\t";
-	echo $row[trainerid]."\t";
-	echo $row[duration]."\n";
+	echo $row['last_name']."\t";
+	echo $row['first_name']."\t";
+	echo $row['location']."\t";
+	echo $row['date']."\t";
+	echo $row['year']."\t";
+	echo $row['mon']."\t";
+	echo $row['mday']."\t";
+	echo $row['wday']."\t";
+	echo $row['typ']."\t";
+	echo $row['subtyp']."\t";
+	echo $row['trainerid']."\t";
+	echo $row['duration']."\n";
+}
+
+$_referer = $_SERVER["HTTP_REFERER"];
+if (strpos($_referer,$_SERVER['PHP_SELF'])>0){
+      $_referer="trmanage.php";
 }
 
 
-
+header("Location: ".$_referer); /* Redirect browser back to original page*/
 
 ?>

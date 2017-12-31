@@ -2,9 +2,8 @@
 /******************************************************************************
  * Downloads anhand von Datumsfeldern erlauben
  *
- * Copyright    : (c) 2010 Shojikido Brake
+ * Copyright    : (c) 2009 - 2010  Shojikido-Karate Brake
  * Homepage     : http://www.shojikido.de
- * projectpage  : kobs.googlecode.com
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -17,7 +16,7 @@
 	include("./downloadconfig.php");
 	require("../../system/login_valid.php");
 
-	$a_user_id = $g_current_user->getValue("usr_id");
+	$a_user_id = $gCurrentUser->getValue("usr_id");
 
  	$filename=escapeshellcmd($_REQUEST["filename"]);
 
@@ -40,19 +39,19 @@
 		FROM ". TBL_USERS . "
 		LEFT JOIN ". TBL_USER_DATA. " as last_name
 		ON last_name.usd_usr_id = usr_id
-		AND last_name.usd_usf_id = ". $g_current_user->getProperty("Nachname", "usf_id"). "
+		AND last_name.usd_usf_id = ". $gProfileFields->getProperty("LAST_NAME",  "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as first_name
 		ON first_name.usd_usr_id = usr_id
-		AND first_name.usd_usf_id = ". $g_current_user->getProperty("Vorname", "usf_id"). "
+		AND first_name.usd_usf_id = ". $gProfileFields->getProperty("FIRST_NAME",  "usf_id"). "
 		LEFT JOIN ". TBL_USER_DATA. " as abo_date
 		ON abo_date.usd_usr_id = usr_id
-		AND abo_date.usd_usf_id = ". $g_current_user->getProperty($klobs_download_date, "usf_id"). "
+		AND abo_date.usd_usf_id = ". $gProfileFields->getProperty($klobs_download_date, "usf_id"). "
 		WHERE usr_valid = 1
 		AND usr_id = ".$a_user_id;
 
 
-	$result_user = $g_db->query($sql);
-	$row = $g_db->fetch_array($result_user);
+	$result_user = $gDb->query($sql);
+	$row = $result_user->fetch();
 	if (count($row)<1){
 		showError( "interner Fehler<br>Bitte verfluchen Sie den Programmierer..");
 	}
