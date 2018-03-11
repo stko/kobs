@@ -1,0 +1,9 @@
+*.run
+*.zip
+*.exe
+*~
+**/build/
+**/dist/
+**/nbproject/private/
+*.class
+
