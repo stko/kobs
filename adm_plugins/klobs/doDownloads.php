@@ -2,8 +2,9 @@
 /******************************************************************************
  * Downloads anhand von Datumsfeldern erlauben
  *
- * Copyright    : (c) 2009 - 2010  Shojikido-Karate Brake
+ * Copyright    : (c) 2010-2018 Shojikido Brake
  * Homepage     : http://www.shojikido.de
+ * projectpage  : https://github.com/stko/kobs
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -11,10 +12,10 @@
  *
  *****************************************************************************/
 
-	require("../../system/common.php");
+	require("../../adm_program/system/common.php");
 	include("./config.php");
 	include("./downloadconfig.php");
-	require("../../system/login_valid.php");
+	require("../../adm_program/system/login_valid.php");
 
 	$a_user_id = $gCurrentUser->getValue("usr_id");
 

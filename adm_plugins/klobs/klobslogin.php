@@ -2,8 +2,9 @@
 /******************************************************************************
  * Mitgliederdaten für Klobs als XML- Stream abrufen
  *
- * Copyright    : (c) 2009 - 2009 The Admidio Team
- * Homepage     : http://www.admidio.org
+ * Copyright    : (c) 2010-2018 Shojikido Brake
+ * Homepage     : http://www.shojikido.de
+ * projectpage  : https://github.com/stko/kobs
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -11,37 +12,53 @@
  *
  *****************************************************************************/
 
-require_once("../../system/common.php");
+require_once("../../adm_program/system/common.php");
 include("./config.php");
-require_once("../../system/login_func.php");
+require_once("../../adm_program/system/login_func.php");
 
 
 if (!isset($klobs_trainer)) {
-	$klobs_trainer="Trainer"; //default
+    $klobs_trainer = "Trainer"; //default
 }
 
-
-    $checkLoginReturn =createUserObjectFromPost();
-    if (is_string($checkLoginReturn))
-    {
+try {
+    
+    $checkLoginReturn = createUserObjectFromPost();
+    if (is_string($checkLoginReturn)) {
         //$gMessage->show($checkLoginReturn);
         showLogin($checkLoginReturn);
         // => EXIT
     }
-
-
-
-
-// Darf der angemeldete User Mitglieder editieren?
-if(!$gCurrentUser->editUsers()){
-showLogin("Du hast leider nicht die notwendigen Rechte, um alle Trainingsdaten sehen zu d&uuml;rfen..");
+    
+}
+catch (AdmException $e) {
+    showLogin($e->getText());
+    // => EXIT
 }
 
 
 
-function showLogin($info){
-//$info= htmlentities($info);
-print '
+/*    if (is_string($checkLoginReturn))
+{
+//$gMessage->show($checkLoginReturn);
+showLogin($checkLoginReturn);
+// => EXIT
+}
+
+*/
+
+
+// Darf der angemeldete User Mitglieder editieren?
+if (!$gCurrentUser->editUsers()) {
+    showLogin("Du hast leider nicht die notwendigen Rechte, um alle Trainingsdaten sehen zu d&uuml;rfen..");
+}
+
+
+
+function showLogin($info)
+{
+    //$info= htmlentities($info);
+    print '
 <html>
 <head>
 <title>Login</title>
@@ -54,8 +71,8 @@ print '
 </head>
 
 <body>
-'.$info.'<br>
-<form name="login" action="'.$_SERVER['PHP_SELF'].'" method="post" >
+' . $info . '<br>
+<form name="login" action="' . $_SERVER['PHP_SELF'] . '" method="post" >
 <table>
 <tr>
 <td>User</td>
@@ -75,7 +92,7 @@ After login, the training data will be transfered as a .csv file, which can be u
 
 
 </body></html>';
-exit;
+    exit;
 }
 
 

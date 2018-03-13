@@ -2,19 +2,20 @@
 /******************************************************************************
  * Mitgliederdaten für Klobs als XML- Stream abrufen
  *
- * Copyright    : (c) 2010 Shojikido Brake
+ * Copyright    : (c) 2010-2018 Shojikido Brake
  * Homepage     : http://www.shojikido.de
- * projectpage  : kobs.googlecode.com
-* Module-Owner : Steffen Köhler
+ * projectpage  : https://github.com/stko/kobs
+ * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
+ *****************************************************************************/
  * Uebergaben:
  *
  *****************************************************************************/
 
-	require_once("../../system/common.php");
+	require_once("../../adm_program/system/common.php");
 	include("./config.php");
-	require_once("../../system/login_valid.php");
+	require_once("../../adm_program/system/login_valid.php");
 
 	$a_user_id = $gCurrentUser->getValue("usr_id");
 

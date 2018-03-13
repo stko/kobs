@@ -2,9 +2,9 @@
 /******************************************************************************
  * Konfigurationsdatei von Admidio
  *
- * Copyright    : (c) 2010 Shojikido Brake
+ * Copyright    : (c) 2010-2018 Shojikido Brake
  * Homepage     : http://www.shojikido.de
- * projectpage  : kobs.googlecode.com
+ * projectpage  : https://github.com/stko/kobs
  * Module-Owner : Steffen Köhler
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  *
