@@ -4,6 +4,9 @@ Sorry, as Admidio & KLOBS are mainly used in germany, the docu is also in german
 
 ## Was ist KLOBS? ##
 
+(see the [Wiki](https://github.com/stko/kobs/wiki) for the details)
+
+
 KLOBS steht für den "Kartenleser ohne besonderen Schwierigkeitsgrad". Damit ist die Möglichkeit gemeint, schnell und komfortabel beim Sporttraining aufnehmen zu können, wer mit dabei ist und welche Trainingseinheiten gemacht wurden.
 
 
