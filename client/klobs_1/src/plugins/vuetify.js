@@ -12,7 +12,24 @@ import Vuetify, {
   VLayout,
   VFlex,
   VImg,
-  VFadeTransition
+  VFadeTransition,
+  VCard,
+  VToolbarSideIcon,
+  VIcon,
+  VList,
+  VSubheader,
+  VListTile,
+  VListTileAvatar,
+  VListTileContent,
+  VListTileTitle,
+  VListTileSubTitle,
+  VListTileAction,
+  VDivider,
+  VDialog,
+  VCardText,
+  VTextField,
+  VCardActions
+
 } from 'vuetify/lib'
 
 import 'vuetify/src/stylus/app.styl'
@@ -32,6 +49,22 @@ Vue.use(Vuetify, {
     VLayout,
     VFlex,
     VImg,
-    VFadeTransition
+    VFadeTransition,
+    VCard,
+    VToolbarSideIcon,
+    VIcon,
+    VList,
+    VListTile,
+    VListTileAvatar,
+    VListTileContent,
+    VListTileTitle,
+    VListTileSubTitle,
+    VListTileAction,
+    VDivider,
+    VSubheader,
+    VDialog,
+    VCardText,
+    VTextField,
+    VCardActions
   }
 })

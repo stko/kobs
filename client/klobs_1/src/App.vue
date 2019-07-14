@@ -8,7 +8,7 @@
       <v-spacer></v-spacer>
       <!--v-btn
         flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/stko/kobs"
         target="_blank"
       >
         <span class="mr-2">Latest Release</span>
