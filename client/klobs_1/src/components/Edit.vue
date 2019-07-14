@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     nav2Main () {
-      router.go(-2) // always goes 'back enough' to Main
+      router.push({ name: 'Main' }) // always goes 'back enough' to Main
     },
     nav2Add () {
       router.push({ name: 'Add', params: { id: '123' } })
