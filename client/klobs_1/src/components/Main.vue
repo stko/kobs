@@ -69,6 +69,7 @@
 
 <script>
 import router from '../router'
+// import func from '../../vue-temp/vue-editor-bridge';
 export default {
   name: 'Main',
   data () {
@@ -95,7 +96,35 @@ export default {
     },
     nav2Edit () {
       router.push({ name: 'Edit', params: { id: '999' } })
+    },
+    getLocations (data) {
+      var res = []
+      var tagObj = data.getElementsByTagName('orte')[0].children
+      console.log(tagObj)
+      var i
+      for (i = 0; i < tagObj.length; i++) {
+        console.log('count', i)
+        res.push({
+          'id': tagObj[i].getElementsByTagName('ort_id')[0].childNodes[0].nodeValue,
+          'name': tagObj[i].getElementsByTagName('name')[0].childNodes[0].nodeValue})
+      }
+      console.log(res)
+      return res
+    },
+    fetchUsers: function () {
+      // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
+      fetch('/static/locations.xml')
+        .then(response => response.text())
+        .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
+        .then(data => this.getLocations(data))
+        .catch(function (error) {
+          console.log(error)
+        })
     }
+  },
+  beforeMount: function () {
+    var self = this
+    self.prototype.$locations = this.fetchUsers()
   }
 }
 </script>
