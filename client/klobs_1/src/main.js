@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 

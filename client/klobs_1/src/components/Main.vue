@@ -3,7 +3,7 @@
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-toolbar color="light-blue" light extended>
-          <v-toolbar-side-icon></v-toolbar-side-icon>
+          <v-toolbar-side-icon @click="nav2Set()"></v-toolbar-side-icon>
           <v-btn
             fab
             small
@@ -11,7 +11,7 @@
             bottom
             left
             absolute
-            @click="dialog = !dialog"
+            @click="nav2New()"
           >
             <v-icon>add</v-icon>
           </v-btn>
