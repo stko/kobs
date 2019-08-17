@@ -28,7 +28,10 @@ import Vuetify, {
   VDialog,
   VCardText,
   VTextField,
-  VCardActions
+  VCardActions,
+  VDatePicker,
+  VTimePicker,
+  VMenu
 
 } from 'vuetify/lib'
 
@@ -65,6 +68,9 @@ Vue.use(Vuetify, {
     VDialog,
     VCardText,
     VTextField,
-    VCardActions
+    VCardActions,
+    VDatePicker,
+    VTimePicker,
+    VMenu
   }
 })

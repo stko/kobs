@@ -9,7 +9,8 @@ import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
-
+// Vue.prototype.$locations = {}
+// Object.defineProperty(Vue.prototype, '$locations', { value: {} })
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

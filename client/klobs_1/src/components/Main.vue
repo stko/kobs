@@ -97,7 +97,8 @@ export default {
     nav2Edit () {
       router.push({ name: 'Edit', params: { id: '999' } })
     },
-    getLocations (data) {
+    getLocations (data, self) {
+      console.log('t2', self)
       var res = []
       var tagObj = data.getElementsByTagName('orte')[0].children
       console.log(tagObj)
@@ -108,15 +109,16 @@ export default {
           'id': tagObj[i].getElementsByTagName('ort_id')[0].childNodes[0].nodeValue,
           'name': tagObj[i].getElementsByTagName('name')[0].childNodes[0].nodeValue})
       }
-      console.log(res)
+      window.klobsdata = {'locations': res}
+      console.log('Assingment', window.klobsdata.locations)
       return res
     },
-    fetchUsers: function () {
+    fetchUsers: function (self) {
       // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
       fetch('/static/locations.xml')
         .then(response => response.text())
         .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
-        .then(data => this.getLocations(data))
+        .then(data => this.getLocations(data, self))
         .catch(function (error) {
           console.log(error)
         })
@@ -124,7 +126,8 @@ export default {
   },
   beforeMount: function () {
     var self = this
-    self.prototype.$locations = this.fetchUsers()
+    console.log('t1', self)
+    this.fetchUsers(self)
   }
 }
 </script>
