@@ -31,7 +31,8 @@ import Vuetify, {
   VCardActions,
   VDatePicker,
   VTimePicker,
-  VMenu
+  VMenu,
+  VSelect
 
 } from 'vuetify/lib'
 
@@ -71,6 +72,7 @@ Vue.use(Vuetify, {
     VCardActions,
     VDatePicker,
     VTimePicker,
-    VMenu
+    VMenu,
+    VSelect
   }
 })

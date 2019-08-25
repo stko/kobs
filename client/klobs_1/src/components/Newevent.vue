@@ -1,73 +1,47 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 sm6 md4>
-      <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        :return-value.sync="date"
-        transition="scale-transition"
-        offset-y
-        full-width
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="date"
-            label="Picker in menu"
-            prepend-icon="event"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
-      </v-menu>
-    </v-flex>
-    <v-spacer></v-spacer>
-    <v-flex xs12 sm6 md4>
-      <v-menu
-        ref="timemenu"
-        v-model="time"
-        :close-on-content-click="false"
-        :return-value.sync="time"
-        transition="scale-transition"
-        offset-y
-        full-width
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="time"
-            label="Picker in menu"
-            prepend-icon="event"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <!-- <v-time-picker v-model="time" no-title scrollable> -->
-        <v-time-picker v-model="time" no-title scrollable>
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="timemenu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.timemenu.save(time)">OK</v-btn>
-        </v-time-picker>
-      </v-menu>
-    </v-flex>
-    <v-spacer></v-spacer>
-    <select v-model="locations">
-      <option disabled value="">Please select one</option>
-      <option v-for="location in locations" v-bind:key="location.id">
-    {{ location.name }}
-      </option>
+  <v-container>
+    <h1>Ein neues Ereignis</h1>
+    <p>
+    <label :for="date">Wähle das Datum</label>
+    <br/>
+    <v-date-picker v-model="date" :id="date"></v-date-picker>
+    <p/>
+    <label :for="time">Wähle die Anfangszeit</label>
+    <br/>
+    <v-time-picker
+      v-model="time"
+      :id="time"
+      :allowed-minutes="allowedStep"
+      format="24hr">
+
+    </v-time-picker>
+    <p/>
+<!--     <label :for="duration">Wähle die Dauer</label>
+    <br/>
+    <select v-model="duration" :id="duration">
+      <option disabled value="" selected>Hier auswählen</option>
       <option>A</option>
       <option>B</option>
       <option>C</option>
     </select>
+    <p/>
+ -->    <v-select
+      label="Wähle die Dauer"
+      :items='duration'
+      box
+      placeholder="Hier auswählen">
+    </v-select>
+    <v-select
+      label="Wähle den Ort"
+      :items='locations'
+      item-text='name'
+      item-value='id'
+      box
+      placeholder="Hier auswählen">
+    </v-select>
+    <p/>
     <a style="cursor: pointer; text-decoration: underline" v-on:click="navBack()">Navigate to Main</a>
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -75,14 +49,21 @@ import router from '../router'
 export default {
   name: 'Newevent',
   data () {
+    var ticktime = Date.now()
     return {
       msg: 'New Event page',
-      time: null,
-      duration: null,
+      // integer arith: rounds down to last full quarter hour
+      time: new Date(ticktime - ticktime % (15 * 60 * 1000)),
+      duration: [
+        {'value': 1, 'text': 'Eins'}
+      ],
       locations: window.klobsdata.locations,
-      date: new Date().toISOString().substr(0, 10),
-      menu: false,
-      timemenu: false
+      date: new Date().toISOString().substr(0, 10)
+    }
+  },
+  watch: {
+    locations: function (locations) {
+      console.log('log here')
     }
   },
   methods: {
