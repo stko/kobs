@@ -89,7 +89,9 @@ export default {
     },
     allowedStep: m => m % 15 === 0,
     submit () {
-      this.$refs.form.validate()
+      if (this.$refs.form.validate()) {
+        router.go(-1)
+      }
     }
   },
   beforeMount: function () {

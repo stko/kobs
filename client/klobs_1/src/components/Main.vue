@@ -29,7 +29,7 @@
           -->
         </v-toolbar>
         <v-list two-line>
-          <v-list-tile v-for="item in items" :key="item.title"  @click="nav2Edit">
+          <v-list-tile v-for="item in items2" :key="item.id"  @click="nav2Edit">
             <v-list-tile-content>
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
@@ -69,7 +69,6 @@
 
 <script>
 import router from '../router'
-// import func from '../../vue-temp/vue-editor-bridge';
 export default {
   name: 'Main',
   data () {
@@ -80,13 +79,28 @@ export default {
         { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
         { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
         { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
-      ],
-      items2: [
-        { icon: 'assignment', iconClass: 'blue white--text', title: 'Vacation itinerary', subtitle: 'Jan 20, 2014' },
-        { icon: 'call_to_action', iconClass: 'amber white--text', title: 'Kitchen remodel', subtitle: 'Jan 10, 2014' }
       ]
     }
   },
+  computed: {
+    items2: function () {
+      var _items = []
+      if (!window.klobsdata || !window.klobsdata['sessiondata']) {
+        return _items
+      }
+      var sd = window.klobsdata['sessiondata']
+      var count = 0
+      for (var trainings of sd.trainings) {
+        var item = { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' }
+        item.subtitle = trainings.date
+        item.title = trainings.location
+        item.id = count++
+        _items.push(item)
+      }
+      return _items
+    }
+  },
+
   methods: {
     nav2New () {
       router.push({ name: 'Newevent' })
@@ -98,22 +112,40 @@ export default {
       router.push({ name: 'Edit', params: { id: '999' } })
     },
     getLocations (data, self) {
-      console.log('t2', self)
       var res = []
-      var tagObj = data.getElementsByTagName('orte')[0].children
-      console.log(tagObj)
-      var i
-      for (i = 0; i < tagObj.length; i++) {
-        console.log('count', i)
+      var orte = data.getElementsByTagName('orte')[0].children
+      for (var ort of orte) {
         res.push({
-          'id': tagObj[i].getElementsByTagName('ort_id')[0].childNodes[0].nodeValue,
-          'name': tagObj[i].getElementsByTagName('name')[0].childNodes[0].nodeValue})
+          'id': ort.getElementsByTagName('ort_id')[0].childNodes[0].nodeValue,
+          'name': ort.getElementsByTagName('name')[0].childNodes[0].nodeValue})
       }
-      window.klobsdata = {'locations': res}
-      console.log('Assingment', window.klobsdata.locations)
+      if (!window.klobsdata) {
+        window.klobsdata = []
+      }
+      window.klobsdata['locations'] = res
+      // console.log('locations', window.klobsdata.locations)
       return res
     },
-    fetchUsers: function (self) {
+    getUsers (data, self) {
+      var res = []
+      // var members = data.getElementsByTagName('members')[0].children
+      var members = data.getElementsByTagName('members')[0]
+      for (var member of members.childNodes) {
+        res.push({
+          'usr_id': member.getElementsByTagName('usr_id')[0].childNodes[0].nodeValue,
+          'trainer': member.getElementsByTagName('trainer')[0].childNodes[0].nodeValue,
+          'first_name': member.getElementsByTagName('first_name')[0].childNodes[0].nodeValue,
+          'last_name': member.getElementsByTagName('last_name')[0].childNodes[0].nodeValue
+        })
+      }
+      if (!window.klobsdata) {
+        window.klobsdata = []
+      }
+      window.klobsdata['userdata'] = res
+      // console.log('userdata', window.klobsdata.userdata)
+      return res
+    },
+    fetchLocations: function (self) {
       // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
       fetch('/static/locations.xml')
         .then(response => response.text())
@@ -122,13 +154,71 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
+    },
+    fetchUsers: function (self) {
+      // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
+      fetch('/static/userdata.xml')
+        .then(response => response.text())
+        .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
+        .then(data => this.getUsers(data, self))
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
   beforeMount: function () {
     var self = this
-    console.log('t1', self)
+    this.fetchLocations(self)
     this.fetchUsers(self)
+    // },
+    // mounted: function () {
+    if (!window.klobsdata) {
+      window.klobsdata = []
+    }
+    if (localStorage.getItem('sessiondata')) {
+      try {
+        window.klobsdata['sessiondata'] = JSON.parse(localStorage.getItem('sessiondata'))
+      } catch (e) {
+        localStorage.removeItem('sessiondata')
+      }
+    } else {
+      console.log('simulate data')
+      window.klobsdata['sessiondata'] = {
+        'updates': [],
+        'trainings': [
+          {
+            'location': 'Bremen',
+            'locationid': '22',
+            'date': '31.12.2017'
+          },
+          {
+            'location': 'Bremen',
+            'locationid': '22',
+            'date': '31.08.2019',
+            'training': [
+              {
+                'usr_id': '642',
+                'typ': '1',
+                'subtyp': '0',
+                'trainerid': '1',
+                'starttime': '12:40',
+                'duration': '60'
+              },
+              {
+                'usr_id': '386',
+                'typ': '1',
+                'subtyp': '0',
+                'trainerid': '1',
+                'starttime': '12:40',
+                'duration': '60'
+              }
+            ]
+          }
+        ]
+      }
+    }
   }
+
 }
 </script>
 
