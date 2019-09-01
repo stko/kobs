@@ -29,7 +29,7 @@
           -->
         </v-toolbar>
         <v-list two-line>
-          <v-list-tile v-for="item in items2" :key="item.id"  @click="nav2Edit">
+          <v-list-tile v-for="item in items2" :key="item.id"  @click="nav2Edit(item.ref)">
             <v-list-tile-content>
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
@@ -95,6 +95,7 @@ export default {
         item.subtitle = trainings.date
         item.title = trainings.location
         item.id = count++
+        item.ref = trainings
         _items.push(item)
       }
       return _items
@@ -108,8 +109,8 @@ export default {
     nav2Set () {
       router.push({ name: 'Settings' })
     },
-    nav2Edit () {
-      router.push({ name: 'Edit', params: { id: '999' } })
+    nav2Edit (item) {
+      router.push({ name: 'Edit', params: { id: item } })
     },
     getLocations (data, self) {
       var res = []
@@ -189,12 +190,16 @@ export default {
           {
             'location': 'Bremen',
             'locationid': '22',
-            'date': '31.12.2017'
+            'date': '31.12.2017',
+            'starttime': '10:40',
+            'duration': '120'
           },
           {
             'location': 'Bremen',
             'locationid': '22',
             'date': '31.08.2019',
+            'starttime': '12:40',
+            'duration': '60',
             'training': [
               {
                 'usr_id': '642',
