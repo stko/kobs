@@ -33,7 +33,8 @@ import Vuetify, {
   VTimePicker,
   VMenu,
   VSelect,
-  VForm
+  VForm,
+  VCheckbox
 
 } from 'vuetify/lib'
 
@@ -75,6 +76,7 @@ Vue.use(Vuetify, {
     VTimePicker,
     VMenu,
     VSelect,
-    VForm
+    VForm,
+    VCheckbox
   }
 })
