@@ -71,7 +71,23 @@ export default {
       time: new Date(ticktime - ticktime % (15 * 60 * 1000)),
       duration: 0,
       durationitems: [
-        {'value': 1, 'text': 'Eins'}
+        {'value': 15, 'text': '15 min'},
+        {'value': 30, 'text': '30 min'},
+        {'value': 45, 'text': '45 min'},
+        {'value': 60, 'text': '1 Std'},
+        {'value': 75, 'text': '1 Std 15 min'},
+        {'value': 90, 'text': '1 Std 30 min'},
+        {'value': 105, 'text': '1 Std 45 min'},
+        {'value': 120, 'text': '2 Std'},
+        {'value': 135, 'text': '2 Std 15 min'},
+        {'value': 150, 'text': '2 Std 30 min'},
+        {'value': 165, 'text': '2 Std 45 min'},
+        {'value': 180, 'text': '3 Std'},
+        {'value': 240, 'text': '4 Std'},
+        {'value': 300, 'text': '5 Std'},
+        {'value': 360, 'text': '6 Std'},
+        {'value': 420, 'text': '7 Std'},
+        {'value': 480, 'text': '8 Std'}
       ],
       location: 0,
       locations: window.klobsdata.locations,
@@ -90,12 +106,37 @@ export default {
     allowedStep: m => m % 15 === 0,
     submit () {
       if (this.$refs.form.validate()) {
-        router.go(-1)
+        /*
+        var mm = this.date.getMonth() + 1 // getMonth() is zero-based
+        var dd = this.dategetDate()
+        */
+        var locationId = -1
+        for (var i = 0; i < window.klobsdata.locations.length && locationId === -1; i++) {
+          if (window.klobsdata.locations[i].id === this.location) {
+            locationId = i
+          }
+        }
+        window.klobsdata['sessiondata']['trainings'].push({
+          'location': window.klobsdata.locations[locationId].name,
+          'locationid': window.klobsdata.locations[locationId].id,
+          /*
+          'date': [
+            (dd > 9 ? '' : '0') + dd,
+            (mm > 9 ? '' : '0') + mm,
+            this.getFullYear()
+          ].join('.'),
+          */
+          'date': this.date,
+          'starttime': this.time.toTimeString(),
+          'duration': this.duration
+        }
+        )
+        localStorage.sessiondata = JSON.stringify(window.klobsdata['sessiondata'])
+        router.push({ name: 'Main' }) // always goes 'back enough' to Main
       }
     }
   },
   beforeMount: function () {
-    console.log('Newevent beforeMount', window.klobsdata.locations)
   }
 
 }

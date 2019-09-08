@@ -103,7 +103,7 @@ export default {
         if (!lookup.includes(entry.usr_id)) { // not selected anymore? delete it..
           this.id['training'].splice(this.id['training'].indexOf(entry.usr_id), 1)
         } else {
-          // lookup[entry.usr_id] = false // marked as been already included in the sessiondata
+          lookup[entry.usr_id] = false // marked as been already included in the sessiondata
         }
       }
       // and finally we fill the training array with the new added users:
