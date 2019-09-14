@@ -29,7 +29,7 @@
           -->
         </v-toolbar>
         <v-list two-line>
-          <v-list-tile v-for="item in items2" :key="item.id"  @click="nav2Edit(item.ref)">
+          <v-list-tile v-for="item in items" :key="item.id"  @click="nav2Edit(item.ref)">
             <v-list-tile-content>
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
@@ -41,6 +41,7 @@
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
+        <v-btn :disabled=sendIsDisabled>{{ sendButtonText }}</v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-text>
@@ -75,33 +76,11 @@ export default {
     return {
       msg: 'Main page',
       dialog: false,
-      items: [
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
-      ]
+      sendButtonText: 'Offline',
+      onLine: navigator.onLine,
+      showBackOnline: false
     }
   },
-  computed: {
-    items2: function () {
-      var _items = []
-      if (!window.klobsdata || !window.klobsdata['sessiondata']) {
-        return _items
-      }
-      var sd = window.klobsdata['sessiondata']
-      var count = 0
-      for (var trainings of sd.trainings) {
-        var item = { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' }
-        item.subtitle = trainings.date
-        item.title = trainings.location
-        item.id = count++
-        item.ref = trainings
-        _items.push(item)
-      }
-      return _items
-    }
-  },
-
   methods: {
     nav2New () {
       router.push({ name: 'Newevent' })
@@ -165,8 +144,25 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
+    },
+    updateOnlineStatus (e) {
+      const {
+        type
+      } = e
+      this.onLine = type === 'online'
     }
   },
+  watch: {
+    onLine (v) {
+      if (v) {
+        this.showBackOnline = true
+        setTimeout(() => {
+          this.showBackOnline = false
+        }, 1000)
+      }
+    }
+  },
+
   beforeMount: function () {
     var self = this
     this.fetchLocations(self)
@@ -222,8 +218,39 @@ export default {
         ]
       }
     }
+  },
+  mounted () {
+    window.addEventListener('online', this.updateOnlineStatus)
+    window.addEventListener('offline', this.updateOnlineStatus)
+  },
+  beforeDestroy () {
+    window.removeEventListener('online', this.updateOnlineStatus)
+    window.removeEventListener('offline', this.updateOnlineStatus)
+  },
+  computed: {
+    items: function () {
+      var _items = []
+      if (!window.klobsdata || !window.klobsdata['sessiondata']) {
+        return _items
+      }
+      var sd = window.klobsdata['sessiondata']
+      var count = 0
+      for (var trainings of sd.trainings) {
+        var item = { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' }
+        item.subtitle = trainings.date
+        item.title = trainings.location
+        item.id = count++
+        item.ref = trainings
+        _items.push(item)
+      }
+      return _items
+    },
+    sendIsDisabled () {
+      // evaluate whatever you need to determine disabled here...
+      this.sendButtonText = 'computed'
+      return !this.onLine
+    }
   }
-
 }
 </script>
 
