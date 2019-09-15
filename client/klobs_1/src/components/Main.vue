@@ -41,7 +41,7 @@
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
-        <v-btn :disabled=sendIsDisabled>{{ sendButtonText }}</v-btn>
+        <v-btn @click="sendToServer()" :disabled=sendIsDisabled>{{ sendButtonText }}</v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-text>
@@ -57,15 +57,6 @@
       </v-card>
     </v-flex>
   </v-layout>
-  <!--
-    <div class="hello">
-    <h1>{{ msg }}</h1>
-    <router-link to="/newewent">Navigate to Newevent</router-link>
-    <a style="cursor: pointer; text-decoration: underline" v-on:click="nav2New()">Push to Newevent</a>
-    <a style="cursor: pointer; text-decoration: underline" v-on:click="nav2Edit()">Push to Edit</a>
-    <a style="cursor: pointer; text-decoration: underline" v-on:click="nav2Set()">Push to Set</a>
-  </div>
-  -->
 </template>
 
 <script>
@@ -78,7 +69,8 @@ export default {
       dialog: false,
       sendButtonText: 'Offline',
       onLine: navigator.onLine,
-      showBackOnline: false
+      showBackOnline: false,
+      sessiondata: {'trainings': []}
     }
   },
   methods: {
@@ -90,6 +82,11 @@ export default {
     },
     nav2Edit (item) {
       router.push({ name: 'Edit', params: { id: item } })
+    },
+    sendToServer () {
+      window.klobsdata = []
+      localStorage.removeItem('sessiondata')
+      this.sessiondata = {'trainings': []}
     },
     getLocations (data, self) {
       var res = []
@@ -103,14 +100,12 @@ export default {
         window.klobsdata = []
       }
       window.klobsdata['locations'] = res
-      // console.log('locations', window.klobsdata.locations)
       return res
     },
     getUsers (data, self) {
       var res = []
-      // var members = data.getElementsByTagName('members')[0].children
-      var members = data.getElementsByTagName('members')[0]
-      for (var member of members.childNodes) {
+      var members = data.getElementsByTagName('members')[0].children
+      for (var member of members) {
         res.push({
           'usr_id': member.getElementsByTagName('usr_id')[0].childNodes[0].nodeValue,
           'trainer': member.getElementsByTagName('trainer')[0].childNodes[0].nodeValue,
@@ -122,25 +117,34 @@ export default {
         window.klobsdata = []
       }
       window.klobsdata['userdata'] = res
-      // console.log('userdata', window.klobsdata.userdata)
       return res
     },
-    fetchLocations: function (self) {
+    fetchData: function (self) {
       // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
-      fetch('/static/locations.xml')
-        .then(response => response.text())
-        .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
-        .then(data => this.getLocations(data, self))
-        .catch(function (error) {
-          console.log(error)
+      var username = ''
+      var pw = ''
+      if (localStorage.user) {
+        username = localStorage.user
+      }
+      if (localStorage.pw) {
+        pw = localStorage.pw
+      }
+      var url = '../syncklobs.php'
+      fetch(url,
+        { method: 'POST',
+          headers: {
+            // 'Content-Type': 'text/xml; charset="utf-8"'
+            'accept-charset': 'UTF-8',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent('')
         })
-    },
-    fetchUsers: function (self) {
-      // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
-      fetch('/static/userdata.xml')
         .then(response => response.text())
         .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
-        .then(data => this.getUsers(data, self))
+        .then(data => {
+          this.getUsers(data, self)
+          this.getLocations(data, self)
+        })
         .catch(function (error) {
           console.log(error)
         })
@@ -165,57 +169,21 @@ export default {
 
   beforeMount: function () {
     var self = this
-    this.fetchLocations(self)
-    this.fetchUsers(self)
-    // },
-    // mounted: function () {
+    this.fetchData(self)
     if (!window.klobsdata) {
       window.klobsdata = []
     }
     if (localStorage.getItem('sessiondata')) {
       try {
         window.klobsdata['sessiondata'] = JSON.parse(localStorage.getItem('sessiondata'))
+        this.sessiondata = window.klobsdata['sessiondata']
       } catch (e) {
         localStorage.removeItem('sessiondata')
       }
     } else {
-      console.log('simulate data')
       window.klobsdata['sessiondata'] = {
         'updates': [],
-        'trainings': [
-          {
-            'location': 'Bremen',
-            'locationid': '22',
-            'date': '31.12.2017',
-            'starttime': '10:40',
-            'duration': '120'
-          },
-          {
-            'location': 'Bremen',
-            'locationid': '22',
-            'date': '31.08.2019',
-            'starttime': '12:40',
-            'duration': '60',
-            'training': [
-              {
-                'usr_id': '642',
-                'typ': '1',
-                'subtyp': '0',
-                'trainerid': '1',
-                'starttime': '12:40',
-                'duration': '60'
-              },
-              {
-                'usr_id': '386',
-                'typ': '1',
-                'subtyp': '0',
-                'trainerid': '1',
-                'starttime': '12:40',
-                'duration': '60'
-              }
-            ]
-          }
-        ]
+        'trainings': []
       }
     }
   },
@@ -230,16 +198,13 @@ export default {
   computed: {
     items: function () {
       var _items = []
-      if (!window.klobsdata || !window.klobsdata['sessiondata']) {
-        return _items
-      }
-      var sd = window.klobsdata['sessiondata']
       var count = 0
-      for (var trainings of sd.trainings) {
+      for (var trainings of this.sessiondata.trainings) {
         var item = { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' }
-        item.subtitle = trainings.date
-        item.title = trainings.location
+        item.subtitle = trainings.date + ' ' + trainings.starttime + ' ' + trainings.duration + ' min'
+        item.title = trainings.location + '( ' + (trainings.training ? trainings.training.length.toString() : '0') + ')'
         item.id = count++
+        item.ref = trainings
         item.ref = trainings
         _items.push(item)
       }

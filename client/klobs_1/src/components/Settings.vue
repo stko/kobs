@@ -1,8 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    Server <input v-model="server" placeholder="The Admidio Server URL">
-    <br/>
     Benutzername <input v-model="user" placeholder="Dein User Name">
     <br/>
     Passwort <input v-model="pw" placeholder="Dein Passwort">
@@ -19,7 +17,6 @@ export default {
   data () {
     return {
       msg: 'Settings page',
-      server: 'http://mitglieder.shojikido.de',
       user: '',
       pw: '',
       md5pw: ''
@@ -31,9 +28,6 @@ export default {
     }
   },
   mounted () {
-    if (localStorage.server) {
-      this.server = localStorage.server
-    }
     if (localStorage.user) {
       this.user = localStorage.user
     }
@@ -42,9 +36,6 @@ export default {
     }
   },
   watch: {
-    server (newServer) {
-      localStorage.server = newServer
-    },
     user (newUser) {
       localStorage.user = newUser
     },

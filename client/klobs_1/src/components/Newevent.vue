@@ -22,16 +22,7 @@
 
       </v-time-picker>
       <p/>
-  <!--     <label :for="duration">Wähle die Dauer</label>
-      <br/>
-      <select v-model="duration" :id="duration">
-        <option disabled value="" selected>Hier auswählen</option>
-        <option>A</option>
-        <option>B</option>
-        <option>C</option>
-      </select>
-      <p/>
-  -->    <v-select
+      <v-select
         label="Wähle die Dauer"
         v-model='duration'
         :items='durationitems'
@@ -106,28 +97,18 @@ export default {
     allowedStep: m => m % 15 === 0,
     submit () {
       if (this.$refs.form.validate()) {
-        /*
-        var mm = this.date.getMonth() + 1 // getMonth() is zero-based
-        var dd = this.dategetDate()
-        */
         var locationId = -1
         for (var i = 0; i < window.klobsdata.locations.length && locationId === -1; i++) {
           if (window.klobsdata.locations[i].id === this.location) {
             locationId = i
           }
         }
+        const [year, month, day] = this.date.split('-')
         window.klobsdata['sessiondata']['trainings'].push({
           'location': window.klobsdata.locations[locationId].name,
           'locationid': window.klobsdata.locations[locationId].id,
-          /*
-          'date': [
-            (dd > 9 ? '' : '0') + dd,
-            (mm > 9 ? '' : '0') + mm,
-            this.getFullYear()
-          ].join('.'),
-          */
-          'date': this.date,
-          'starttime': this.time.toTimeString(),
+          'date': `${day}.${month}.${year}`,
+          'starttime': this.time.toTimeString().substr(0, 5),
           'duration': this.duration
         }
         )
