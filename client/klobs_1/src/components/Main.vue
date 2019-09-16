@@ -83,10 +83,35 @@ export default {
     nav2Edit (item) {
       router.push({ name: 'Edit', params: { id: item } })
     },
+    formatNode (tag, value) {
+      return '<' + tag + '>' + value + '</' + tag + '>\n'
+    },
+    serializeSessiondata (sessionData) {
+      var res = '<klobsdata>\n\t<updates />\n'
+      for (var event of sessionData['trainings']) {
+        if (event['training'].length > 0) {
+          res += '\t<trainings>\n'
+          res += '\t\t' + this.formatNode('location', event['location'])
+          res += '\t\t' + this.formatNode('locationid', event['locationid'])
+          res += '\t\t' + this.formatNode('date', event['date'])
+          for (var training of event['training']) {
+            res += '\t\t<training>\n'
+            res += '\t\t\t' + this.formatNode('usr_id', training['usr_id'])
+            res += '\t\t\t' + this.formatNode('typ', training['typ'])
+            res += '\t\t\t' + this.formatNode('subtyp', training['subtyp'])
+            res += '\t\t\t' + this.formatNode('trainerid', training['trainerid'])
+            res += '\t\t\t' + this.formatNode('starttime', training['starttime'])
+            res += '\t\t\t' + this.formatNode('duration', training['duration'])
+            res += '\t\t</training>\n'
+          }
+          res += '\t</trainings>\n'
+        }
+      }
+      res += '</klobsdata>\n'
+      return res
+    },
     sendToServer () {
-      window.klobsdata = []
-      localStorage.removeItem('sessiondata')
-      this.sessiondata = {'trainings': []}
+      this.syncData(self, this.serializeSessiondata(this.sessiondata))
     },
     getLocations (data, self) {
       var res = []
@@ -119,15 +144,19 @@ export default {
       window.klobsdata['userdata'] = res
       return res
     },
-    fetchData: function (self) {
+    syncData: function (self, sessionData) {
       // das mit dem Passwort steht hier: https://stackoverflow.com/questions/43842793/basic-authentication-with-fetch
       var username = ''
       var pw = ''
       if (localStorage.user) {
         username = localStorage.user
+      } else {
+        this.nav2Set()
       }
       if (localStorage.pw) {
         pw = localStorage.pw
+      } else {
+        this.nav2Set()
       }
       var url = '../syncklobs.php'
       fetch(url,
@@ -137,13 +166,19 @@ export default {
             'accept-charset': 'UTF-8',
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent('')
+          body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent(sessionData)
         })
         .then(response => response.text())
         .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
         .then(data => {
           this.getUsers(data, self)
           this.getLocations(data, self)
+          if (sessionData !== '') { // type save non-equal check
+            // sucessful sync, so delete local stored data
+            window.klobsdata = []
+            localStorage.removeItem('sessiondata')
+            this.sessiondata = {'trainings': []}
+          }
         })
         .catch(function (error) {
           console.log(error)
@@ -169,7 +204,7 @@ export default {
 
   beforeMount: function () {
     var self = this
-    this.fetchData(self)
+    this.syncData(self, '')
     if (!window.klobsdata) {
       window.klobsdata = []
     }
