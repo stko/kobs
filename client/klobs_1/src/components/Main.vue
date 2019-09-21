@@ -111,7 +111,15 @@ export default {
       return res
     },
     sendToServer () {
-      this.syncData(self, this.serializeSessiondata(this.sessiondata))
+      // eslint-disable-next-line
+      if (true) { // demo mode
+        // delete local stored data
+        window.klobsdata = []
+        localStorage.removeItem('sessiondata')
+        this.sessiondata = {'trainings': []}
+      } else {
+        this.syncData(self, this.serializeSessiondata(this.sessiondata))
+      }
     },
     getLocations (data, self) {
       var res = []
@@ -158,6 +166,7 @@ export default {
       } else {
         this.nav2Set()
       }
+      /* Dies ist der HTTP Request für das 'neue' Klobs
       var url = '../syncklobs.php'
       fetch(url,
         { method: 'POST',
@@ -168,6 +177,22 @@ export default {
           },
           body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent(sessionData)
         })
+        */
+      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5
+      */
+      var MD5 = require('md5.js')
+      var md5pw = new MD5().update(pw).digest('hex')
+      console.log('md5', md5pw)
+      var url = '../syncklobs.php' + '?user=' + encodeURIComponent(username) + '&pw=' + encodeURIComponent(md5pw)
+
+      fetch(url,
+        { method: 'POST',
+          headers: {
+            'Content-Type': 'text/xml; charset="utf-8"'
+          },
+          body: sessionData
+        })
+        /* Ende der alten Version */
         .then(response => response.text())
         .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
         .then(data => {
@@ -247,8 +272,13 @@ export default {
     },
     sendIsDisabled () {
       // evaluate whatever you need to determine disabled here...
-      this.sendButtonText = 'computed'
-      return !this.onLine
+      if (this.onLine) {
+        this.sendButtonText = 'Senden'
+        return false // not disabled
+      } else {
+        this.sendButtonText = 'Offline'
+        return true // disabled
+      }
     }
   }
 }

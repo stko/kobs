@@ -25,8 +25,10 @@
 
         <p>{{ id.location }} am {{ id.date }}</p>
         <p>Beginn:{{ id.starttime }} Dauer: {{ id.duration }} Min.</p>
+        <!--
         <p>Selected items:</p>
         <pre>{{ selected }}</pre>
+        -->
         <v-list>
           <v-list-tile v-for="(user) in users" :key="user.usr_id" @click="">
             <v-list-tile-action>
