@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-toolbar app>
+      <img class="mr-3" :src="require('@/assets/Klobslogo.svg')" height="40"/>
       <v-toolbar-title class="headline text-uppercase">
         <span>Klobs</span>
         <span class="font-weight-light">Anwesenheiten</span>

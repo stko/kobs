@@ -1,52 +1,66 @@
 <template>
-  <v-container>
-    <h1>Ein neues Ereignis</h1>
-    <v-form v-model="valid" ref="form">
-      <p>
-      <label :for="date">Wähle das Datum</label>
-      <br/>
-      <v-date-picker
-        v-model="date"
-        full-width
-        :id="date">
-      </v-date-picker>
-      <p/>
-      <label :for="time">Wähle die Anfangszeit</label>
-      <br/>
-      <v-time-picker
-        v-model="time"
-        :id="time"
-        :allowed-minutes="allowedStep"
-        full-width
-        format="24hr">
-
-      </v-time-picker>
-      <p/>
-      <v-select
-        label="Wähle die Dauer"
-        v-model='duration'
-        :items='durationitems'
-        box
-        :rules="[(v) => !!v || 'Item is required']"
-        required
-        placeholder="Hier auswählen">
-      </v-select>
-      <v-select
-        label="Wähle den Ort"
-        v-model='location'
-        :items='locations'
-        item-text='name'
-        item-value='id'
-        box
-        :rules="[(v) => !!v || 'Item is required']"
-        required
-        placeholder="Hier auswählen">
-      </v-select>
-      <v-btn @click="submit" :class="{ red: !valid, green: valid }">submit</v-btn>
-    </v-form>
-    <p/>
-    <a style="cursor: pointer; text-decoration: underline" v-on:click="navBack()">Navigate to Main</a>
-  </v-container>
+  <v-layout row>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-toolbar color="light-blue" light extended>
+          <template v-slot:extension>
+            <v-toolbar-title class="white--text">Neues Ereignis</v-toolbar-title>
+          </template>
+          <!--
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>search</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>view_module</v-icon>
+          </v-btn>
+          -->
+        </v-toolbar>
+        <v-form v-model="valid" ref="form">
+          <!--p>
+          <label :for="date">Wähle das Datum</label>
+          <br/-->
+          <v-date-picker
+            v-model="date"
+            full-width
+            :id="date">
+          </v-date-picker>
+          <!--p/>
+          <label :for="time">Wähle die Anfangszeit</label>
+          <br/-->
+          <v-time-picker
+            v-model="time"
+            close-content-on-click=true
+            :id="time"
+            :allowed-minutes="allowedStep"
+            full-width
+            format="24hr">
+          </v-time-picker>
+          <v-select
+            label="Wähle die Dauer"
+            v-model='duration'
+            :items='durationitems'
+            box
+            :rules="[(v) => !!v || 'Item is required']"
+            required
+            placeholder="Hier auswählen">
+          </v-select>
+          <v-select
+            label="Wähle den Ort"
+            v-model='location'
+            :items='locations'
+            item-text='name'
+            item-value='id'
+            box
+            :rules="[(v) => !!v || 'Item is required']"
+            required
+            placeholder="Hier auswählen">
+          </v-select>
+          <v-btn @click="submit" :class="{ red: !valid, green: valid }">Speichern</v-btn>
+        </v-form>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -57,7 +71,6 @@ export default {
     var ticktime = Date.now()
     return {
       valid: false,
-      msg: 'New Event page',
       // integer arith: rounds down to last full quarter hour
       time: new Date(ticktime - ticktime % (15 * 60 * 1000)),
       duration: 0,
@@ -91,9 +104,6 @@ export default {
     }
   },
   methods: {
-    navBack () {
-      router.go(-1)
-    },
     allowedStep: m => m % 15 === 0,
     submit () {
       if (this.$refs.form.validate()) {

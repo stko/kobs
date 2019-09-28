@@ -167,6 +167,7 @@ export default {
         this.nav2Set()
       }
       /* Dies ist der HTTP Request für das 'neue' Klobs
+      * /
       var url = '../syncklobs.php'
       fetch(url,
         { method: 'POST',
@@ -177,9 +178,8 @@ export default {
           },
           body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent(sessionData)
         })
-        */
-      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5
-      */
+        /* Ende der neuen Version */
+      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5 */
       var MD5 = require('md5.js')
       var md5pw = new MD5().update(pw).digest('hex')
       console.log('md5', md5pw)
@@ -262,7 +262,7 @@ export default {
       for (var trainings of this.sessiondata.trainings) {
         var item = { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' }
         item.subtitle = trainings.date + ' ' + trainings.starttime + ' ' + trainings.duration + ' min'
-        item.title = trainings.location + '( ' + (trainings.training ? trainings.training.length.toString() : '0') + ')'
+        item.title = trainings.location + ' (' + (trainings.training ? trainings.training.length.toString() : '0') + ')'
         item.id = count++
         item.ref = trainings
         item.ref = trainings
@@ -274,7 +274,7 @@ export default {
       // evaluate whatever you need to determine disabled here...
       if (this.onLine) {
         this.sendButtonText = 'Senden'
-        return false // not disabled
+        return this.sessiondata.trainings.length === 0 // disable if nothing to send
       } else {
         this.sendButtonText = 'Offline'
         return true // disabled

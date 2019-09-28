@@ -16,13 +16,7 @@
           </v-btn>
           -->
         </v-toolbar>
-        <v-btn icon
-          class="hidden-xs-only"
-          @click="nav2Main()"
-        >
-          <v-icon>arrow_back</v-icon>
-        </v-btn>
-
+        <v-btn @click="nav2Main()" >Speichern</v-btn>
         <p>{{ id.location }} am {{ id.date }}</p>
         <p>Beginn:{{ id.starttime }} Dauer: {{ id.duration }} Min.</p>
         <!--
@@ -39,6 +33,7 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
+        <v-btn @click="nav2Main()" >Speichern</v-btn>
       </v-card>
     </v-flex>
   </v-layout>

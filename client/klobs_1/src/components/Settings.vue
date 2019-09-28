@@ -1,31 +1,32 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    Benutzername <input v-model="user" placeholder="Dein User Name">
-    <br/>
-    Passwort <input v-model="pw" placeholder="Dein Passwort">
-    <br/>
-
-    <a style="cursor: pointer; text-decoration: underline" v-on:click="navBack()">Pop to Main</a>
-  </div>
+  <v-container>
+    <h1>Deine Login Daten</h1>
+    <v-form v-model="valid" ref="form">
+      <v-text-field
+      v-model="user"
+      label="Dein User Name"
+      required
+      ></v-text-field>
+      <br/>
+      <v-text-field
+      v-model="pw"
+      label="Dein Passwort"
+      required
+      ></v-text-field>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
-import router from '../router'
 export default {
   name: 'Settings',
   data () {
     return {
-      msg: 'Settings page',
       user: '',
-      pw: '',
-      md5pw: ''
+      pw: ''
     }
   },
   methods: {
-    navBack () {
-      router.go(-1)
-    }
   },
   mounted () {
     if (localStorage.user) {
