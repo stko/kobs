@@ -114,7 +114,7 @@ export default {
       // eslint-disable-next-line
       if (true) { // demo mode
         // delete local stored data
-        window.klobsdata = []
+        // window.klobsdata = []
         localStorage.removeItem('sessiondata')
         this.sessiondata = {'trainings': []}
       } else {
@@ -200,7 +200,8 @@ export default {
           this.getLocations(data, self)
           if (sessionData !== '') { // type save non-equal check
             // sucessful sync, so delete local stored data
-            window.klobsdata = []
+            // we we should delete users and locations ?!?!
+            // window.klobsdata = []
             localStorage.removeItem('sessiondata')
             this.sessiondata = {'trainings': []}
           }

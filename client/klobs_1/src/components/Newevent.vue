@@ -72,7 +72,7 @@ export default {
     return {
       valid: false,
       // integer arith: rounds down to last full quarter hour
-      time: new Date(ticktime - ticktime % (15 * 60 * 1000)),
+      time: new Date(ticktime - ticktime % (15 * 60 * 1000)).toTimeString().substr(0, 5),
       duration: 0,
       durationitems: [
         {'value': 15, 'text': '15 min'},
@@ -106,6 +106,9 @@ export default {
   methods: {
     allowedStep: m => m % 15 === 0,
     submit () {
+      console.log('form  date:', this.date, this.date.split('-'))
+      console.log('form  time :', this.time)
+      // console.log('form  time:', this.time, this.time.toTimeString().substr(0, 5))
       if (this.$refs.form.validate()) {
         var locationId = -1
         for (var i = 0; i < window.klobsdata.locations.length && locationId === -1; i++) {
@@ -118,16 +121,21 @@ export default {
           'location': window.klobsdata.locations[locationId].name,
           'locationid': window.klobsdata.locations[locationId].id,
           'date': `${day}.${month}.${year}`,
-          'starttime': this.time.toTimeString().substr(0, 5),
+          'starttime': this.time,
           'duration': this.duration
         }
         )
         localStorage.sessiondata = JSON.stringify(window.klobsdata['sessiondata'])
         router.push({ name: 'Main' }) // always goes 'back enough' to Main
+      } else {
+        console.log('form nicht validated :')
       }
     }
   },
   beforeMount: function () {
+    if (!window.klobsdata) {
+      router.push({ name: 'Main' }) // go back to main to load data first
+    }
   }
 
 }
