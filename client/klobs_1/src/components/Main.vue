@@ -35,7 +35,7 @@
               <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-btn icon>
+              <v-btn icon @click="nav2NewEdit(item.ref)">
                 <v-icon color="grey lighten-1">edit</v-icon>
               </v-btn>
             </v-list-tile-action>
@@ -76,6 +76,9 @@ export default {
   methods: {
     nav2New () {
       router.push({ name: 'Newevent' })
+    },
+    nav2NewEdit (item) {
+      router.push({ name: 'Newevent', params: { id: item } })
     },
     nav2Set () {
       router.push({ name: 'Settings' })
@@ -274,8 +277,9 @@ export default {
     sendIsDisabled () {
       // evaluate whatever you need to determine disabled here...
       if (this.onLine) {
-        this.sendButtonText = 'Senden'
-        return this.sessiondata.trainings.length === 0 // disable if nothing to send
+        this.sendButtonText = 'Sync'
+        // return this.sessiondata.trainings.length === 0 // disable if nothing to send
+        return false
       } else {
         this.sendButtonText = 'Offline'
         return true // disabled

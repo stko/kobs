@@ -68,12 +68,14 @@ import router from '../router'
 export default {
   name: 'Newevent',
   data () {
-    var ticktime = Date.now()
+    // var ticktime = Date.now()
     return {
       valid: false,
       // integer arith: rounds down to last full quarter hour
-      time: new Date(ticktime - ticktime % (15 * 60 * 1000)).toTimeString().substr(0, 5),
-      duration: 0,
+      // time: new Date(ticktime - ticktime % (15 * 60 * 1000)).toTimeString().substr(0, 5),
+      time: this.time,
+      // duration: 0,
+      duration: this.duration,
       durationitems: [
         {'value': 15, 'text': '15 min'},
         {'value': 30, 'text': '30 min'},
@@ -93,9 +95,11 @@ export default {
         {'value': 420, 'text': '7 Std'},
         {'value': 480, 'text': '8 Std'}
       ],
-      location: 0,
+      // location: 0,
+      location: this.location,
       locations: window.klobsdata.locations,
-      date: new Date().toISOString().substr(0, 10)
+      // date: new Date().toISOString().substr(0, 10)
+      date: this.date
     }
   },
   watch: {
@@ -103,6 +107,29 @@ export default {
       console.log('log here')
     }
   },
+  created () {
+    // default settings
+    var ticktime = Date.now()
+    this.time = new Date(ticktime - ticktime % (15 * 60 * 1000)).toTimeString().substr(0, 5)
+    this.duration = 0
+    this.location = 0
+    this.date = new Date().toISOString().substr(0, 10)
+    console.log('locations:', window.klobsdata.locations)
+    try {
+      this.dataid = this.$route.params.id
+      if (this.dataid) {
+        console.log('edit existing entry')
+        const [day, month, year] = this.dataid.date.split('.')
+        this.date = `${year}-${month}-${day}`
+        this.time = this.dataid.starttime
+        this.duration = this.dataid.duration
+        this.location = this.dataid.locationid
+      }
+    } catch (error) {
+      this.nav2Main()
+    }
+  },
+
   methods: {
     allowedStep: m => m % 15 === 0,
     submit () {
@@ -117,14 +144,21 @@ export default {
           }
         }
         const [year, month, day] = this.date.split('-')
-        window.klobsdata['sessiondata']['trainings'].push({
-          'location': window.klobsdata.locations[locationId].name,
-          'locationid': window.klobsdata.locations[locationId].id,
-          'date': `${day}.${month}.${year}`,
-          'starttime': this.time,
-          'duration': this.duration
+        if (this.dataid) {
+          this.dataid.location = window.klobsdata.locations[locationId].name
+          this.dataid.locationid = window.klobsdata.locations[locationId].id
+          this.dataid.date = `${day}.${month}.${year}`
+          this.dataid.starttime = this.time
+          this.dataid.duration = this.duration
+        } else {
+          window.klobsdata['sessiondata']['trainings'].push({
+            'location': window.klobsdata.locations[locationId].name,
+            'locationid': window.klobsdata.locations[locationId].id,
+            'date': `${day}.${month}.${year}`,
+            'starttime': this.time,
+            'duration': this.duration
+          })
         }
-        )
         localStorage.sessiondata = JSON.stringify(window.klobsdata['sessiondata'])
         router.push({ name: 'Main' }) // always goes 'back enough' to Main
       } else {
