@@ -1,11 +1,11 @@
 {
-  "name": "klobs_1",
+  "name": "klobs_pwa",
   "version": "1.0.0",
   "private": true,
-  "description": "A Vue.js project",
+  "description": "PWA Web App for Klobs",
   "author": "Steffen Köhler <steffen@koehlers.de>",
   "scripts": {
-    "build": "node build/build.js",
+    "build": "node build/build.js && cp -r dist/* ../../adm_plugins/klobs/pwa",
     "lint": "eslint --ext .js,.vue src",
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js"
