@@ -118,6 +118,7 @@ export default {
       if (true) { // demo mode
         // delete local stored data
         // window.klobsdata = []
+        window.klobsdata['sessiondata']['trainings'] = []
         localStorage.removeItem('sessiondata')
         this.sessiondata = {'trainings': []}
       } else {
