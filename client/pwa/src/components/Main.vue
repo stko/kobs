@@ -92,7 +92,7 @@ export default {
     serializeSessiondata (sessionData) {
       var res = '<klobsdata>\n\t<updates />\n'
       for (var event of sessionData['trainings']) {
-        if (event['training'].length > 0) {
+        if (event['training'] && event['training'].length > 0) {
           res += '\t<trainings>\n'
           res += '\t\t' + this.formatNode('location', event['location'])
           res += '\t\t' + this.formatNode('locationid', event['locationid'])
@@ -115,7 +115,7 @@ export default {
     },
     sendToServer () {
       // eslint-disable-next-line
-      if (true) { // demo mode
+      if (false) { // demo mode
         // delete local stored data
         // window.klobsdata = []
         window.klobsdata['sessiondata']['trainings'] = []
@@ -205,10 +205,11 @@ export default {
           if (sessionData !== '') { // type save non-equal check
             // sucessful sync, so delete local stored data
             // we we should delete users and locations ?!?!
-            // window.klobsdata = []
+            window.klobsdata['sessiondata']['trainings'] = []
             localStorage.removeItem('sessiondata')
             this.sessiondata = {'trainings': []}
           }
+          console.log('successful snyc :-)')
         })
         .catch(function (error) {
           console.log(error)
