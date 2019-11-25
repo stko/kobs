@@ -183,10 +183,10 @@ export default {
       } else {
         this.nav2Set()
       }
-      /* Dies ist der HTTP Request für das 'neue' Klobs
-      */
-      var url = '../syncklobs.php'
       var userTriggeredSync = sessionData !== ''
+      /* Dies ist der HTTP Request für das 'neue' Klobs
+      * /
+      var url = '../syncklobs.php'
       fetch(url,
         { method: 'POST',
           headers: {
@@ -197,7 +197,7 @@ export default {
           body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent(sessionData)
         })
         /* Ende der neuen Version */
-      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5 * /
+      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5 */
       var MD5 = require('md5.js')
       var md5pw = new MD5().update(pw).digest('hex')
       console.log('md5', md5pw)
