@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar color="light-blue" light extended>
           <template v-slot:extension>
-            <v-toolbar-title class="white--text">Teilnehmer</v-toolbar-title>
+            <v-toolbar-title class="white--text">Teilnehmer ({{onsides}} Anwesende)</v-toolbar-title>
           </template>
           <v-spacer></v-spacer>
           <!--
@@ -54,6 +54,11 @@ export default {
         { hex: '#0f0', label: 'Green' },
         { hex: '#00f', label: 'Blue' }
       ]
+    }
+  },
+  computed: {
+    onsides: function () {
+      return this.selected.length.toString()
     }
   },
   created () {

@@ -42,15 +42,27 @@
           </v-list-tile>
         </v-list>
         <v-btn @click="sendToServer()" :disabled=sendIsDisabled>{{ sendButtonText }}</v-btn>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="okDialog" max-width="500px">
           <v-card>
             <v-card-text>
-              <v-text-field label="File name"></v-text-field>
-              <small class="grey--text">* This doesn't actually save.</small>
+              <v-text-field label="Sync erfolgreich"></v-text-field>
+              <small class="grey--text">Daten wurden gespeichert</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="dialog = false">Submit</v-btn>
+              <v-btn flat color="primary" @click="okDialog = false">Prima!</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="errorDialog" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-text-field label="Sync- Fehler"></v-text-field>
+              <small class="grey--text">Daten konnten nicht übertragen werden</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="errorDialog = false">Schade...</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -66,7 +78,8 @@ export default {
   data () {
     return {
       msg: 'Main page',
-      dialog: false,
+      okDialog: false,
+      errorDialog: false,
       sendButtonText: 'Offline',
       onLine: navigator.onLine,
       showBackOnline: false,
@@ -171,8 +184,9 @@ export default {
         this.nav2Set()
       }
       /* Dies ist der HTTP Request für das 'neue' Klobs
-      * /
+      */
       var url = '../syncklobs.php'
+      var userTriggeredSync = sessionData !== ''
       fetch(url,
         { method: 'POST',
           headers: {
@@ -183,7 +197,7 @@ export default {
           body: 'usr_login_name=' + encodeURIComponent(username) + '&usr_password=' + encodeURIComponent(pw) + '&data=' + encodeURIComponent(sessionData)
         })
         /* Ende der neuen Version */
-      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5 */
+      /* Dies ist der HTTP Request für das 'alte' Klobs mit MD5 * /
       var MD5 = require('md5.js')
       var md5pw = new MD5().update(pw).digest('hex')
       console.log('md5', md5pw)
@@ -208,11 +222,15 @@ export default {
             window.klobsdata['sessiondata']['trainings'] = []
             localStorage.removeItem('sessiondata')
             this.sessiondata = {'trainings': []}
+            this.okDialog = true
           }
-          console.log('successful snyc :-)')
+          console.log('successful sync :-)')
         })
         .catch(function (error) {
           console.log(error)
+          if (userTriggeredSync) {
+            this.errorDialog = true
+          }
         })
     },
     updateOnlineStatus (e) {

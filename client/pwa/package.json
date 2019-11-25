@@ -11,6 +11,7 @@
     "start": "node build/dev-server.js"
   },
   "dependencies": {
+    "babel-plugin-conditional-compilation": "0.0.1",
     "register-service-worker": "^1.6.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

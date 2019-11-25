@@ -19,3 +19,19 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+# for conditional compiling
+
+npm install babel-plugin-conditional-compilation
+
+in .babelrc (recommended)
+
+{
+  "plugins": ["conditional-compilation", {/* compile-time constants */}]
+}
+
+
+Via Node API
+require("babel-core").transform("code", {
+  plugins: ["conditional-compilation", {/* compile-time constants*/}]
+});
